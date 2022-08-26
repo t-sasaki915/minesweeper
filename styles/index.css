@@ -1,33 +1,56 @@
 a.cell {
     display: inline-block;
-    background-color: #D8D8D8;
+    background-color: #c0c0c0;
     content: "";
     width: 64px;
     height: 64px;
     border: 2px solid #000000;
+    text-decoration: none;
+    font-size: 64px;
+    text-align: center;
+    color: transparent;
 }
 
-.cell-mine {
+a.cell-num-0 { color: transparent; }
+a.cell-num-0:active { color: transparent; }
+a.cell-num-1 { color: #0200f9; }
+a.cell-num-1:active { color: #0200f9; }
+a.cell-num-2 { color: #008001; }
+a.cell-num-2:active {color: #008001; }
+a.cell-num-3 { color: #fd0100; }
+a.cell-num-3:active { color: #fd0100; }
+a.cell-num-4 { color: #010080; }
+a.cell-num-4:active { color: #010080; }
+a.cell-num-5 { color: #800002; }
+a.cell-num-5:active { color: #800002; }
+a.cell-num-6 { color: #00817c; }
+a.cell-num-6:active { color: #00817c; }
+a.cell-num-7 { color: #000000; }
+a.cell-num-7:active { color: #000000; }
+a.cell-num-8 { color: #808080; }
+a.cell-num-8:active { color: #808080; }
+
+a.cell-mine {
     background-image: url("../public/mine.png");
     background-size: 100%;
 }
 
-.cell-mine-cause {
+a.cell-mine-cause {
     background-image: url("../public/mine.png");
     background-size: 100%;
     background-color: #ff0000 !important;
 }
 
-.cell-flag {
+a.cell-flag {
     background-image: url("../public/flag.png");
     background-size: 100%;
 }
 
-.cell-flag-miss {
+a.cell-flag-miss {
     background-image: url("../public/flag.png"), url("../public/flagMiss.png");
     background-size: 100%;
 }
 
-.line {
+div.line {
     height: 64px;
 }

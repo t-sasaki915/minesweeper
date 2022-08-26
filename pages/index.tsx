@@ -22,9 +22,10 @@ function Main() {
                             {
                                 Array.from(Array(WIDTH).keys()).map(x =>
                                     <a href="#"
-                                       className={game.cellAt(x, y).isMine() ? "cell cell-mine" : "cell"}
+                                       className={game.cellAt(x, y).isMine() ? "cell cell-mine" : `cell cell-num-${game.calcNumber(x, y)}`}
                                        id={x.toString() + "-" + y.toString()}
-                                    ></a>
+                                       draggable="false"
+                                    >{ game.calcNumber(x, y) }</a>
                                 )
                             }
                         </div>

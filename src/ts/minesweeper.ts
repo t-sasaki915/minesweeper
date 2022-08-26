@@ -107,7 +107,7 @@ export class Minesweeper {
 
     public calcNumber(x: number, y: number): number {
         if (this.cellAt(x, y).isMine()) {
-            throw new Error(`(${x}, ${y}) is mine.`);
+            return 0;
         }
 
         let nearCells = [];
