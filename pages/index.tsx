@@ -9,7 +9,7 @@ function Main() {
     return (
         <>
             <Head>
-                <title>minesweeper</title>
+                <title>Minesweeper</title>
             </Head>
             <p>test</p>
         </>
