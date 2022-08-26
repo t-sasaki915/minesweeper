@@ -3,7 +3,11 @@ import Head from "next/head";
 
 import { Minesweeper } from "../src/ts/minesweeper";
 
-const game = Minesweeper.generate(9, 9, 10);
+const WIDTH = 9;
+const HEIGHT = 9;
+const NUM_OF_MINES = 10;
+
+const game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES);
 
 function Main() {
     return (
@@ -11,7 +15,9 @@ function Main() {
             <Head>
                 <title>Minesweeper</title>
             </Head>
-            <p>test</p>
+            <div>
+                <a href="#" className="cell cell-mine"></a>
+            </div>
         </>
     );
 }

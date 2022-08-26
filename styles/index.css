@@ -1,0 +1,29 @@
+a.cell {
+    display: inline-block;
+    background-color: #D8D8D8;
+    content: "";
+    width: 64px;
+    height: 64px;
+    border: 2px solid #000000;
+}
+
+.cell-mine {
+    background-image: url("../public/mine.png");
+    background-size: 100%;
+}
+
+.cell-mine-cause {
+    background-image: url("../public/mine.png");
+    background-size: 100%;
+    background-color: #ff0000 !important;
+}
+
+.cell-flag {
+    background-image: url("../public/flag.png");
+    background-size: 100%;
+}
+
+.cell-flag-miss {
+    background-image: url("../public/flag.png"), url("../public/flagMiss.png");
+    background-size: 100%;
+}
