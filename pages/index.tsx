@@ -21,7 +21,10 @@ function Main() {
                         <div className="line">
                             {
                                 Array.from(Array(WIDTH).keys()).map(x =>
-                                    <a href="#" className="cell" id={x.toString() + "-" + y.toString()}></a>
+                                    <a href="#"
+                                       className={game.cellAt(x, y).isMine() ? "cell cell-mine" : "cell"}
+                                       id={x.toString() + "-" + y.toString()}
+                                    ></a>
                                 )
                             }
                         </div>
