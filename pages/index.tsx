@@ -16,7 +16,17 @@ function Main() {
                 <title>Minesweeper</title>
             </Head>
             <div>
-                <a href="#" className="cell cell-mine"></a>
+                {
+                    Array.from(Array(HEIGHT).keys()).map(y =>
+                        <div className="line">
+                            {
+                                Array.from(Array(WIDTH).keys()).map(x =>
+                                    <a href="#" className="cell" id={x.toString() + "-" + y.toString()}></a>
+                                )
+                            }
+                        </div>
+                    )
+                }
             </div>
         </>
     );

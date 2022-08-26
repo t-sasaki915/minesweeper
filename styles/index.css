@@ -27,3 +27,7 @@ a.cell {
     background-image: url("../public/flag.png"), url("../public/flagMiss.png");
     background-size: 100%;
 }
+
+.line {
+    height: 64px;
+}
