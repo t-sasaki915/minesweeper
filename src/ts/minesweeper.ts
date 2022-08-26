@@ -1,4 +1,4 @@
-class Coordinate {
+export class Coordinate {
 
     private _x: number;
     private _y: number;
@@ -26,7 +26,7 @@ class Coordinate {
 
 }
 
-abstract class Cell {
+export abstract class Cell {
 
     private _coord: Coordinate;
 
@@ -46,7 +46,7 @@ abstract class Cell {
 
 }
 
-class NeutralCell extends Cell {
+export class NeutralCell extends Cell {
 
     public isMine(): boolean {
         return false;
@@ -54,7 +54,7 @@ class NeutralCell extends Cell {
 
 }
 
-class MineCell extends Cell {
+export class MineCell extends Cell {
 
     public isMine(): boolean {
         return true;
@@ -62,7 +62,7 @@ class MineCell extends Cell {
 
 }
 
-class Minesweeper {
+export class Minesweeper {
 
     private _width: number;
     private _height: number;

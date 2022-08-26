@@ -1,0 +1,23 @@
+{
+  "name": "minesweeper",
+  "version": "1.0.0",
+  "description": "Minesweeper made with TypeScript",
+  "main": "index.js",
+  "author": "stouma915",
+  "license": "MIT",
+  "scripts": {
+    "build": "next build && next export",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "12.2.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.7.13",
+    "@types/react": "^18.0.17",
+    "typescript": "4.8.2",
+    "yarn-run-all": "3.1.1"
+  }
+}
