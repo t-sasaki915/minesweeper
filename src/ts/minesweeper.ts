@@ -85,7 +85,7 @@ export class Minesweeper {
             return 0;
         }
 
-        let nearCells = [];
+        const nearCells = [];
 
         for (let i = -1; i < 2; i ++) {
             for (let j = -1; j < 2; j ++) {
@@ -108,7 +108,7 @@ export class Minesweeper {
     }
 
     public dumpCells(): string {
-        let lines = ["\n"];
+        const lines = ["\n"];
 
         for (let y = 0; y < this.height(); y ++) {
             let line = "";
@@ -138,7 +138,7 @@ export class Minesweeper {
             throw new IllegalArgumentError("width * height < number of mines");
         }
 
-        let arr = [];
+        const arr = [];
 
         for (let y = 0; y < height; y ++) {
             let line = [];
