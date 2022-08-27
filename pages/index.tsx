@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 import { Minesweeper } from "../src/ts/minesweeper";
+import { Util } from "../src/ts/util";
 
 const WIDTH = 9;
 const HEIGHT = 9;
@@ -17,10 +18,10 @@ function Main() {
             </Head>
             <div>
                 {
-                    Array.from(Array(HEIGHT).keys()).map(y =>
+                    Util.range(0, HEIGHT).map(y =>
                         <div className="line">
                             {
-                                Array.from(Array(WIDTH).keys()).map(x =>
+                                Util.range(0, WIDTH).map(x =>
                                     <a href="#"
                                        className={game.cellAt(x, y).isMine() ? "cell cell-mine" : `cell cell-num-${game.calcNumber(x, y)}`}
                                        id={x.toString() + "-" + y.toString()}
