@@ -1,3 +1,4 @@
+import { IllegalArgumentError } from "./errors";
 import { Coordinate, Util } from "./util";
 
 export abstract class Cell {
@@ -134,7 +135,7 @@ export class Minesweeper {
         numOfMines: number
     ): Minesweeper {
         if (width * height < numOfMines) {
-            throw new Error("width * height < number of mines");
+            throw new IllegalArgumentError("width * height < number of mines");
         }
 
         let arr = [];
