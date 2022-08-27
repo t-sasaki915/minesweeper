@@ -48,7 +48,7 @@ export class Minesweeper {
         width: number,
         height: number,
         numOfMines: number,
-        cells: Array<Cell> = []
+        cells: Array<Cell>
     ) {
         this._width = width;
         this._height = height;
