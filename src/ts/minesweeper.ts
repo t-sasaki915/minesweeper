@@ -1,4 +1,4 @@
-import { Coordinate } from "./util";
+import { Coordinate, Util } from "./util";
 
 export abstract class Cell {
 
@@ -137,10 +137,6 @@ export class Minesweeper {
             throw new Error("width * height < number of mines");
         }
 
-        const randomNum = (max: number) => {
-            return Math.floor(Math.random() * (max + 1));
-        };
-
         let arr = [];
 
         for (let y = 0; y < height; y ++) {
@@ -157,8 +153,8 @@ export class Minesweeper {
             let y = 0;
 
             while (true) {
-                const rx = randomNum(width - 1);
-                const ry = randomNum(height - 1);
+                const rx = Util.randomRange(0, width - 1);
+                const ry = Util.randomRange(0, height - 1);
 
                 if (arr[ry][rx].notMine()) {
                     x = rx;

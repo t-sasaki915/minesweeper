@@ -6,6 +6,10 @@ export class Util {
         return Array.from(Array(max - min).keys()).map(x => x + min);
     }
 
+    public static randomRange(min: number, max: number): number {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
 }
 
 export class Coordinate {
