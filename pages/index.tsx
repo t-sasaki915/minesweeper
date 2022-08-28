@@ -34,9 +34,9 @@ function startGame(x: number, y: number) {
             const num = game.calcNumber(x, y);
 
             if (cell.isMine()) {
-                elem.className = "cell cell-mine";
+                elem.className = elem.className + " cell-mine";
             } else {
-                elem.className = `cell cell-num-${num}`;
+                elem.className = elem.className + ` cell-num-${num}`;
             }
 
             elem.innerHTML = `${num}`;
