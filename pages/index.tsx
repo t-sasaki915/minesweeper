@@ -58,12 +58,11 @@ function Main() {
                         <div className="line">
                             {
                                 Util.range(0, WIDTH).map(x =>
-                                    <a href="#"
-                                       className="cell"
-                                       id={x.toString() + "-" + y.toString()}
-                                       draggable="false"
-                                       onClick={() => clicked(x, y)}
-                                    ></a>
+                                    <div className="cell"
+                                         id={x.toString() + "-" + y.toString()}
+                                         draggable="false"
+                                         onClick={() => clicked(x, y)}
+                                    ></div>
                                 )
                             }
                         </div>
