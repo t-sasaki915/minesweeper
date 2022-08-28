@@ -104,7 +104,7 @@ export class Minesweeper {
     }
 
     public calcNumber_(coord: Coordinate): number {
-        return this.calcNumber(coord.x(), coord.y())
+        return this.calcNumber(coord.x(), coord.y());
     }
 
     public dumpCells(): string {
@@ -117,10 +117,12 @@ export class Minesweeper {
                 const cell = this.cellAt(x, y);
 
                 if (cell.isMine()) {
-                    line += "M ";
+                    line += "M";
                 } else {
-                    line += `${this.calcNumber_(cell.coord())} `;
+                    line += `${this.calcNumber_(cell.coord())}`;
                 }
+
+                line += " ";
             }
 
             lines.push(line.trim());
@@ -154,12 +156,12 @@ export class Minesweeper {
             let y = 0;
 
             while (true) {
-                const rx = Util.randomRange(0, width - 1);
-                const ry = Util.randomRange(0, height - 1);
+                const xc = Util.randomRange(0, width - 1);
+                const yc = Util.randomRange(0, height - 1);
 
-                if (arr[ry][rx].notMine()) {
-                    x = rx;
-                    y = ry;
+                if (arr[yc][xc].notMine()) {
+                    x = xc;
+                    y = yc;
 
                     break;
                 }
@@ -173,12 +175,7 @@ export class Minesweeper {
             cells = cells.concat(arr[i]);
         }
 
-        return new Minesweeper(
-            width,
-            height,
-            numOfMines,
-            cells
-        );
+        return new Minesweeper(width, height, numOfMines, cells);
     }
 
 }
