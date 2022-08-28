@@ -10,6 +10,8 @@ const NUM_OF_MINES = 10;
 
 let game: Minesweeper;
 
+let flagMode = false;
+
 let end = false;
 
 function clicked(x: number, y: number) {
@@ -25,6 +27,18 @@ function clicked(x: number, y: number) {
         } else {
             startGame(x, y);    
         }
+    }
+}
+
+function toggleFlagMode() {
+    const elem = document.getElementById("toggleFlag")!;
+
+    if (flagMode) {
+        elem.innerHTML = "switch to flag mode";
+        flagMode = false;
+    } else {
+        elem.innerHTML = "switch to normal mode";
+        flagMode = true;
     }
 }
 
@@ -75,6 +89,9 @@ function Main() {
                         </div>
                     )
                 }
+            </div>
+            <div>
+                <button id="toggleFlag" onClick={() => toggleFlagMode()}>switch to flag mode</button>
             </div>
             <div>
                 <p>
