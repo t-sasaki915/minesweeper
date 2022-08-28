@@ -134,7 +134,8 @@ export class Minesweeper {
     public static generate(
         width: number,
         height: number,
-        numOfMines: number
+        numOfMines: number,
+        blacklist: Array<Coordinate>
     ): Minesweeper {
         if (width * height < numOfMines) {
             throw new IllegalArgumentError("width * height < number of mines");
@@ -158,12 +159,14 @@ export class Minesweeper {
             while (true) {
                 const xc = Util.randomRange(0, width - 1);
                 const yc = Util.randomRange(0, height - 1);
+                
+                if (!blacklist.some(c => c.equals(x, y))) {
+                    if (arr[yc][xc].notMine()) {
+                        x = xc;
+                        y = yc;
 
-                if (arr[yc][xc].notMine()) {
-                    x = xc;
-                    y = yc;
-
-                    break;
+                        break;
+                    }
                 }
             }
 
