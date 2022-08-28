@@ -10,11 +10,15 @@ const NUM_OF_MINES = 10;
 
 let game: Minesweeper;
 
-function clicked(x: number, y: number) {
-    if (game != null) {
+let end = false;
 
-    } else {
-        startGame(x, y);    
+function clicked(x: number, y: number) {
+    if (!end) {
+        if (game != null) {
+            
+        } else {
+            startGame(x, y);    
+        }
     }
 }
 
