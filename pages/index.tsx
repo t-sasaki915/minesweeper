@@ -9,10 +9,9 @@ const HEIGHT = 9;
 const NUM_OF_MINES = 10;
 
 let game: Minesweeper;
-let started = false;
 
 function clicked(x: number, y: number) {
-    if (started) {
+    if (game != null) {
 
     } else {
         startGame(x, y);    
@@ -42,8 +41,6 @@ function startGame(x: number, y: number) {
             elem.innerHTML = `${num}`;
         }
     }
-    
-    started = true;
 }
 
 function Main() {
