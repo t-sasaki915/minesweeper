@@ -26,8 +26,8 @@ function startGame(x: number, y: number) {
 
     game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
 
-    Util.range(0, WIDTH).map(x => 
-        Util.range(0, HEIGHT).map(y => {
+    for (let x = 0; x < WIDTH; x ++) {
+        for (let y = 0; y < HEIGHT; y ++) {
             const cell = game.cellAt(x, y);
             const elem = document.getElementById(`${x}-${y}`)!;
 
@@ -40,8 +40,8 @@ function startGame(x: number, y: number) {
             }
 
             elem.innerHTML = `${num}`;
-        })
-    );
+        }
+    }
     
     started = true;
 }
