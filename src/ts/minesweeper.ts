@@ -160,7 +160,7 @@ export class Minesweeper {
                 const xc = Util.randomRange(0, width - 1);
                 const yc = Util.randomRange(0, height - 1);
                 
-                if (!blacklist.some(c => c.equals(x, y))) {
+                if (!blacklist.some(c => c.equals(xc, yc))) {
                     if (arr[yc][xc].notMine()) {
                         x = xc;
                         y = yc;
