@@ -2,13 +2,47 @@ import React from "react";
 import Head from "next/head";
 
 import { Minesweeper } from "../src/ts/minesweeper";
-import { Util } from "../src/ts/util";
+import { Coordinate, Util } from "../src/ts/util";
 
 const WIDTH = 9;
 const HEIGHT = 9;
 const NUM_OF_MINES = 10;
 
-const game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES);
+let game: Minesweeper;
+let started = false;
+
+function clicked(x: number, y: number) {
+    if (started) {
+
+    } else {
+        startGame(x, y);    
+    }
+}
+
+function startGame(x: number, y: number) {
+    const blacklist = [
+        new Coordinate(x, y)
+    ];
+
+    game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
+
+    Util.range(0, WIDTH).map(x => 
+        Util.range(0, HEIGHT).map(y => {
+            const cell = game.cellAt(x, y);
+            const elem = document.getElementById(`${x}-${y}`)!;
+
+            const num = game.calcNumber(x, y);
+
+            if (cell.isMine()) {
+                elem.className += "cell-mine";
+            } else {
+                elem.className += `cell-num-${num}`;
+            }
+
+            elem.innerHTML = `${num}`;
+        })
+    );
+}
 
 function Main() {
     return (
@@ -23,10 +57,11 @@ function Main() {
                             {
                                 Util.range(0, WIDTH).map(x =>
                                     <a href="#"
-                                       className={game.cellAt(x, y).isMine() ? "cell cell-mine" : `cell cell-num-${game.calcNumber(x, y)}`}
+                                       className="cell"
                                        id={x.toString() + "-" + y.toString()}
                                        draggable="false"
-                                    >{ game.calcNumber(x, y) }</a>
+                                       onClick={() => clicked(x, y)}
+                                    ></a>
                                 )
                             }
                         </div>
