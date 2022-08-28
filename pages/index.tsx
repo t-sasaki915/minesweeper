@@ -15,7 +15,13 @@ let end = false;
 function clicked(x: number, y: number) {
     if (!end) {
         if (game != null) {
-            
+            const cell = game.cellAt(x, y);
+            const elem = document.getElementById(`${x}-${y}`);
+
+            if (cell.isMine()) {
+                elem.className = "cell cell-mine-cause";
+                end = true;
+            }
         } else {
             startGame(x, y);    
         }
