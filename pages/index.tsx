@@ -13,32 +13,55 @@ let game: Minesweeper;
 let flagMode = false;
 
 let end = false;
+let flagged: Array[Coordinate] = [];
 
-function clicked(x: number, y: number) {
+function cellClicked(x: number, y: number) {
     if (!end) {
         if (game != null) {
-            const cell = game.cellAt(x, y);
-            const elem = document.getElementById(`${x}-${y}`)!;
-
-            if (cell.isMine()) {
-                elem.className = "cell cell-mine-cause";
-                end = true;
+            if (flagMode) {
+                setFlag(x, y);
+            } else {
+                openCell(x, y);
             }
         } else {
-            startGame(x, y);    
+            startGame(x, y);
         }
+    }
+}
+
+function openCell(x: number, y: number) {
+    const cell = game.cellAt(x, y);
+    const elem = document.getElementById(`${x}-${y}`)!;
+
+    if (cell.isMine()) {
+        elem.className = "cell cell-mine-cause";
+        end = true;
+    }
+}
+
+function setFlag(x: number, y: number) {
+    const elem = document.getElementById(`${x}-${y}`)!;
+
+    if (flagged.some(c => c.equals(x, y))) {
+        elem.className = "cell";
+        flagged = flagged.filter(e => !e.equals(x, y));
+    } else {
+        elem.className = "cell cell-flag";
+        flagged.push(new Coordinate(x, y));
     }
 }
 
 function toggleFlagMode() {
     const elem = document.getElementById("toggleFlag")!;
 
-    if (flagMode) {
-        elem.innerHTML = "switch to flag mode";
-        flagMode = false;
-    } else {
-        elem.innerHTML = "switch to normal mode";
-        flagMode = true;
+    if (game != null) {
+        if (flagMode) {
+            elem.innerHTML = "switch to flag mode";
+            flagMode = false;
+        } else {
+            elem.innerHTML = "switch to normal mode";
+            flagMode = true;
+        }
     }
 }
 
@@ -82,7 +105,7 @@ function Main() {
                                     <div className="cell"
                                          id={x.toString() + "-" + y.toString()}
                                          draggable="false"
-                                         onClick={() => clicked(x, y)}
+                                         onClick={() => cellClicked(x, y)}
                                     ></div>
                                 )
                             }
