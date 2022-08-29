@@ -85,24 +85,30 @@ function setFlag(x: number, y: number) {
 
 let end = false;
 
-function startGame(startX: number, startY: number) {
+function init() {
     opened = [];
     flagged = [];
     flagMode = false;
     end = false;
 
-    const blacklist = [
-        new Coordinate(startX, startY)
-    ];
+    game = null;
 
     for (let x = 0; x < WIDTH; x ++) {
         for (let y = 0; y < HEIGHT; y ++) {
             const elem = cellElemAt(x, y);
- 
+
             elem.className = "cell";
             elem.innerHTML = "0";
         }
     }
+}
+
+function startGame(startX: number, startY: number) {
+    init();
+
+    const blacklist = [
+        new Coordinate(startX, startY)
+    ];
 
     game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
 }
@@ -127,7 +133,7 @@ function endGame(causeX: number, causeY: number) {
 }
 
 function restart() {
-    startGame();
+    init();
 }
 
 function Main() {
