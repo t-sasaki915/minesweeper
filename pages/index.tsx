@@ -10,6 +10,15 @@ const NUM_OF_MINES = 10;
 
 let game: Minesweeper;
 
+let mines: Array<Coordinate> = [];
+let neutrals: Array<Coordinate> = [];
+
+let opened: Array<Coordinate> = [];
+let flagged: Array<Coordinate> = [];
+
+let flagMode = false;
+let end = false;
+
 function cellElemAt(x: number, y: number): HTMLElement {
     return document.getElementById(`${x}-${y}`)!;
 }
@@ -18,7 +27,37 @@ function cellElemAt_(coord: Coordinate): HTMLElement {
     return cellElemAt(coord.x(), coord.y());
 }
 
-let opened: Array<Coordinate> = [];
+function isMine(x: number, y: number): boolean {
+    return mines.some(c => c.equals(x, y));
+}
+
+function isMine_(coord: Coordinate): boolean {
+    return isMine(coord.x(), coord.y());
+}
+
+function isNeutral(x: number, y: number): boolean {
+    return neutrals.some(c => c.equals(x, y));
+}
+
+function isNeutral_(coord: Coordinate): boolean {
+    return isNeutral(coord.x(), coord.y());
+}
+
+function isOpened(x: number, y: number): boolean {
+    return opened.some(c => c.equals(x, y));
+}
+
+function isOpened_(coord: Coordinate): boolean {
+    return isOpened(coord.x(), coord.y());
+}
+
+function isFlagged(x: number, y: number): boolean {
+    return flagged.some(c => c.equals(x, y));
+}
+
+function isFlagged_(coord: Coordinate): boolean {
+    return isFlagged(coord.x(), coord.y());
+}
 
 function cellClicked(x: number, y: number) {
     if (game != null) {
@@ -35,10 +74,8 @@ function cellClicked(x: number, y: number) {
 }
 
 function openCell(x: number, y: number) {
-    const cell = game.cellAt(x, y);
-
-    if (!flagged.some(c => c.equals(x, y))) {
-        if (cell.isMine()) {
+    if (!isFlagged(x, y)) {
+        if (isMine(x, y)) {
             endGame(x, y);
         } else {
             const elem = cellElemAt(x, y);
@@ -49,9 +86,6 @@ function openCell(x: number, y: number) {
         }
     }
 }
-
-let flagMode = false;
-let flagged: Array<Coordinate> = [];
 
 function toggleFlagButtonClicked() {
     if (game != null && !end) {
@@ -71,8 +105,8 @@ function setFlag(x: number, y: number) {
     if (game != null && !end) {
         const elem = cellElemAt(x, y);
 
-        if (!opened.some(c => c.equals(x, y))) {
-            if (flagged.some(c => c.equals(x, y))) {
+        if (!isOpened(x, y)) {
+            if (isFlagged(x, y)) {
                 elem.className = "cell";
                 flagged = flagged.filter(e => !e.equals(x, y));
             } else {
@@ -83,9 +117,9 @@ function setFlag(x: number, y: number) {
     }
 }
 
-let end = false;
-
 function startGame(startX: number, startY: number) {
+    mines = [];
+    neutrals = [];
     opened = [];
     flagged = [];
     flagMode = false;
@@ -105,21 +139,17 @@ function startGame(startX: number, startY: number) {
     ];
 
     game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
+    mines = game.mines().map(c => c.coord());
+    neutrals = game.neutrals().map(c => c.coord());
 }
 
 function endGame(causeX: number, causeY: number) {
-    game.cells().filter(e => e.isMine()).forEach(cell => {
-        const elem = cellElemAt_(cell.coord());
-        elem.className = "cell cell-mine"; 
-    });
-
-    const causeElem = cellElemAt(causeX, causeY);
-    causeElem.className = "cell cell-mine-cause";
+    mines.forEach(coord => cellElemAt_(coord).className = "cell cell-mine");
+    cellElemAt(causeX, causeY).className = "cell cell-mine-cause";
 
     flagged.forEach(coord => {
-        const elem = cellElemAt_(coord);
-        if (!game.cellAt_(coord).isMine()) {
-            elem.className = "cell cell-flag-miss";
+        if (!isFlagged_(coord)) {
+            cellElemAt_(coord).className = "cell cell-flag-miss";
         }
     });
 
