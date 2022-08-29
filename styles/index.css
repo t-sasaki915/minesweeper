@@ -45,11 +45,6 @@ div.cell-flag-miss {
     background-size: 100%;
 }
 
-div.cell-flag-correct {
-    background-image: url("../public/mine.png"), url("../public/flag.png") !important;
-    background-size: 100%;
-}
-
 div.line {
     height: 64px;
 }
