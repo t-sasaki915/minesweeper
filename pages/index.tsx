@@ -65,7 +65,7 @@ function isFlagged_(coord: Coordinate): boolean {
 }
 
 function updateTime(): void {
-    document.getElementById("timer")!.innerHTML = `${time}`;
+    document.getElementById("time")!.innerHTML = `${time}`;
 }
 
 function updateMineRemain(): void {
@@ -177,6 +177,10 @@ function init(): void {
     end = false;
 
     game = null;
+
+    if (timerId != -1) {
+        stopTimer();
+    }
 
     time = 0;
     timerId = -1;
