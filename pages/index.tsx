@@ -20,7 +20,7 @@ let flagMode = false;
 let end = false;
 
 let time = 0;
-let timerIntervalId = 0;
+let timerId = -1;
 
 let mineRemain = 0;
 
@@ -178,8 +178,11 @@ function init(): void {
 
     game = null;
 
+    if (timerId != -1) {
+        stopTimer();
+    }
     time = 0;
-    timerIntervalId = 0;
+    timerId = -1;
     updateTime();
 
     mineRemain = 0;
@@ -258,14 +261,14 @@ function endGame(causeX: number, causeY: number): void {
 }
 
 function startTimer(): void {
-    timerIntervalId = setInterval(() => {
+    timerId = setInterval(() => {
         time += 1;
         updateTime();
     }, 1000);
 }
 
 function stopTimer(): void {
-    clearInterval(timerIntervalId);
+    clearInterval(timerId);
 }
 
 function Main() {
