@@ -73,6 +73,12 @@ function cellClicked(x: number, y: number) {
     }
 }
 
+function cellRightClicked(x: number, y: number) {
+    if (game != null && !end) {
+        setFlag(x, y);
+    }
+}
+
 function openCell(x: number, y: number) {
     if (!isOpened(x, y) && !isFlagged(x, y)) {
         if (isMine(x, y)) {
@@ -104,17 +110,15 @@ function toggleFlagButtonClicked() {
 }
 
 function setFlag(x: number, y: number) {
-    if (game != null && !end) {
-        const elem = cellElemAt(x, y);
+    const elem = cellElemAt(x, y);
 
-        if (!isOpened(x, y)) {
-            if (isFlagged(x, y)) {
-                elem.className = "cell cell-not-opened";
-                flagged = flagged.filter(e => !e.equals(x, y));
-            } else {
-                elem.className = "cell cell-flag";
-                flagged.push(new Coordinate(x, y));
-            }
+    if (!isOpened(x, y)) {
+        if (isFlagged(x, y)) {
+            elem.className = "cell cell-not-opened";
+            flagged = flagged.filter(e => !e.equals(x, y));
+        } else {
+            elem.className = "cell cell-flag";
+            flagged.push(new Coordinate(x, y));
         }
     }
 }
@@ -176,6 +180,10 @@ function Main() {
                                          id={x.toString() + "-" + y.toString()}
                                          draggable="false"
                                          onClick={() => cellClicked(x, y)}
+                                         onContextMenu={(e) => {
+                                            e.preventDefault();
+                                            cellRightClicked(x, y);
+                                         }}
                                     >0</div>
                                 )
                             }
