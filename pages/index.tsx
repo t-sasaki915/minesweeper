@@ -137,14 +137,18 @@ function setFlag(x: number, y: number): void {
     }
 }
 
-function startGame(startX: number, startY: number): void {
+function init(): void {
     mines = [];
     neutrals = [];
     opened = [];
     flagged = [];
     flagMode = false;
-    mineRemain = 0;
     end = false;
+
+    game = null;
+
+    mineRemain = 0;
+    updateMineRemain();
 
     for (let x = 0; x < WIDTH; x ++) {
         for (let y = 0; y < HEIGHT; y ++) {
@@ -154,6 +158,10 @@ function startGame(startX: number, startY: number): void {
             elem.innerHTML = "0";
         }
     }
+}
+
+function startGame(startX: number, startY: number): void {
+    init();
 
     const blacklist = [
         new Coordinate(startX, startY)
@@ -167,6 +175,10 @@ function startGame(startX: number, startY: number): void {
     updateMineRemain();
 
     openCell(startX, startY);
+}
+
+function restartButtonClicked(): void {
+    init();
 }
 
 function clearGame(): void {
@@ -234,6 +246,7 @@ function Main() {
             <br />
             <div>
                 <button id="toggleFlag" onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
+                <button id="restart" onClick={() => restartButtonClicked()}>restart</button>
                 <br />
                 <div>
                     <p>mine remains: <span id="mineRemain">0</span></p>
