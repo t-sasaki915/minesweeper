@@ -97,6 +97,10 @@ function openCell(x: number, y: number): void {
             elem.innerHTML = `${num}`;
 
             opened.push(new Coordinate(x, y));
+
+            if (opened.length == neutrals.length) {
+                clearGame();
+            }
         }
     }
 }
@@ -165,8 +169,26 @@ function startGame(startX: number, startY: number): void {
     openCell(startX, startY);
 }
 
+function clearGame(): void {
+    mines.forEach(coord => {
+        if (!isFlagged_(coord)) {
+            cellElemAt_(coord).className = "cell cell-mine";
+        } 
+    });
+
+    end = true;
+
+    setTimeout(() => {
+        alert("cleared");
+    }, 1);
+}
+
 function endGame(causeX: number, causeY: number): void {
-    mines.forEach(coord => cellElemAt_(coord).className = "cell cell-mine");
+    mines.forEach(coord => {
+        if (!isFlagged_(coord)) {
+            cellElemAt_(coord).className = "cell cell-mine";
+        } 
+    });
     cellElemAt(causeX, causeY).className = "cell cell-mine-cause";
 
     flagged.forEach(coord => {
@@ -176,6 +198,10 @@ function endGame(causeX: number, causeY: number): void {
     });
 
     end = true;
+
+    setTimeout(() => {
+        alert("failed");
+    }, 1);
 }
 
 function Main() {
