@@ -74,7 +74,7 @@ function cellClicked(x: number, y: number) {
 }
 
 function openCell(x: number, y: number) {
-    if (!isFlagged(x, y)) {
+    if (!isOpened(x, y) && !isFlagged(x, y)) {
         if (isMine(x, y)) {
             endGame(x, y);
         } else {
@@ -83,6 +83,8 @@ function openCell(x: number, y: number) {
 
             elem.className = `cell cell-num-${num}`;
             elem.innerHTML = `${num}`;
+
+            opened.push(new Coordinate(x, y));
         }
     }
 }
@@ -107,7 +109,7 @@ function setFlag(x: number, y: number) {
 
         if (!isOpened(x, y)) {
             if (isFlagged(x, y)) {
-                elem.className = "cell";
+                elem.className = "cell cell-not-opened";
                 flagged = flagged.filter(e => !e.equals(x, y));
             } else {
                 elem.className = "cell cell-flag";
@@ -129,7 +131,7 @@ function startGame(startX: number, startY: number) {
         for (let y = 0; y < HEIGHT; y ++) {
             const elem = cellElemAt(x, y);
 
-            elem.className = "cell";
+            elem.className = "cell cell-not-opened";
             elem.innerHTML = "0";
         }
     }
@@ -141,6 +143,8 @@ function startGame(startX: number, startY: number) {
     game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
     mines = game.mines().map(c => c.coord());
     neutrals = game.neutrals().map(c => c.coord());
+
+    openCell(startX, startY);
 }
 
 function endGame(causeX: number, causeY: number) {
@@ -148,7 +152,7 @@ function endGame(causeX: number, causeY: number) {
     cellElemAt(causeX, causeY).className = "cell cell-mine-cause";
 
     flagged.forEach(coord => {
-        if (!isFlagged_(coord)) {
+        if (!isMine_(coord)) {
             cellElemAt_(coord).className = "cell cell-flag-miss";
         }
     });
@@ -168,11 +172,11 @@ function Main() {
                         <div className="line">
                             {
                                 Util.range(0, WIDTH).map(x =>
-                                    <div className="cell"
+                                    <div className="cell cell-not-opened"
                                          id={x.toString() + "-" + y.toString()}
                                          draggable="false"
                                          onClick={() => cellClicked(x, y)}
-                                    ></div>
+                                    >0</div>
                                 )
                             }
                         </div>

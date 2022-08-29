@@ -8,10 +8,16 @@ div.cell {
     content: "";
     width: 64px;
     height: 64px;
-    border: 2px solid #000000;
+    border: 2px solid #858585;
     font-size: 64px;
     text-align: center;
     color: transparent;
+    user-select: none;
+}
+
+div.cell-not-opened {
+    background-image: url("../public/cellNotOpened.png") !important;
+    background-size: 100%;
 }
 
 div.cell-num-0 { color: transparent; }
@@ -41,10 +47,11 @@ div.cell-flag {
 }
 
 div.cell-flag-miss {
-    background-image: url("../public/flag.png"), url("../public/flagMiss.png");
+    background-image: url("../public/flagMiss.png");
     background-size: 100%;
 }
 
 div.line {
     height: 64px;
+    user-select: none;
 }
