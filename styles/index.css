@@ -2,6 +2,11 @@ body {
     font-family: sans-serif;
 }
 
+div.game {
+    user-select: none;
+    overflow: hidden;
+}
+
 div.cell {
     display: inline-block;
     background-color: #c0c0c0;
@@ -9,10 +14,9 @@ div.cell {
     width: 64px;
     height: 64px;
     border: 2px solid #858585;
-    font-size: 64px;
+    font-size: 60px;
     text-align: center;
     color: transparent;
-    user-select: none;
 }
 
 div.cell-not-opened {
@@ -53,5 +57,4 @@ div.cell-flag-miss {
 
 div.line {
     height: 64px;
-    user-select: none;
 }

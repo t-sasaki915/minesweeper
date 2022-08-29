@@ -170,7 +170,7 @@ function Main() {
             <Head>
                 <title>Minesweeper</title>
             </Head>
-            <div>
+            <div className="game">
                 {
                     Util.range(0, HEIGHT).map(y =>
                         <div className="line">
