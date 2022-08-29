@@ -72,6 +72,14 @@ export class Minesweeper {
         return this._cells;
     }
 
+    public mines(): Array<Cell> {
+        return this.cells().filter(e => e.isMine());
+    }
+
+    public neutrals(): Array<Cell> {
+        return this.cells().filter(e => e.notMine());
+    }
+
     public cellAt(x: number, y: number): Cell {
         return this.cells().filter(e => e.coord().equals(x, y))[0];
     }
