@@ -110,9 +110,25 @@ function toggleFlagButtonClicked(): void {
         const elem = document.getElementById("toggleFlag")!;
 
         if (flagMode) {
+            for (let x = 0; x < WIDTH; x ++) {
+                for (let y = 0; y < HEIGHT; y ++) {
+                    if (cellElemAt(x, y).className.indexOf("cell-flag-placeholder") != -1) {
+                        cellElemAt(x, y).className = "cell cell-not-opened";
+                    }
+                }
+            }
+
             elem.innerHTML = "switch to flag mode";
             flagMode = false;
         } else {
+            for (let x = 0; x < WIDTH; x ++) {
+                for (let y = 0; y < HEIGHT; y ++) {
+                    if (!isOpened(x, y) && !isFlagged(x, y)) {
+                        cellElemAt(x, y).className = "cell cell-flag-placeholder";
+                    }
+                }
+            }
+
             elem.innerHTML = "switch to normal mode";
             flagMode = true;
         }
@@ -126,7 +142,11 @@ function setFlag(x: number, y: number): void {
         if (isFlagged(x, y)) {
             mineRemain += 1;
             updateMineRemain();
-            elem.className = "cell cell-not-opened";
+            if (flagMode) {
+                elem.className = "cell cell-flag-placeholder";
+            } else {
+                elem.className = "cell cell-not-opened";
+            }
             flagged = flagged.filter(e => !e.equals(x, y));
         } else {
             mineRemain -= 1;
