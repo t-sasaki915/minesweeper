@@ -13,7 +13,7 @@ let game: Minesweeper;
 let flagMode = false;
 
 let end = false;
-let flagged: Array[Coordinate] = [];
+let flagged: Array<Coordinate> = [];
 
 function cellClicked(x: number, y: number) {
     if (!end) {
