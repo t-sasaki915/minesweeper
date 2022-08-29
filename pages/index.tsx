@@ -40,6 +40,12 @@ function openCell(x: number, y: number) {
     if (!flagged.some(c => c.equals(x, y))) {
         if (cell.isMine()) {
             endGame(x, y);
+        } else {
+            const elem = cellElemAt(x, y);
+            const num = game.calcNumber(x, y);
+
+            elem.className = `cell cell-num-${num}`;
+            elem.innerHTML = `${num}`;
         }
     }
 }
@@ -62,15 +68,17 @@ function toggleFlagButtonClicked() {
 }
 
 function setFlag(x: number, y: number) {
-    const elem = cellElemAt(x, y);
+    if (game != null && !end) {
+        const elem = cellElemAt(x, y);
 
-    if (!opened.some(c => c.equals(x, y))) {
-        if (flagged.some(c => c.equals(x, y))) {
-            elem.className = "cell";
-            flagged = flagged.filter(e => !e.equals(x, y));
-        } else {
-            elem.className = "cell cell-flag";
-            flagged.push(new Coordinate(x, y));
+        if (!opened.some(c => c.equals(x, y))) {
+            if (flagged.some(c => c.equals(x, y))) {
+                elem.className = "cell";
+                flagged = flagged.filter(e => !e.equals(x, y));
+            } else {
+                elem.className = "cell cell-flag";
+                flagged.push(new Coordinate(x, y));
+            }
         }
     }
 }
@@ -91,23 +99,20 @@ function startGame(startX: number, startY: number) {
 
     for (let x = 0; x < WIDTH; x ++) {
         for (let y = 0; y < HEIGHT; y ++) {
-            const cell = game.cellAt(x, y);
             const elem = cellElemAt(x, y);
-
-            const num = game.calcNumber(x, y);
-
-            if (cell.isMine()) {
-                elem.className = "cell cell-mine";
-            } else {
-                elem.className = `cell cell-num-${num}`;
-            }
-
-            elem.innerHTML = `${num}`;
+ 
+            elem.className = "cell";
+            elem.innerHTML = "0";
         }
     }
 }
 
 function endGame(causeX: number, causeY: number) {
+    game.cells().filter(e => e.isMine()).forEach(cell => {
+        const elem = cellElemAt_(cell.coord());
+        elem.className = "cell cell-mine"; 
+    });
+
     const causeElem = cellElemAt(causeX, causeY);
     causeElem.className = "cell cell-mine-cause";
 
