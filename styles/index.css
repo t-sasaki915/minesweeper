@@ -50,6 +50,11 @@ div.cell-flag {
     background-size: 100%;
 }
 
+div.cell-flag-placeholder {
+    background-image: url("../public/flagPlaceholder.png");
+    background-size: 100%;
+}
+
 div.cell-flag-miss {
     background-image: url("../public/flagMiss.png");
     background-size: 100%;
