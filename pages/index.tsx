@@ -90,6 +90,7 @@ function Main() {
                     )
                 }
             </div>
+            <br />
             <div>
                 <button id="toggleFlag" onClick={() => toggleFlagMode()}>switch to flag mode</button>
             </div>
