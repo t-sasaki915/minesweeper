@@ -85,13 +85,11 @@ function setFlag(x: number, y: number) {
 
 let end = false;
 
-function init() {
+function startGame(startX: number, startY: number) {
     opened = [];
     flagged = [];
     flagMode = false;
     end = false;
-
-    game = null;
 
     for (let x = 0; x < WIDTH; x ++) {
         for (let y = 0; y < HEIGHT; y ++) {
@@ -101,10 +99,6 @@ function init() {
             elem.innerHTML = "0";
         }
     }
-}
-
-function startGame(startX: number, startY: number) {
-    init();
 
     const blacklist = [
         new Coordinate(startX, startY)
@@ -130,10 +124,6 @@ function endGame(causeX: number, causeY: number) {
     });
 
     end = true;
-}
-
-function restart() {
-    init();
 }
 
 function Main() {
@@ -162,7 +152,6 @@ function Main() {
             <br />
             <div>
                 <button id="toggleFlag" onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
-                <button id="restart" onClick={() => restart()}>restart</button>
             </div>
             <div>
                 <p>
