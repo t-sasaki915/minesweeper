@@ -95,8 +95,6 @@ function startGame(startX: number, startY: number) {
         new Coordinate(startX, startY)
     ];
 
-    game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
-
     for (let x = 0; x < WIDTH; x ++) {
         for (let y = 0; y < HEIGHT; y ++) {
             const elem = cellElemAt(x, y);
@@ -105,6 +103,8 @@ function startGame(startX: number, startY: number) {
             elem.innerHTML = "0";
         }
     }
+
+    game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
 }
 
 function endGame(causeX: number, causeY: number) {
@@ -124,6 +124,10 @@ function endGame(causeX: number, causeY: number) {
     });
 
     end = true;
+}
+
+function restart() {
+    startGame();
 }
 
 function Main() {
@@ -152,6 +156,7 @@ function Main() {
             <br />
             <div>
                 <button id="toggleFlag" onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
+                <button id="restart" onClick={() => restart()}>restart</button>
             </div>
             <div>
                 <p>
