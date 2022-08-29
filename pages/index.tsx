@@ -178,9 +178,6 @@ function init(): void {
 
     game = null;
 
-    if (timerId != -1) {
-        stopTimer();
-    }
     time = 0;
     timerId = -1;
     updateTime();
