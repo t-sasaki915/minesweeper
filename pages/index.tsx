@@ -142,16 +142,20 @@ function setFlag(x: number, y: number): void {
         if (isFlagged(x, y)) {
             mineRemain += 1;
             updateMineRemain();
+
             if (flagMode) {
                 elem.className = "cell cell-flag-placeholder";
             } else {
                 elem.className = "cell cell-not-opened";
             }
+
             flagged = flagged.filter(e => !e.equals(x, y));
         } else {
             mineRemain -= 1;
             updateMineRemain();
+
             elem.className = "cell cell-flag";
+            
             flagged.push(new Coordinate(x, y));
         }
     }
