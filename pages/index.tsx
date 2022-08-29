@@ -19,6 +19,9 @@ let flagged: Array<Coordinate> = [];
 let flagMode = false;
 let end = false;
 
+let time = 0;
+let timerIntervalId = 0;
+
 let mineRemain = 0;
 
 function cellElemAt(x: number, y: number): HTMLElement {
@@ -59,6 +62,10 @@ function isFlagged(x: number, y: number): boolean {
 
 function isFlagged_(coord: Coordinate): boolean {
     return isFlagged(coord.x(), coord.y());
+}
+
+function updateTime(): void {
+    document.getElementById("timer")!.innerHTML = `${time}`;
 }
 
 function updateMineRemain(): void {
@@ -171,6 +178,10 @@ function init(): void {
 
     game = null;
 
+    time = 0;
+    timerIntervalId = 0;
+    updateTime();
+
     mineRemain = 0;
     updateMineRemain();
 
@@ -195,6 +206,8 @@ function startGame(startX: number, startY: number): void {
     mines = game.mines().map(c => c.coord());
     neutrals = game.neutrals().map(c => c.coord());
 
+    startTimer();
+
     mineRemain = NUM_OF_MINES;
     updateMineRemain();
 
@@ -206,6 +219,8 @@ function restartButtonClicked(): void {
 }
 
 function clearGame(): void {
+    stopTimer();
+
     mines.forEach(coord => {
         if (!isFlagged_(coord)) {
             cellElemAt_(coord).className = "cell cell-mine";
@@ -220,6 +235,8 @@ function clearGame(): void {
 }
 
 function endGame(causeX: number, causeY: number): void {
+    stopTimer();
+    
     mines.forEach(coord => {
         if (!isFlagged_(coord)) {
             cellElemAt_(coord).className = "cell cell-mine";
@@ -238,6 +255,17 @@ function endGame(causeX: number, causeY: number): void {
     setTimeout(() => {
         alert("failed");
     }, 1);
+}
+
+function startTimer(): void {
+    timerIntervalId = setInterval(() => {
+        time += 1;
+        updateTime();
+    }, 1000);
+}
+
+function stopTimer(): void {
+    clearInterval(timerIntervalId);
 }
 
 function Main() {
@@ -273,6 +301,7 @@ function Main() {
                 <button id="restart" onClick={() => restartButtonClicked()}>restart</button>
                 <br />
                 <div>
+                    <p>time: <span id="time">0</span>s</p>
                     <p>mine remains: <span id="mineRemain">0</span></p>
                 </div>
             </div>
