@@ -261,7 +261,7 @@ function endGame(causeX: number, causeY: number): void {
 }
 
 function startTimer(): void {
-    timerId = setInterval(() => {
+    timerId = window.setInterval(() => {
         time += 1;
         updateTime();
     }, 1000);
