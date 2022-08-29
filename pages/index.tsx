@@ -8,7 +8,7 @@ const WIDTH = 9;
 const HEIGHT = 9;
 const NUM_OF_MINES = 10;
 
-let game: Minesweeper;
+let game: Minesweeper | null;
 
 let mines: Array<Coordinate> = [];
 let neutrals: Array<Coordinate> = [];
@@ -91,7 +91,7 @@ function openCell(x: number, y: number): void {
             endGame(x, y);
         } else {
             const elem = cellElemAt(x, y);
-            const num = game.calcNumber(x, y);
+            const num = game!.calcNumber(x, y);
 
             elem.className = `cell cell-num-${num}`;
             elem.innerHTML = `${num}`;
