@@ -37,8 +37,10 @@ function cellClicked(x: number, y: number) {
 function openCell(x: number, y: number) {
     const cell = game.cellAt(x, y);
 
-    if (cell.isMine()) {
-        endGame(x, y);
+    if (!flagged.some(c => c.equals(x, y))) {
+        if (cell.isMine()) {
+            endGame(x, y);
+        }
     }
 }
 
@@ -111,9 +113,7 @@ function endGame(causeX: number, causeY: number) {
 
     flagged.forEach(coord => {
         const elem = cellElemAt_(coord);
-        if (game.cellAt_(coord).isMine()) {
-            elem.className = "cell cell-flag-correct";
-        } else {
+        if (!game.cellAt_(coord).isMine()) {
             elem.className = "cell cell-flag-miss";
         }
     });
