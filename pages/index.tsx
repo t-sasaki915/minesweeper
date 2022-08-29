@@ -19,6 +19,8 @@ let flagged: Array<Coordinate> = [];
 let flagMode = false;
 let end = false;
 
+let mineRemain = 0;
+
 function cellElemAt(x: number, y: number): HTMLElement {
     return document.getElementById(`${x}-${y}`)!;
 }
@@ -59,7 +61,11 @@ function isFlagged_(coord: Coordinate): boolean {
     return isFlagged(coord.x(), coord.y());
 }
 
-function cellClicked(x: number, y: number) {
+function updateMineRemain(): void {
+    document.getElementById("mineRemain")!.innerHTML = `${mineRemain}`;
+}
+
+function cellClicked(x: number, y: number): void {
     if (game != null) {
         if (!end) {
             if (flagMode) {
@@ -73,13 +79,13 @@ function cellClicked(x: number, y: number) {
     }
 }
 
-function cellRightClicked(x: number, y: number) {
+function cellRightClicked(x: number, y: number): void {
     if (game != null && !end) {
         setFlag(x, y);
     }
 }
 
-function openCell(x: number, y: number) {
+function openCell(x: number, y: number): void {
     if (!isOpened(x, y) && !isFlagged(x, y)) {
         if (isMine(x, y)) {
             endGame(x, y);
@@ -95,7 +101,7 @@ function openCell(x: number, y: number) {
     }
 }
 
-function toggleFlagButtonClicked() {
+function toggleFlagButtonClicked(): void {
     if (game != null && !end) {
         const elem = document.getElementById("toggleFlag")!;
 
@@ -109,26 +115,31 @@ function toggleFlagButtonClicked() {
     }
 }
 
-function setFlag(x: number, y: number) {
+function setFlag(x: number, y: number): void {
     const elem = cellElemAt(x, y);
 
     if (!isOpened(x, y)) {
         if (isFlagged(x, y)) {
+            mineRemain += 1;
+            updateMineRemain();
             elem.className = "cell cell-not-opened";
             flagged = flagged.filter(e => !e.equals(x, y));
         } else {
+            mineRemain -= 1;
+            updateMineRemain();
             elem.className = "cell cell-flag";
             flagged.push(new Coordinate(x, y));
         }
     }
 }
 
-function startGame(startX: number, startY: number) {
+function startGame(startX: number, startY: number): void {
     mines = [];
     neutrals = [];
     opened = [];
     flagged = [];
     flagMode = false;
+    mineRemain = 0;
     end = false;
 
     for (let x = 0; x < WIDTH; x ++) {
@@ -148,10 +159,13 @@ function startGame(startX: number, startY: number) {
     mines = game.mines().map(c => c.coord());
     neutrals = game.neutrals().map(c => c.coord());
 
+    mineRemain = NUM_OF_MINES;
+    updateMineRemain();
+
     openCell(startX, startY);
 }
 
-function endGame(causeX: number, causeY: number) {
+function endGame(causeX: number, causeY: number): void {
     mines.forEach(coord => cellElemAt_(coord).className = "cell cell-mine");
     cellElemAt(causeX, causeY).className = "cell cell-mine-cause";
 
@@ -194,6 +208,10 @@ function Main() {
             <br />
             <div>
                 <button id="toggleFlag" onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
+                <br />
+                <div>
+                    <p>mine remains: <span id="mineRemain">0</span></p>
+                </div>
             </div>
             <div>
                 <p>
