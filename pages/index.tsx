@@ -204,9 +204,15 @@ function init(): void {
 function startGame(startX: number, startY: number): void {
     init();
 
-    const blacklist = [
-        new Coordinate(startX, startY)
-    ];
+    let blacklist = [];
+    for (let i = -1; i < 2; i ++) {
+        for (let j = -1; j < 2; j ++) {
+            const nx = startX + i;
+            const ny = startY + j;
+
+            blacklist.push(new Coordinate(nx, ny));
+        }
+    }
 
     game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
     mines = game.mines().map(c => c.coord());
