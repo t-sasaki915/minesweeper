@@ -6,30 +6,41 @@ import { useLocation } from "react-router-dom";
 import { Minesweeper } from "../src/ts/minesweeper";
 import { Coordinate, Util } from "../src/ts/util";
 
-const search = useLocation().search;
-const params = new URLSearchParams(search);
-//const urlParam = params.get("d");
-
 let difficulty = "easy";
-/*if (urlParam != null) {
-    difficulty = urlParam!;
-}*/
 
-const WIDTH =
-    difficulty == "easy" ? 9 :
-    difficulty == "normal" ? 16 :
-    difficulty == "hard" ? 30 :
-    9;
-const HEIGHT =
-    difficulty == "easy" ? 9 :
-    difficulty == "normal" ? 16 :
-    difficulty == "hard" ? 16 :
-    9;
-const NUM_OF_MINES =
-    difficulty == "easy" ? 10 :
-    difficulty == "normal" ? 40 :
-    difficulty == "hard" ? 99 :
-    10;
+const WIDTH = () => {
+    if (difficulty == "easy") {
+        return 9;
+    } else if (difficulty == "normal") {
+        return 16;
+    } else if (difficulty == "hard") {
+        return 30;
+    } else {
+        return 9;
+    }
+}
+const HEIGHT = () => {
+    if (difficulty == "easy") {
+        return 9;
+    } else if (difficulty == "normal") {
+        return 16;
+    } else if (difficulty == "hard") {
+        return 16;
+    } else {
+        return 9;
+    }
+}
+const NUM_OF_MINES = () => {
+    if (difficulty == "easy") {
+        return 10;
+    } else if (difficulty == "normal") {
+        return 40;
+    } else if (difficulty == "hard") {
+        return 99;
+    } else {
+        return 10;
+    }
+}
 
 let game: Minesweeper | null;
 
@@ -158,7 +169,7 @@ function openCellTailrec(x: number, y: number): void {
                 if (nx == x && ny == y) {
                     continue;
                 }
-                if (nx < 0 || nx >= WIDTH || ny < 0 || ny >= HEIGHT) {
+                if (nx < 0 || nx >= WIDTH() || ny < 0 || ny >= HEIGHT()) {
                     continue;
                 }
 
@@ -177,8 +188,8 @@ function toggleFlagButtonClicked(): void {
         const elem = document.getElementById("toggleFlag")!;
 
         if (flagMode) {
-            for (let x = 0; x < WIDTH; x ++) {
-                for (let y = 0; y < HEIGHT; y ++) {
+            for (let x = 0; x < WIDTH(); x ++) {
+                for (let y = 0; y < HEIGHT(); y ++) {
                     if (cellElemAt(x, y).className.indexOf("cell-flag-placeholder") != -1) {
                         cellElemAt(x, y).className = "cell cell-not-opened";
                     }
@@ -188,8 +199,8 @@ function toggleFlagButtonClicked(): void {
             elem.innerHTML = "switch to flag mode";
             flagMode = false;
         } else {
-            for (let x = 0; x < WIDTH; x ++) {
-                for (let y = 0; y < HEIGHT; y ++) {
+            for (let x = 0; x < WIDTH(); x ++) {
+                for (let y = 0; y < HEIGHT(); y ++) {
                     if (!isOpened(x, y) && !isFlagged(x, y)) {
                         cellElemAt(x, y).className = "cell cell-flag-placeholder";
                     }
@@ -249,8 +260,8 @@ function init(): void {
     mineRemain = 0;
     updateMineRemain();
 
-    for (let x = 0; x < WIDTH; x ++) {
-        for (let y = 0; y < HEIGHT; y ++) {
+    for (let x = 0; x < WIDTH(); x ++) {
+        for (let y = 0; y < HEIGHT(); y ++) {
             const elem = cellElemAt(x, y);
 
             elem.className = "cell cell-not-opened";
@@ -268,7 +279,7 @@ function startGame(startX: number, startY: number): void {
             const nx = startX + i;
             const ny = startY + j;
 
-            if (nx < 0 || nx >= WIDTH || ny < 0 || ny >= HEIGHT) {
+            if (nx < 0 || nx >= WIDTH() || ny < 0 || ny >= HEIGHT()) {
                 continue;
             }
 
@@ -276,13 +287,13 @@ function startGame(startX: number, startY: number): void {
         }
     }
 
-    game = Minesweeper.generate(WIDTH, HEIGHT, NUM_OF_MINES, blacklist);
+    game = Minesweeper.generate(WIDTH(), HEIGHT(), NUM_OF_MINES(), blacklist);
     mines = game.mines().map(c => c.coord());
     neutrals = game.neutrals().map(c => c.coord());
 
     startTimer();
 
-    mineRemain = NUM_OF_MINES;
+    mineRemain = NUM_OF_MINES();
     updateMineRemain();
 
     openCellTailrec(startX, startY);
@@ -339,6 +350,13 @@ function stopTimer(): void {
 }
 
 function Main() {
+    const search = useLocation().search;
+    const params = new URLSearchParams(search);
+    const urlParam = params.get("d");
+    if (urlParam != null) {
+        difficulty = urlParam;
+    }
+
     return (
         <>
             <Head>
@@ -346,10 +364,10 @@ function Main() {
             </Head>
             <div className="game">
                 {
-                    Util.range(0, HEIGHT).map(y =>
+                    Util.range(0, HEIGHT()).map(y =>
                         <div className="line">
                             {
-                                Util.range(0, WIDTH).map(x =>
+                                Util.range(0, WIDTH()).map(x =>
                                     <div className="cell cell-not-opened"
                                          id={x.toString() + "-" + y.toString()}
                                          draggable="false"
