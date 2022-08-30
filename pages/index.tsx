@@ -115,19 +115,18 @@ function openCell(x: number, y: number): void {
 }
 
 function openCellTailrec(x: number, y: number): void {
+    if (isMine(x, y)) {
+        return;
+    }
+
     openCell(x, y);
 
-    const nearCells = [];
-    for (let i = -1; i < 2; i ++) {
-        for (let j = -1; j < 2; j ++) {
-            const nx = x + i;
-            const ny = y + j;
-
-            if (!isOpened(x, y) && !isMine(x, y)) {
-                nearCells.push(new Coordinate(nx, ny));
-            }
-        }
-    }
+    const nearCells = [
+        new Coordinate(x, y + 1),
+        new Coordinate(x, y - 1),
+        new Coordinate(x + 1, y),
+        new Coordinate(x - 1, y)
+    ].filter(c => !isOpened_(c) && !isMine_(c));
 
     nearCells.forEach(coord => {
         if (game!.calcNumber_(coord) == 0) {
