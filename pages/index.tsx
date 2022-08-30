@@ -115,20 +115,21 @@ function openCell(x: number, y: number): void {
 }
 
 function openCellTailrec(x: number, y: number): void {
+    openCell(x, y);
+
     const nearCells = [];
     for (let i = -1; i < 2; i ++) {
         for (let j = -1; j < 2; j ++) {
             const nx = x + i;
             const ny = y + j;
 
-            if (!isOpened(x, y)) {
+            if (!isOpened(x, y) && !isMine(x, y)) {
                 nearCells.push(new Coordinate(nx, ny));
             }
         }
     }
 
     nearCells.forEach(coord => {
-        openCell(coord.x(), coord.y());
         if (game!.calcNumber_(coord) == 0) {
             openCellTailrec(coord.x(), coord.y());
         }
@@ -230,6 +231,10 @@ function startGame(startX: number, startY: number): void {
         for (let j = -1; j < 2; j ++) {
             const nx = startX + i;
             const ny = startY + j;
+
+            if (nx < 0 || nx >= WIDTH || ny < 0 || ny >= HEIGHT) {
+                continue;
+            }
 
             blacklist.push(new Coordinate(nx, ny));
         }
