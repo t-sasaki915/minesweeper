@@ -115,8 +115,6 @@ function openCell(x: number, y: number): void {
 }
 
 function openCellTailrec(x: number, y: number): void {
-    openCell(x, y);
-
     const nearCells = [];
     for (let i = -1; i < 2; i ++) {
         for (let j = -1; j < 2; j ++) {
@@ -130,10 +128,9 @@ function openCellTailrec(x: number, y: number): void {
     }
 
     nearCells.forEach(coord => {
+        openCell(coord.x(), coord.y());
         if (game!.calcNumber_(coord) == 0) {
             openCellTailrec(coord.x(), coord.y());
-        } else {
-            openCell(x, y);
         }
     });
 }
