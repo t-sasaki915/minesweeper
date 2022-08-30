@@ -6,14 +6,14 @@ import { useLocation } from "react-router-dom";
 import { Minesweeper } from "../src/ts/minesweeper";
 import { Coordinate, Util } from "../src/ts/util";
 
-const search = useLocation().search;
+/*const search = useLocation().search;
 const params = new URLSearchParams(search);
-const urlParam = params.get("d");
+const urlParam = params.get("d");*/
 
 let difficulty = "easy";
-if (urlParam != null) {
+/*if (urlParam != null) {
     difficulty = urlParam!;
-}
+}*/
 
 const WIDTH =
     difficulty == "easy" ? 9 :
