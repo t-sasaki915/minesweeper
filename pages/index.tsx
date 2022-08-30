@@ -121,22 +121,28 @@ function openCellTailrec(x: number, y: number): void {
 
     openCell(x, y);
 
-    const nearCells = [
-        new Coordinate(x, y + 1),
-        new Coordinate(x, y - 1),
-        new Coordinate(x + 1, y),
-        new Coordinate(x - 1, y)
-    ].filter(c => !isOpened_(c) && !isMine_(c));
+    if (game!.calcNumber(x, y) == 0) {
+        const nearCells = [];
+        for (let i = -1; i < 2; i ++) {
+            for (let j = -1; j < 2; j ++) {
+                const nx = x + i;
+                const ny = y + j;
 
-    nearCells.forEach(coord => {
-        if (game!.calcNumber_(coord) == 0) {
-            openCellTailrec(coord.x(), coord.y());
-        } else {
-            if (game!.calcNumber(x, y) == 0) {
-                openCell(coord.x(), coord.y())
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                if (nx < 0 || nx >= WIDTH || ny < 0 || ny >= HEIGHT) {
+                    continue;
+                }
+
+                if (!isOpened(nx, ny) && !isMine(nx, ny) && !isFlagged(nx, ny)) {
+                    nearCells.push(new Coordinate(nx, ny));
+                }
             }
         }
-    });
+
+        nearCells.forEach(c => openCellTailrec(c.x(), c.y()));
+    }
 }
 
 function toggleFlagButtonClicked(): void {
