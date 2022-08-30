@@ -78,7 +78,13 @@ function cellClicked(x: number, y: number): void {
             if (flagMode) {
                 setFlag(x, y);
             } else {
-                openCell(x, y);
+                if (!isOpened(x, y) && !isFlagged(x, y)) {
+                    if (isMine(x, y)) {
+                        endGame(x, y);
+                    } else {
+                        openCellTailrec(x, y);
+                    }
+                }
             }
         }
     } else {
@@ -95,23 +101,41 @@ function cellRightClicked(x: number, y: number): void {
 }
 
 function openCell(x: number, y: number): void {
-    if (!isOpened(x, y) && !isFlagged(x, y)) {
-        if (isMine(x, y)) {
-            endGame(x, y);
-        } else {
-            const elem = cellElemAt(x, y);
-            const num = game!.calcNumber(x, y);
+    const elem = cellElemAt(x, y);
+    const num = game!.calcNumber(x, y);
 
-            elem.className = `cell cell-num-${num}`;
-            elem.innerHTML = `${num}`;
+    elem.className = `cell cell-num-${num}`;
+    elem.innerHTML = `${num}`;
 
-            opened.push(new Coordinate(x, y));
+    opened.push(new Coordinate(x, y));
 
-            if (opened.length == neutrals.length) {
-                clearGame();
+    if (opened.length == neutrals.length) {
+        clearGame();
+    }
+}
+
+function openCellTailrec(x: number, y: number): void {
+    openCell(x, y);
+
+    const nearCells = [];
+    for (let i = -1; i < 2; i ++) {
+        for (let j = -1; j < 2; j ++) {
+            const nx = x + i;
+            const ny = y + j;
+
+            if (!isOpened(x, y)) {
+                nearCells.push(new Coordinate(nx, ny));
             }
         }
     }
+
+    nearCells.forEach(coord => {
+        if (game!.calcNumber_(coord) == 0) {
+            openCellTailrec(coord.x(), coord.y());
+        } else {
+            openCell(x, y);
+        }
+    });
 }
 
 function toggleFlagButtonClicked(): void {
@@ -204,7 +228,7 @@ function init(): void {
 function startGame(startX: number, startY: number): void {
     init();
 
-    let blacklist = [];
+    const blacklist = [];
     for (let i = -1; i < 2; i ++) {
         for (let j = -1; j < 2; j ++) {
             const nx = startX + i;
