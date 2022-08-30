@@ -111,6 +111,7 @@ function openCell(x: number, y: number): void {
     elem.className = `cell cell-num-${num}`;
     elem.innerHTML = `${num}`;
 
+    document.getElementById("mineRemain")!.innerHTML += `${x}, ${y}`;
     opened.push(new Coordinate(x, y));
 
     if (opened.length == neutrals.length) {
