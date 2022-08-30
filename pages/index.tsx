@@ -4,9 +4,9 @@ import Head from "next/head";
 import { Minesweeper } from "../src/ts/minesweeper";
 import { Coordinate, Util } from "../src/ts/util";
 
-const WIDTH = 30;
+const WIDTH = 16;
 const HEIGHT = 16;
-const NUM_OF_MINES = 99;
+const NUM_OF_MINES = 40;
 
 let game: Minesweeper | null;
 
