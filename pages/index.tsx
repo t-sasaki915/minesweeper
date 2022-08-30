@@ -349,7 +349,7 @@ function stopTimer(): void {
     clearInterval(timerId);
 }
 
-function Main() {
+function Main(): React.FC {
     /*const search = useLocation().search;
     const params = new URLSearchParams(search);
     const urlParam = params.get("d");
