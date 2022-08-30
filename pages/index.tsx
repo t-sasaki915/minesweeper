@@ -131,6 +131,10 @@ function openCellTailrec(x: number, y: number): void {
     nearCells.forEach(coord => {
         if (game!.calcNumber_(coord) == 0) {
             openCellTailrec(coord.x(), coord.y());
+        } else {
+            if (game!.calcNumber(x, y) == 0) {
+                openCell(coord.x(), coord.y())
+            }
         }
     });
 }
