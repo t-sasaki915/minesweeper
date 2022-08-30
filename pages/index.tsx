@@ -1,12 +1,35 @@
 import React from "react";
 import Head from "next/head";
 
+import { useLocation } from "react-router-dom";
+
 import { Minesweeper } from "../src/ts/minesweeper";
 import { Coordinate, Util } from "../src/ts/util";
 
-const WIDTH = 16;
-const HEIGHT = 16;
-const NUM_OF_MINES = 40;
+const search = useLocation().search;
+const params = new URLSearchParams(search);
+const urlParam = params.get("d");
+
+let difficulty = "easy";
+if (urlParam != null) {
+    difficulty = urlParam;
+}
+
+const WIDTH =
+    difficulty == "easy" ? 9 :
+    difficulty == "normal" ? 16 :
+    difficulty == "hard" ? 30 :
+    9;
+const HEIGHT =
+    difficulty == "easy" ? 9 :
+    difficulty == "normal" ? 16 :
+    difficulty == "hard" ? 16 :
+    9;
+const NUM_OF_MINES =
+    difficulty == "easy" ? 10 :
+    difficulty == "normal" ? 40 :
+    difficulty == "hard" ? 99 :
+    10;
 
 let game: Minesweeper | null;
 
