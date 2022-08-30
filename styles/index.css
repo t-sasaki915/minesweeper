@@ -11,10 +11,10 @@ div.cell {
     display: inline-block;
     background-color: #c0c0c0;
     content: "";
-    width: 64px;
-    height: 64px;
-    border: 2px solid #858585;
-    font-size: 60px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #858585;
+    font-size: 30px;
     text-align: center;
     color: transparent;
 }
@@ -61,5 +61,5 @@ div.cell-flag-miss {
 }
 
 div.line {
-    height: 64px;
+    height: 32px;
 }
