@@ -350,12 +350,12 @@ function stopTimer(): void {
 }
 
 function Main() {
-    const search = useLocation().search;
+    /*const search = useLocation().search;
     const params = new URLSearchParams(search);
     const urlParam = params.get("d");
     if (urlParam != null) {
         difficulty = urlParam!;
-    }
+    }*/
 
     return (
         <>
