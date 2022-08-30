@@ -302,10 +302,6 @@ function endGame(causeX: number, causeY: number): void {
     });
 
     end = true;
-
-    setTimeout(() => {
-        alert("failed");
-    }, 1);
 }
 
 function startTimer(): void {
