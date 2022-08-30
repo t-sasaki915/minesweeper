@@ -88,7 +88,9 @@ function cellClicked(x: number, y: number): void {
 
 function cellRightClicked(x: number, y: number): void {
     if (game != null && !end) {
-        setFlag(x, y);
+        if (!flagMode) {
+            setFlag(x, y);
+        }
     }
 }
 
