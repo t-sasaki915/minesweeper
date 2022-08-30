@@ -12,7 +12,7 @@ const urlParam = params.get("d");
 
 let difficulty = "easy";
 if (urlParam != null) {
-    difficulty = urlParam;
+    difficulty = urlParam!;
 }
 
 const WIDTH =
