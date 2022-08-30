@@ -248,7 +248,7 @@ function startGame(startX: number, startY: number): void {
     mineRemain = NUM_OF_MINES;
     updateMineRemain();
 
-    openCell(startX, startY);
+    openCellTailrec(startX, startY);
 }
 
 function restartButtonClicked(): void {
