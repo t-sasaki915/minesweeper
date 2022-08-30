@@ -101,6 +101,10 @@ function cellRightClicked(x: number, y: number): void {
 }
 
 function openCell(x: number, y: number): void {
+    if (isMine(x, y)) {
+        return;
+    }
+
     const elem = cellElemAt(x, y);
     const num = game!.calcNumber(x, y);
 
@@ -128,7 +132,7 @@ function openCellTailrec(x: number, y: number): void {
                 const nx = x + i;
                 const ny = y + j;
 
-                if (i == 0 && j == 0) {
+                if (nx == x && ny == y) {
                     continue;
                 }
                 if (nx < 0 || nx >= WIDTH || ny < 0 || ny >= HEIGHT) {
