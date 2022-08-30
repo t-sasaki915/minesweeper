@@ -354,7 +354,7 @@ function Main() {
     const params = new URLSearchParams(search);
     const urlParam = params.get("d");
     if (urlParam != null) {
-        difficulty = urlParam;
+        difficulty = urlParam!;
     }
 
     return (
