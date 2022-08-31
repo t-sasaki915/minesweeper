@@ -347,6 +347,16 @@ function stopTimer(): void {
     clearInterval(timerId);
 }
 
+function setDifficulty(difficulty: string): void {
+    const url = new URL(window.location.href);
+
+    if (difficulty == "easy") {
+        window.location.href = `${url.origin}${url.pathname}`;
+    } else {
+        window.location.href = `${url.origin}${url.pathname}?d=${difficulty}`;
+    }
+}
+
 function Main() {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -363,6 +373,9 @@ function Main() {
                     <title>Minesweeper</title>
                 </Head>
                 <p>unknown difficulty: {difficulty}</p>
+                <a href="#" onClick={() => setDifficulty("easy")}>easy</a>
+                <a href="#" onClick={() => setDifficulty("normal")}>normal</a>
+                <a href="#" onClick={() => setDifficulty("hard")}>hard</a>
             </>
         );
     }
