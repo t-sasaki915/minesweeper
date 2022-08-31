@@ -356,6 +356,17 @@ function Main() {
         }
     });
 
+    if (difficulty != "easy" && difficulty != "normal" && difficulty != "hard") {
+        return (
+            <>
+                <Head>
+                    <title>Minesweeper</title>
+                </Head>
+                <p>unknown difficulty: {difficulty}</p>
+            </>
+        );
+    }
+
     return (
         <>
             <Head>
