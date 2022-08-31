@@ -417,6 +417,12 @@ function Main() {
                 </div>
             </div>
             <div>
+                <p>difficulty:</p>
+                <a href="#" onClick={() => setDifficulty("easy")}>easy</a><br />
+                <a href="#" onClick={() => setDifficulty("normal")}>normal</a><br />
+                <a href="#" onClick={() => setDifficulty("hard")}>hard</a>
+            </div>
+            <div>
                 <p>
                     This site is licensed under the <a href="https://github.com/stouma915/minesweeper/blob/main/LICENSE">MIT License</a>.<br />
                     This site is open source. <a href="https://github.com/stouma915/minesweeper/">Improve this site</a>.<br />
