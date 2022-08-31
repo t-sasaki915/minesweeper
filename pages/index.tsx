@@ -373,8 +373,8 @@ function Main() {
                     <title>Minesweeper</title>
                 </Head>
                 <p>unknown difficulty: {difficulty}</p>
-                <a href="#" onClick={() => setDifficulty("easy")}>easy</a>
-                <a href="#" onClick={() => setDifficulty("normal")}>normal</a>
+                <a href="#" onClick={() => setDifficulty("easy")}>easy</a><br />
+                <a href="#" onClick={() => setDifficulty("normal")}>normal</a><br />
                 <a href="#" onClick={() => setDifficulty("hard")}>hard</a>
             </>
         );
