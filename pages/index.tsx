@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 
 import { Minesweeper } from "../src/ts/minesweeper";
@@ -348,11 +348,13 @@ function stopTimer(): void {
 }
 
 function Main() {
-    const params = new URLSearchParams(window.location.search);
-    const difficultyParam = params.get("d");
-    if (difficultyParam != null) {
-        difficulty = difficultyParam;
-    }
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const difficultyParam = params.get("d");
+        if (difficultyParam != null) {
+            difficulty = difficultyParam;
+        }
+    });
 
     return (
         <>
