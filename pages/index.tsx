@@ -1,8 +1,6 @@
 import React from "react";
 import Head from "next/head";
 
-import { useLocation } from "react-router-dom";
-
 import { Minesweeper } from "../src/ts/minesweeper";
 import { Coordinate, Util } from "../src/ts/util";
 
@@ -350,13 +348,10 @@ function stopTimer(): void {
 }
 
 function Main() {
-    if (useLocation() != null) {
-        const search = useLocation().search;
-        const params = new URLSearchParams(search);
-        const urlParam = params.get("d");
-        if (urlParam != null) {
-            difficulty = urlParam!;
-        }
+    const params = new URLSearchParams(window.location.search);
+    const difficultyParam = params.get("d");
+    if (difficultyParam != null) {
+        difficulty = difficultyParam;
     }
 
     return (
