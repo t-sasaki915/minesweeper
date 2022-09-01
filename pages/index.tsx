@@ -3,6 +3,7 @@ import Head from "next/head";
 
 import AboutPage from "../components/AboutPage";
 import DifficultySelect from "../components/DifficultySelect";
+import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
 import { Minesweeper } from "../src/ts/minesweeper";
 import { Coordinate, Util } from "../src/ts/util";
@@ -43,6 +44,8 @@ const NUM_OF_MINES = () => {
     }
 }
 
+const TIMER_ID = "main";
+
 let game: Minesweeper | null;
 
 let mines: Array<Coordinate> = [];
@@ -53,9 +56,6 @@ let flagged: Array<Coordinate> = [];
 
 let flagMode = false;
 let end = false;
-
-let time = 0;
-let timerId = -1;
 
 let mineRemain = 0;
 
@@ -250,13 +250,7 @@ function init(): void {
 
     game = null;
 
-    if (timerId != -1) {
-        stopTimer();
-    }
-
-    time = 0;
-    timerId = -1;
-    updateTime();
+    resetTimer(TIMER_ID);
 
     mineRemain = 0;
     updateMineRemain();
@@ -292,7 +286,7 @@ function startGame(startX: number, startY: number): void {
     mines = game.mines().map(c => c.coord());
     neutrals = game.neutrals().map(c => c.coord());
 
-    startTimer();
+    startTimer(TIMER_ID);
 
     mineRemain = NUM_OF_MINES();
     updateMineRemain();
@@ -305,7 +299,7 @@ function restartButtonClicked(): void {
 }
 
 function clearGame(): void {
-    stopTimer();
+    stopTimer(TIMER_ID);
 
     mines.forEach(coord => {
         if (!isFlagged_(coord)) {
@@ -321,7 +315,7 @@ function clearGame(): void {
 }
 
 function endGame(causeX: number, causeY: number): void {
-    stopTimer();
+    stopTimer(TIMER_ID);
     
     mines.forEach(coord => {
         if (!isFlagged_(coord)) {
@@ -337,17 +331,6 @@ function endGame(causeX: number, causeY: number): void {
     });
 
     end = true;
-}
-
-function startTimer(): void {
-    timerId = window.setInterval(() => {
-        time += 1;
-        updateTime();
-    }, 1000);
-}
-
-function stopTimer(): void {
-    clearInterval(timerId);
 }
 
 function Main() {
@@ -400,7 +383,7 @@ function Main() {
                 <button id="restart" onClick={() => restartButtonClicked()}>restart</button>
                 <br />
                 <div>
-                    <p>time: <span id="time">0</span>s</p>
+                    <p>time: <Timer id={TIMER_ID} />s</p>
                     <p>mine remains: <span id="mineRemain">0</span></p>
                 </div>
             </div>
