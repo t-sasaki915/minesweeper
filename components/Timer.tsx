@@ -41,12 +41,16 @@ export function resetTimer(id: string): void {
     }
 }
 
-const Timer = (id: string) => {
-    TIMES.set(id, 0);
-    TIMER_IDS.set(id, -1);
+type Props = {
+    id: string;
+}
+
+const Timer = (props: Props) => {
+    TIMES.set(props.id, 0);
+    TIMER_IDS.set(props.id, -1);
 
     return (
-        <span id={`timer-${id}`}>0</span>
+        <span id={`timer-${props.id}`}>0</span>
     );
 };
 
