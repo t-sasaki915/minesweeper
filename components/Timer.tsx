@@ -3,13 +3,16 @@ import React from 'react';
 const TIMES = new Map<string, number>();
 const TIMER_IDS = new Map<string, number>();
 
+function getElement(id: string): HTMLElement {
+    return document.getElementById(`timer-${id}`)!;
+}
+
 export function startTimer(id: string): void {
     if (TIMER_IDS.has(id)) {
         const timerId = window.setInterval(() => {
-            const time = TIMES.get(id);
-    
-            const elem = document.getElementById(`timer-${id}`)!;
-            elem.innerHTML = `${time + 1}`;
+            const time = TIMES.get(id)!;
+
+            getElement(id).innerHTML = `${time + 1}`;
     
             TIMES.set(id, time + 1);
         }, 1000);
@@ -30,6 +33,8 @@ export function stopTimer(id: string): void {
 export function resetTimer(id: string): void {
     if (TIMER_IDS.has(id)) {
         stopTimer(id);
+
+        getElement(id).innerHTML = "0";
 
         TIMES.set(id, 0);
         TIMER_IDS.set(id, -1);
