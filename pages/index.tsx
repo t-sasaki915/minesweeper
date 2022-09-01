@@ -99,10 +99,6 @@ function isFlagged_(coord: Coordinate): boolean {
     return isFlagged(coord.x(), coord.y());
 }
 
-function updateTime(): void {
-    document.getElementById("time")!.innerHTML = `${time}`;
-}
-
 function updateMineRemain(): void {
     document.getElementById("mineRemain")!.innerHTML = `${mineRemain}`;
 }
