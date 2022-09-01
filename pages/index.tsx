@@ -362,7 +362,7 @@ function Main() {
         return (
             <>
                 <p>unknown difficulty: {difficulty}</p>
-                <DifficultySelect w={window} />
+                <DifficultySelect />
             </>
         );
     }
@@ -405,7 +405,7 @@ function Main() {
             </div>
             <div>
                 <p>difficulty:</p>
-                <DifficultySelect w={window} />
+                <DifficultySelect />
             </div>
             <div>
                 <p>
