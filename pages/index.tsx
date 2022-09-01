@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
 
+import DifficultySelect from "../components/DifficultySelect";
+
 import { Minesweeper } from "../src/ts/minesweeper";
 import { Coordinate, Util } from "../src/ts/util";
 
@@ -347,16 +349,6 @@ function stopTimer(): void {
     clearInterval(timerId);
 }
 
-function setDifficulty(difficulty: string): void {
-    const url = new URL(window.location.href);
-
-    if (difficulty == "easy") {
-        window.location.href = `${url.origin}${url.pathname}`;
-    } else {
-        window.location.href = `${url.origin}${url.pathname}?d=${difficulty}`;
-    }
-}
-
 function Main() {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -370,9 +362,7 @@ function Main() {
         return (
             <>
                 <p>unknown difficulty: {difficulty}</p>
-                <a href="#" onClick={() => setDifficulty("easy")}>easy</a><br />
-                <a href="#" onClick={() => setDifficulty("normal")}>normal</a><br />
-                <a href="#" onClick={() => setDifficulty("hard")}>hard</a>
+                <DifficultySelect w={window} />
             </>
         );
     }
@@ -415,9 +405,7 @@ function Main() {
             </div>
             <div>
                 <p>difficulty:</p>
-                <a href="#" onClick={() => setDifficulty("easy")}>easy</a><br />
-                <a href="#" onClick={() => setDifficulty("normal")}>normal</a><br />
-                <a href="#" onClick={() => setDifficulty("hard")}>hard</a>
+                <DifficultySelect w={window} />
             </div>
             <div>
                 <p>
