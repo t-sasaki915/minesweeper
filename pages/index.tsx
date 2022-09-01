@@ -369,9 +369,6 @@ function Main() {
     if (difficulty != "easy" && difficulty != "normal" && difficulty != "hard") {
         return (
             <>
-                <Head>
-                    <title>Minesweeper</title>
-                </Head>
                 <p>unknown difficulty: {difficulty}</p>
                 <a href="#" onClick={() => setDifficulty("easy")}>easy</a><br />
                 <a href="#" onClick={() => setDifficulty("normal")}>normal</a><br />
