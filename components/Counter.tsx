@@ -1,5 +1,37 @@
 import React from 'react';
 
+const COUNTS = new Map<string, number>();
+
+function getElement(id: string): HTMLElement {
+    return document.getElementById(`counter-${id}`)!;
+}
+
+export function addCount(id: number, n: number = 1): void {
+    if (COUNTS.has(id)) {
+        const count = COUNTS.get(id)!;
+
+        getElement(id).innerHTML = `${count + n}`;
+
+        COUNTS.set(id, count + n);
+    }
+}
+
+export function setCount(id: number, n: number): void {
+    if (COUNTS.has(id)) {
+        getElement(id).innerHTML = `${n}`;
+
+        COUNTS.set(id, n);
+    }
+}
+
+export function resetCount(id: number): void {
+    if (COUNTS.has(id)) {
+        getElement(id).innerHTML = "0";
+
+        COUNTS.set(id, 0);
+    }
+}
+
 type Props = {
     id: string;
 }
