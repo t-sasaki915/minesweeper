@@ -1,6 +1,6 @@
 import React from 'react';
 
-function setDifficulty(w: Window, difficulty: string): void {
+function setDifficulty(w: Window & any, difficulty: string): void {
     const url = new URL(w.location.href);
 
     if (difficulty == "easy") {
@@ -10,7 +10,7 @@ function setDifficulty(w: Window, difficulty: string): void {
     }
 }
 
-const DifficultySelect = (w: Window) => {
+const DifficultySelect = (w: Window & any) => {
     return (
         <div>
             <a href="#" onClick={() => setDifficulty(w, "easy")}>easy</a><br />
