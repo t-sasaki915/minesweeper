@@ -6,7 +6,7 @@ function getElement(id: string): HTMLElement {
     return document.getElementById(`counter-${id}`)!;
 }
 
-export function addCount(id: number, n: number = 1): void {
+export function addCount(id: string, n: number = 1): void {
     if (COUNTS.has(id)) {
         const count = COUNTS.get(id)!;
 
@@ -16,7 +16,7 @@ export function addCount(id: number, n: number = 1): void {
     }
 }
 
-export function setCount(id: number, n: number): void {
+export function setCount(id: string, n: number): void {
     if (COUNTS.has(id)) {
         getElement(id).innerHTML = `${n}`;
 
@@ -24,7 +24,7 @@ export function setCount(id: number, n: number): void {
     }
 }
 
-export function resetCount(id: number): void {
+export function resetCount(id: string): void {
     if (COUNTS.has(id)) {
         getElement(id).innerHTML = "0";
 
