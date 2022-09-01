@@ -1,21 +1,21 @@
 import React from 'react';
 
-function setDifficulty(w: Window & any, difficulty: string): void {
-    const url = new URL(w.location.href);
+function setDifficulty(difficulty: string): void {
+    const url = new URL(window.location.href);
 
     if (difficulty == "easy") {
-        w.location.href = `${url.origin}${url.pathname}`;
+        window.location.href = `${url.origin}${url.pathname}`;
     } else {
-        w.location.href = `${url.origin}${url.pathname}?d=${difficulty}`;
+        window.location.href = `${url.origin}${url.pathname}?d=${difficulty}`;
     }
 }
 
-const DifficultySelect = (w: Window & any) => {
+const DifficultySelect = () => {
     return (
         <div>
-            <a href="#" onClick={() => setDifficulty(w, "easy")}>easy</a><br />
-            <a href="#" onClick={() => setDifficulty(w, "normal")}>normal</a><br />
-            <a href="#" onClick={() => setDifficulty(w, "hard")}>hard</a>
+            <a href="#" onClick={() => setDifficulty("easy")}>easy</a><br />
+            <a href="#" onClick={() => setDifficulty("normal")}>normal</a><br />
+            <a href="#" onClick={() => setDifficulty("hard")}>hard</a>
         </div>
     );
 };
