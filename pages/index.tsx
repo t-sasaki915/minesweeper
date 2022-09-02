@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Head from "next/head";
 
 import AboutPage from "../components/AboutPage";
+import Counter, { addCount, setCount, resetCount } from "../components/Counter";
 import DifficultySelect from "../components/DifficultySelect";
 import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
@@ -45,6 +46,7 @@ const NUM_OF_MINES = () => {
 }
 
 const TIMER_ID = "main";
+const MINE_COUNTER_ID = "mineRemain";
 
 let game: Minesweeper | null;
 
@@ -56,8 +58,6 @@ let flagged: Array<Coordinate> = [];
 
 let flagMode = false;
 let end = false;
-
-let mineRemain = 0;
 
 function cellElemAt(x: number, y: number): HTMLElement {
     return document.getElementById(`${x}-${y}`)!;
@@ -97,10 +97,6 @@ function isFlagged(x: number, y: number): boolean {
 
 function isFlagged_(coord: Coordinate): boolean {
     return isFlagged(coord.x(), coord.y());
-}
-
-function updateMineRemain(): void {
-    document.getElementById("mineRemain")!.innerHTML = `${mineRemain}`;
 }
 
 function cellClicked(x: number, y: number): void {
@@ -215,8 +211,7 @@ function setFlag(x: number, y: number): void {
 
     if (!isOpened(x, y)) {
         if (isFlagged(x, y)) {
-            mineRemain += 1;
-            updateMineRemain();
+            addCount(MINE_COUNTER_ID, 1);
 
             if (flagMode) {
                 elem.className = "cell cell-flag-placeholder";
@@ -226,8 +221,7 @@ function setFlag(x: number, y: number): void {
 
             flagged = flagged.filter(e => !e.equals(x, y));
         } else {
-            mineRemain -= 1;
-            updateMineRemain();
+            addCount(MINE_COUNTER_ID, -1);
 
             elem.className = "cell cell-flag";
             
@@ -248,8 +242,7 @@ function init(): void {
 
     resetTimer(TIMER_ID);
 
-    mineRemain = 0;
-    updateMineRemain();
+    resetCount(MINE_COUNTER_ID);
 
     for (let x = 0; x < WIDTH(); x ++) {
         for (let y = 0; y < HEIGHT(); y ++) {
@@ -284,8 +277,7 @@ function startGame(startX: number, startY: number): void {
 
     startTimer(TIMER_ID);
 
-    mineRemain = NUM_OF_MINES();
-    updateMineRemain();
+    setCount(MINE_COUNTER_ID, NUM_OF_MINES());
 
     openCellTailrec(startX, startY);
 }
@@ -380,7 +372,7 @@ function Main() {
                 <br />
                 <div>
                     <p>time: <Timer id={TIMER_ID} />s</p>
-                    <p>mine remains: <span id="mineRemain">0</span></p>
+                    <p>mine remains: <Counter id={MINE_COUNTER_ID} /></p>
                 </div>
             </div>
             <div>
