@@ -53,11 +53,18 @@ export const HARD = new Difficulty(
     16,
     99
 );
+export const IMPOSSIBLE = new Difficulty(
+    "impossible",
+    9,
+    9,
+    67
+);
 
 export const DIFFICULTIES = [
     EASY,
     NORMAL,
-    HARD
+    HARD,
+    IMPOSSIBLE
 ];
 
 class Difficulties {
