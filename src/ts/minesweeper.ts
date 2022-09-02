@@ -1,5 +1,6 @@
+import Coordinate from "./coordinate";
 import { IllegalArgumentError } from "./errors";
-import { Coordinate, Util } from "./util";
+import { randomRange } from "./util";
 
 export abstract class Cell {
 
