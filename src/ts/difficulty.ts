@@ -66,8 +66,12 @@ class Difficulties {
         return DIFFICULTIES.some(e => e.id() == id);
     }
 
-    public static get(id: string): Difficulty {
-        return DIFFICULTIES.filter(e => e.id() == id)[0];
+    public static get(id: string): Difficulty | null {
+        if (this.exists(id)) {
+            return DIFFICULTIES.filter(e => e.id() == id)[0];
+        } else {
+            return null;
+        }
     }
 
 }

@@ -8,43 +8,20 @@ import Game from "../components/Game";
 import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
 import Coordinate from "../src/ts/coordinate";
+import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 import Minesweeper from "../src/ts/minesweeper";
 import { cellElemAt, cellElemAt_ } from "../src/ts/util";
 
-let difficulty = "easy";
+let difficulty: Difficulty | null = EASY;
 
 const WIDTH = () => {
-    if (difficulty == "easy") {
-        return 9;
-    } else if (difficulty == "normal") {
-        return 16;
-    } else if (difficulty == "hard") {
-        return 30;
-    } else {
-        return 9;
-    }
+    return difficulty!.width();
 }
 const HEIGHT = () => {
-    if (difficulty == "easy") {
-        return 9;
-    } else if (difficulty == "normal") {
-        return 16;
-    } else if (difficulty == "hard") {
-        return 16;
-    } else {
-        return 9;
-    }
+    return difficulty!.height();
 }
 const NUM_OF_MINES = () => {
-    if (difficulty == "easy") {
-        return 10;
-    } else if (difficulty == "normal") {
-        return 40;
-    } else if (difficulty == "hard") {
-        return 99;
-    } else {
-        return 10;
-    }
+    return difficulty!.numOfMines();
 }
 
 const TIMER_ID = "main";
@@ -320,14 +297,14 @@ function Main() {
         const params = new URLSearchParams(window.location.search);
         const difficultyParam = params.get("d");
         if (difficultyParam != null) {
-            difficulty = difficultyParam;
+            difficulty = Difficulties.get(difficultyParam);
         }
     });
 
-    if (difficulty != "easy" && difficulty != "normal" && difficulty != "hard") {
+    if (difficulty == null) {
         return (
             <>
-                <p>unknown difficulty: {difficulty}</p>
+                <p>unknown difficulty.</p>
                 <DifficultySelect />
             </>
         );
