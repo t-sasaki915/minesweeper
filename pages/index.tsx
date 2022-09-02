@@ -8,7 +8,7 @@ import Game from "../components/Game";
 import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
 import Coordinate from "../src/ts/coordinate";
-import { Minesweeper } from "../src/ts/minesweeper";
+import Minesweeper from "../src/ts/minesweeper";
 import { cellElemAt, cellElemAt_ } from "../src/ts/util";
 
 let difficulty = "easy";
