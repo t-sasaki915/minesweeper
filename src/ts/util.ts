@@ -1,3 +1,5 @@
+import Coordinate from "./coordinate";
+
 export function range(min: number, max: number): Array<number> {
     return Array.from(Array(max - min).keys()).map(x => x + min);
 }
