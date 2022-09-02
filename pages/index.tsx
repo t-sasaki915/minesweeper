@@ -7,8 +7,9 @@ import DifficultySelect from "../components/DifficultySelect";
 import Game from "../components/Game";
 import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
+import Coordinate from "../src/ts/coordinate";
 import { Minesweeper } from "../src/ts/minesweeper";
-import { Coordinate, Util } from "../src/ts/util";
+import { cellElemAt, cellElemAt_ } from "../src/ts/util";
 
 let difficulty = "easy";
 
@@ -59,14 +60,6 @@ let flagged: Array<Coordinate> = [];
 
 let flagMode = false;
 let end = false;
-
-function cellElemAt(x: number, y: number): HTMLElement {
-    return document.getElementById(`${x}-${y}`)!;
-}
-
-function cellElemAt_(coord: Coordinate): HTMLElement {
-    return cellElemAt(coord.x(), coord.y());
-}
 
 function isMine(x: number, y: number): boolean {
     return mines.some(c => c.equals(x, y));
