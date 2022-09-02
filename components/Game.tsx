@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Util } from "../src/ts/util";
+import { range } from "../src/ts/util";
 
 type Props = {
     width: number;
@@ -13,10 +13,10 @@ const Game = (props: Props) => {
     return (
         <div className="game">
             {
-                Util.range(0, props.height).map(y =>
+                range(0, props.height).map(y =>
                     <div className="line">
                         { 
-                            Util.range(0, props.width).map(x =>
+                            range(0, props.width).map(x =>
                                 <div className="cell cell-not-opened"
                                      id={x.toString() + "-" + y.toString()}
                                      draggable="false"
