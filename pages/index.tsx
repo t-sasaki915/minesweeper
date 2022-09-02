@@ -4,6 +4,7 @@ import Head from "next/head";
 import AboutPage from "../components/AboutPage";
 import Counter, { addCount, setCount, resetCount } from "../components/Counter";
 import DifficultySelect from "../components/DifficultySelect";
+import Game from "../components/Game";
 import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
 import { Minesweeper } from "../src/ts/minesweeper";
@@ -344,27 +345,11 @@ function Main() {
             <Head>
                 <title>Minesweeper</title>
             </Head>
-            <div className="game">
-                {
-                    Util.range(0, HEIGHT()).map(y =>
-                        <div className="line">
-                            {
-                                Util.range(0, WIDTH()).map(x =>
-                                    <div className="cell cell-not-opened"
-                                         id={x.toString() + "-" + y.toString()}
-                                         draggable="false"
-                                         onClick={() => cellClicked(x, y)}
-                                         onContextMenu={(e) => {
-                                            e.preventDefault();
-                                            cellRightClicked(x, y);
-                                         }}
-                                    >0</div>
-                                )
-                            }
-                        </div>
-                    )
-                }
-            </div>
+            <Game width={WIDTH()}
+                  height={HEIGHT()}
+                  cellClicked={(x, y) => cellClicked(x, y)}
+                  cellRightClicked={(x, y) => cellRightClicked(x, y)}
+            />
             <br />
             <div>
                 <button id="toggleFlag" onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
