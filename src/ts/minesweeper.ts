@@ -2,7 +2,7 @@ import Coordinate from "./coordinate";
 import { IllegalArgumentError } from "./errors";
 import { randomRange } from "./util";
 
-export default abstract class Cell {
+export abstract class Cell {
 
     private _coord: Coordinate;
 
@@ -22,7 +22,7 @@ export default abstract class Cell {
 
 }
 
-export default class NeutralCell extends Cell {
+export class NeutralCell extends Cell {
 
     public isMine(): boolean {
         return false;
@@ -30,7 +30,7 @@ export default class NeutralCell extends Cell {
 
 }
 
-export default class MineCell extends Cell {
+export class MineCell extends Cell {
 
     public isMine(): boolean {
         return true;
