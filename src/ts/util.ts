@@ -1,23 +1,17 @@
-export class Util {
+export function range(min: number, max: number): Array<number> {
+    return Array.from(Array(max - min).keys()).map(x => x + min);
+}
 
-    constructor() { }
+export function randomRange(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min) + min);
+}
 
-    public static range(min: number, max: number): Array<number> {
-        return Array.from(Array(max - min).keys()).map(x => x + min);
-    }
+export function cellElemAt(x: number, y: number): HTMLElement {
+    return document.getElementById(`${x}-${y}`)!;
+}
 
-    public static randomRange(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min) + min);
-    }
-
-    public static cellElemAt(x: number, y: number): HTMLElement {
-        return document.getElementById(`${x}-${y}`)!;
-    }
-
-    public static cellElemAt_(coord: Coordinate): HTMLElement {
-        return this.cellElemAt(coord.x(), coord.y());
-    }
-
+export function cellElemAt_(coord: Coordinate): HTMLElement {
+    return cellElemAt(coord.x(), coord.y());
 }
 
 export class Coordinate {
