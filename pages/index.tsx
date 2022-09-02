@@ -50,7 +50,7 @@ const NUM_OF_MINES = () => {
 const TIMER_ID = "main";
 const MINE_COUNTER_ID = "mineRemain";
 
-let game: typeof Minesweeper | null;
+let game: Minesweeper | null;
 
 let mines: Array<Coordinate> = [];
 let neutrals: Array<Coordinate> = [];
