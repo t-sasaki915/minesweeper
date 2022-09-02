@@ -37,6 +37,8 @@ type Props = {
 }
 
 const Counter = (props: Props) => {
+    COUNTS.set(props.id, 0);
+
     return (
         <span id={`counter-${props.id}`}>0</span>
     );
