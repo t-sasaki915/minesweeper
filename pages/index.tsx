@@ -114,7 +114,7 @@ function chordOpen(x: number, y: number): void {
 
         if (nearCells.filter(c => isFlagged_(c)).length == num) {
             nearCells
-                .filter(c => isFlagged_(c))
+                .filter(c => !isFlagged_(c))
                 .forEach(c => {
                     normalOpen(c.x(), c.y());
                 });
