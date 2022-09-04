@@ -220,6 +220,9 @@ function init(): void {
 
     resetCount(MINE_COUNTER_ID);
 
+    document.getElementById("toggleFlag")!.innerHTML = "switch to flag mode";
+    document.getElementById("toggleChord")!.innerHTML = "switch to chord mode";
+
     for (let x = 0; x < WIDTH(); x ++) {
         for (let y = 0; y < HEIGHT(); y ++) {
             const elem = cellElemAt(x, y);
