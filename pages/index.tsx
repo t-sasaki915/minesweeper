@@ -203,6 +203,17 @@ function setFlag(x: number, y: number): void {
 }
 
 function toggleChord(): void {
+    if (game != null && !end) {
+        const elem = document.getElementById("toggleChord")!;
+
+        if (chordMode) {
+            elem.innerHTML = "switch to chord mode";
+            chordMode = false;
+        } else {
+            elem.innerHTML = "switch to normal mode";
+            chordMode = true;
+        }
+    }
 }
 
 function init(): void {
