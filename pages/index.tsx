@@ -77,17 +77,58 @@ function cellClicked(x: number, y: number): void {
             if (flagMode) {
                 setFlag(x, y);
             } else {
-                if (!isOpened(x, y) && !isFlagged(x, y)) {
-                    if (isMine(x, y)) {
-                        endGame(x, y);
-                    } else {
-                        openCellTailrec(x, y);
-                    }
+                if (chordMode) {
+                    chordOpen(x, y);
+                } else {
+                    normalOpen(x, y);   
                 }
             }
         }
     } else {
         startGame(x, y);
+    }
+}
+
+function chordOpen(x: number, y: number): void {
+    if (isOpened(x, y)) {
+        const num = game!.calcNumber(x, y);
+
+        const nearCells = [];
+        for (let i = -1; i < 2; i ++) {
+            for (let j = -1; j < 2; j ++) {
+                const nx = x + i;
+                const ny = y + j;
+
+                if (nx == x && ny == y) {
+                    continue;
+                }
+                if (nx < 0 || nx >= WIDTH() || ny < 0 || ny >= HEIGHT()) {
+                    continue;
+                }
+
+                if (!isOpened(nx, ny)) {
+                    nearCells.push(new Coordinate(nx, ny));
+                }
+            }
+        }
+
+        if (nearCells.filter(c => isFlagged_(c)).length == num) {
+            nearCells
+                .filter(c => isFlagged_(c))
+                .forEach(c => {
+                    normalOpen(c.x(), c.y());
+                });
+        }
+    }
+}
+
+function normalOpen(x: number, y: number): void {
+    if (!isOpened(x, y) && !isFlagged(x, y)) {
+        if (isMine(x, y)) {
+            endGame(x, y);
+        } else {
+            openCellTailrec(x, y);
+        }
     }
 }
 
