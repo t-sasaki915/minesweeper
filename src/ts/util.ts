@@ -1,5 +1,4 @@
 import Coordinate from "./coordinate";
-import { Cell } from "./minesweeper";
 
 export function range(min: number, max: number): Array<number> {
     return Array.from(Array(max - min).keys()).map(x => x + min);
@@ -21,7 +20,7 @@ export function nearCells(
     center: Coordinate,
     width: number,
     height: number
-): Array<Cell> {
+): Array<Coordinate> {
     const centerX = center.x();
     const centerY = center.y();
 
