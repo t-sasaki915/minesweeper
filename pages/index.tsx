@@ -201,6 +201,9 @@ function setFlag(x: number, y: number): void {
     }
 }
 
+function toggleChord(): void {
+}
+
 function init(): void {
     mines = [];
     neutrals = [];
@@ -323,6 +326,7 @@ function Main() {
             <br />
             <div>
                 <button id="toggleFlag" onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
+                <button id="toggleChord" onClick={() => toggleChord()}>switch to chord mode</button>
                 <button id="restart" onClick={() => restartButtonClicked()}>restart</button>
                 <br />
                 <div>
