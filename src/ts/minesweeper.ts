@@ -1,6 +1,6 @@
 import Coordinate from "./coordinate";
 import { IllegalArgumentError } from "./errors";
-import { randomRange } from "./util";
+import { nearCells, randomRange } from "./util";
 
 export abstract class Cell {
 
@@ -94,20 +94,11 @@ export default class Minesweeper {
             return 0;
         }
 
-        const nearCells = [];
-
-        for (let i = -1; i < 2; i ++) {
-            for (let j = -1; j < 2; j ++) {
-                const nx = x + i;
-                const ny = y + j;
-
-                if (nx < 0 || nx >= this.width() || ny < 0 || ny >= this.height()) {
-                    continue;
-                }
-
-                nearCells.push(this.cellAt(nx, ny));
-            }
-        }
+        const nearCells = nearCells(
+            new Coordinate(x, y),
+            this.width(),
+            this.height()
+        ).map(c => this.cellAt_(c));
 
         return nearCells.filter(e => e.isMine()).length;
     }
