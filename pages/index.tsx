@@ -36,6 +36,7 @@ let opened: Array<Coordinate> = [];
 let flagged: Array<Coordinate> = [];
 
 let flagMode = false;
+let chordMode = false;
 let end = false;
 
 function isMine(x: number, y: number): boolean {
@@ -210,6 +211,7 @@ function init(): void {
     opened = [];
     flagged = [];
     flagMode = false;
+    chordMode = false;
     end = false;
 
     game = null;
