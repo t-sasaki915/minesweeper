@@ -10,7 +10,7 @@ import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 import Coordinate from "../src/ts/coordinate";
 import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 import Minesweeper from "../src/ts/minesweeper";
-import { cellElemAt, cellElemAt_ } from "../src/ts/util";
+import { cellElemAt, cellElemAt_, nearCells } from "../src/ts/util";
 
 let difficulty: Difficulty | null = EASY;
 
@@ -93,27 +93,14 @@ function chordOpen(x: number, y: number): void {
     if (isOpened(x, y)) {
         const num = game!.calcNumber(x, y);
 
-        const nearCells = [];
-        for (let i = -1; i < 2; i ++) {
-            for (let j = -1; j < 2; j ++) {
-                const nx = x + i;
-                const ny = y + j;
+        const cells = nearCells(
+            new Coordinate(x, y),
+            WIDTH(),
+            HEIGHT()
+        ).filter(c => !isOpened_(c));
 
-                if (nx == x && ny == y) {
-                    continue;
-                }
-                if (nx < 0 || nx >= WIDTH() || ny < 0 || ny >= HEIGHT()) {
-                    continue;
-                }
-
-                if (!isOpened(nx, ny)) {
-                    nearCells.push(new Coordinate(nx, ny));
-                }
-            }
-        }
-
-        if (nearCells.filter(c => isFlagged_(c)).length == num) {
-            nearCells
+        if (cells.filter(c => isFlagged_(c)).length == num) {
+            cells
                 .filter(c => !isFlagged_(c))
                 .forEach(c => {
                     normalOpen(c.x(), c.y());
