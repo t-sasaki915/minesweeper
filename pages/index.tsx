@@ -72,8 +72,11 @@ function isFlagged_(coord: Coordinate): boolean {
 }
 
 function cellClicked(x: number, y: number): void {
-    if (end) {
+    if (game == null) {
         return startGame(x, y);
+    }
+    if (end) {
+        return;
     }
 
     if (flagMode) {
