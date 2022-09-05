@@ -278,7 +278,8 @@ function startGame(startX: number, startY: number): void {
     const blacklist = nearCells(
         new Coordinate(startX, startY),
         WIDTH(),
-        HEIGHT()
+        HEIGHT(),
+        true
     );
 
     game = Minesweeper.generate(WIDTH(), HEIGHT(), NUM_OF_MINES(), blacklist);
