@@ -19,7 +19,8 @@ export function cellElemAt_(coord: Coordinate): HTMLElement {
 export function nearCells(
     center: Coordinate,
     width: number,
-    height: number
+    height: number,
+    includeCenter: boolean = false
 ): Array<Coordinate> {
     const centerX = center.x();
     const centerY = center.y();
@@ -31,7 +32,7 @@ export function nearCells(
             const nx = centerX + i;
             const ny = centerY + j;
 
-            if (nx == centerX && ny == centerY) {
+            if (!includeCenter && nx == centerX && ny == centerY) {
                 continue;
             }
             if (nx < 0 || nx >= width || ny < 0 || ny >= height) {
