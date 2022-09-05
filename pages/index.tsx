@@ -72,21 +72,17 @@ function isFlagged_(coord: Coordinate): boolean {
 }
 
 function cellClicked(x: number, y: number): void {
-    if (game == null) {
-        return;
+    if (end) {
+        return startGame(x, y);
     }
 
-    if (end) {
-        startGame(x, y);
+    if (flagMode) {
+        setFlag(x, y);
     } else {
-        if (flagMode) {
-            setFlag(x, y);
+        if (chordMode) {
+            chordOpen(x, y);
         } else {
-            if (chordMode) {
-                chordOpen(x, y);
-            } else {
-                normalOpen(x, y);
-            }
+            normalOpen(x, y);
         }
     }
 }
