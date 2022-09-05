@@ -83,7 +83,7 @@ function cellClicked(x: number, y: number): void {
             setFlag(x, y);
         } else {
             if (chordMode) {
-                chordMode(x, y);
+                chordOpen(x, y);
             } else {
                 normalOpen(x, y);
             }
