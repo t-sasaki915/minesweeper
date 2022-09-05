@@ -72,58 +72,66 @@ function isFlagged_(coord: Coordinate): boolean {
 }
 
 function cellClicked(x: number, y: number): void {
-    if (game != null) {
-        if (!end) {
-            if (flagMode) {
-                setFlag(x, y);
+    if (game == null) {
+        return;
+    }
+
+    if (end) {
+        startGame(x, y);
+    } else {
+        if (flagMode) {
+            setFlag(x, y);
+        } else {
+            if (chordMode) {
+                chordMode(x, y);
             } else {
-                if (chordMode) {
-                    chordOpen(x, y);
-                } else {
-                    normalOpen(x, y);   
-                }
+                normalOpen(x, y);
             }
         }
-    } else {
-        startGame(x, y);
     }
 }
 
 function chordOpen(x: number, y: number): void {
-    if (isOpened(x, y)) {
-        const num = game!.calcNumber(x, y);
+    if (!isOpened(x, y)) {
+        return;
+    }
 
-        const cells = nearCells(
-            new Coordinate(x, y),
-            WIDTH(),
-            HEIGHT()
-        ).filter(c => !isOpened_(c));
+    const num = game!.calcNumber(x, y);
 
-        if (cells.filter(c => isFlagged_(c)).length == num) {
-            cells
-                .filter(c => !isFlagged_(c))
-                .forEach(c => {
-                    normalOpen(c.x(), c.y());
-                });
-        }
+    const cells = nearCells(
+        new Coordinate(x, y),
+        WIDTH(),
+        HEIGHT()
+    ).filter(c => !isOpened_(c));
+
+    if (cells.filter(c => isFlagged_(c)).length == num) {
+        cells
+            .filter(c => !isFlagged_(c))
+            .forEach(c => {
+                normalOpen(c.x(), c.y());
+            });
     }
 }
 
 function normalOpen(x: number, y: number): void {
-    if (!isOpened(x, y) && !isFlagged(x, y)) {
-        if (isMine(x, y)) {
-            endGame(x, y);
-        } else {
-            openCellTailrec(x, y);
-        }
+    if (isOpened(x, y) || isFlagged(x, y)) {
+        return;
+    }
+
+    if (isMine(x, y)) {
+        endGame(x, y);
+    } else {
+        openCellTailrec(x, y);
     }
 }
 
 function cellRightClicked(x: number, y: number): void {
-    if (game != null && !end) {
-        if (!flagMode) {
-            setFlag(x, y);
-        }
+    if (game == null || end) {
+        return;
+    }
+
+    if (!flagMode) {
+        setFlag(x, y);
     }
 }
 
@@ -164,70 +172,76 @@ function openCellTailrec(x: number, y: number): void {
 }
 
 function toggleFlagButtonClicked(): void {
-    if (game != null && !end) {
-        const elem = document.getElementById("toggleFlag")!;
+    if (game == null || end) {
+        return;
+    }
 
-        if (flagMode) {
-            for (let x = 0; x < WIDTH(); x ++) {
-                for (let y = 0; y < HEIGHT(); y ++) {
-                    if (cellElemAt(x, y).className.indexOf("cell-flag-placeholder") != -1) {
-                        cellElemAt(x, y).className = "cell cell-not-opened";
-                    }
+    const elem = document.getElementById("toggleFlag")!;
+
+    if (flagMode) {
+        for (let x = 0; x < WIDTH(); x ++) {
+            for (let y = 0; y < HEIGHT(); y ++) {
+                if (cellElemAt(x, y).className.indexOf("cell-flag-placeholder") != -1) {
+                    cellElemAt(x, y).className = "cell cell-not-opened";
                 }
             }
-
-            elem.innerHTML = "switch to flag mode";
-            flagMode = false;
-        } else {
-            for (let x = 0; x < WIDTH(); x ++) {
-                for (let y = 0; y < HEIGHT(); y ++) {
-                    if (!isOpened(x, y) && !isFlagged(x, y)) {
-                        cellElemAt(x, y).className = "cell cell-flag-placeholder";
-                    }
-                }
-            }
-
-            elem.innerHTML = "switch to normal mode";
-            flagMode = true;
         }
+
+        elem.innerHTML = "switch to flag mode";
+        flagMode = false;
+    } else {
+        for (let x = 0; x < WIDTH(); x ++) {
+            for (let y = 0; y < HEIGHT(); y ++) {
+                if (!isOpened(x, y) && !isFlagged(x, y)) {
+                    cellElemAt(x, y).className = "cell cell-flag-placeholder";
+                }
+            }
+        }
+
+        elem.innerHTML = "switch to normal mode";
+        flagMode = true;
     }
 }
 
 function setFlag(x: number, y: number): void {
+    if (isOpened(x, y)) {
+        return;
+    }
+
     const elem = cellElemAt(x, y);
 
-    if (!isOpened(x, y)) {
-        if (isFlagged(x, y)) {
-            addCount(MINE_COUNTER_ID, 1);
+    if (isFlagged(x, y)) {
+        addCount(MINE_COUNTER_ID, 1);
 
-            if (flagMode) {
-                elem.className = "cell cell-flag-placeholder";
-            } else {
-                elem.className = "cell cell-not-opened";
-            }
-
-            flagged = flagged.filter(e => !e.equals(x, y));
+        if (flagMode) {
+            elem.className = "cell cell-flag-placeholder";
         } else {
-            addCount(MINE_COUNTER_ID, -1);
-
-            elem.className = "cell cell-flag";
-            
-            flagged.push(new Coordinate(x, y));
+            elem.className = "cell cell-not-opened";
         }
+
+        flagged = flagged.filter(e => !e.equals(x, y));
+    } else {
+        addCount(MINE_COUNTER_ID, -1);
+
+        elem.className = "cell cell-flag";
+            
+        flagged.push(new Coordinate(x, y));
     }
 }
 
 function toggleChord(): void {
-    if (game != null && !end) {
-        const elem = document.getElementById("toggleChord")!;
+    if (game == null || end) {
+        return;
+    }
 
-        if (chordMode) {
-            elem.innerHTML = "switch to chord mode";
-            chordMode = false;
-        } else {
-            elem.innerHTML = "switch to normal mode";
-            chordMode = true;
-        }
+    const elem = document.getElementById("toggleChord")!;
+
+    if (chordMode) {
+        elem.innerHTML = "switch to chord mode";
+        chordMode = false;
+    } else {
+        elem.innerHTML = "switch to normal mode";
+        chordMode = true;
     }
 }
 
