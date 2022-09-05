@@ -94,13 +94,13 @@ export default class Minesweeper {
             return 0;
         }
 
-        const nearCells = nearCells(
+        const cells = nearCells(
             new Coordinate(x, y),
             this.width(),
             this.height()
         ).map(c => this.cellAt_(c));
 
-        return nearCells.filter(e => e.isMine()).length;
+        return cells.filter(e => e.isMine()).length;
     }
 
     public calcNumber_(coord: Coordinate): number {
