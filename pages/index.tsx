@@ -153,26 +153,13 @@ function openCellTailrec(x: number, y: number): void {
     openCell(x, y);
 
     if (game!.calcNumber(x, y) == 0) {
-        const nearCells = [];
-        for (let i = -1; i < 2; i ++) {
-            for (let j = -1; j < 2; j ++) {
-                const nx = x + i;
-                const ny = y + j;
+        const cells = nearCells(
+            new Coordinate(x, y),
+            WIDTH(),
+            HEIGHT()
+        ).filter(c => !isOpened_(c) && !isMine_(c) && !isFlagged_(c));
 
-                if (nx == x && ny == y) {
-                    continue;
-                }
-                if (nx < 0 || nx >= WIDTH() || ny < 0 || ny >= HEIGHT()) {
-                    continue;
-                }
-
-                if (!isOpened(nx, ny) && !isMine(nx, ny) && !isFlagged(nx, ny)) {
-                    nearCells.push(new Coordinate(nx, ny));
-                }
-            }
-        }
-
-        nearCells.forEach(c => openCellTailrec(c.x(), c.y()));
+        cells.forEach(c => openCellTailrec(c.x(), c.y()));
     }
 }
 
@@ -275,19 +262,11 @@ function init(): void {
 function startGame(startX: number, startY: number): void {
     init();
 
-    const blacklist = [];
-    for (let i = -1; i < 2; i ++) {
-        for (let j = -1; j < 2; j ++) {
-            const nx = startX + i;
-            const ny = startY + j;
-
-            if (nx < 0 || nx >= WIDTH() || ny < 0 || ny >= HEIGHT()) {
-                continue;
-            }
-
-            blacklist.push(new Coordinate(nx, ny));
-        }
-    }
+    const blacklist = nearCells(
+        new Coordinate(startX, startY),
+        WIDTH(),
+        HEIGHT()
+    );
 
     game = Minesweeper.generate(WIDTH(), HEIGHT(), NUM_OF_MINES(), blacklist);
     mines = game.mines().map(c => c.coord());
