@@ -197,7 +197,7 @@ function toggleFlagButtonClicked(): void {
             }
         }
 
-        elem.innerHTML = "switch to normal mode";
+        elem.innerHTML = "exit flag mode";
         flagMode = true;
     }
 }
@@ -239,7 +239,7 @@ function toggleChord(): void {
         elem.innerHTML = "switch to chord mode";
         chordMode = false;
     } else {
-        elem.innerHTML = "switch to normal mode";
+        elem.innerHTML = "exit chord mode";
         chordMode = true;
     }
 }
