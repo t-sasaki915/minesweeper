@@ -23,7 +23,7 @@ export function startTimer(id: string): void {
             const time = TIMES.get(id)!;
             getElement(id).innerHTML = `${time + 1}`;
             TIMES.set(id, time + 1);
-        })
+        }, 1000)
     );
 }
 
