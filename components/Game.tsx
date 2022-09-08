@@ -17,14 +17,15 @@ const Game = (props: Props) => {
                     <div className="line">
                         { 
                             range(0, props.width).map(x =>
-                                <div className="cell cell-not-opened"
-                                     id={x.toString() + "-" + y.toString()}
-                                     draggable="false"
-                                     onClick={() => props.cellClicked(x, y)}
-                                     onContextMenu={(e) => {
-                                         e.preventDefault();
-                                         props.cellRightClicked(x, y);
-                                     }}
+                                <div
+                                    className="cell cell-not-opened"
+                                    id={`${x}-${y}`}
+                                    draggable="false"
+                                    onClick={() => props.cellClicked(x, y)}
+                                    onContextMenu={(e) => {
+                                        e.preventDefault();
+                                        props.cellRightClicked(x, y);
+                                    }}
                                 >0</div>
                             )
                         }
