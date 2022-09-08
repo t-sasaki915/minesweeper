@@ -1,24 +1,24 @@
 export class Difficulty {
 
-    private _id: string;
+    private _name: string;
     private _width: number;
     private _height: number;
     private _numOfMines: number;
 
     constructor(
-        id: string,
+        name: string,
         width: number,
         height: number,
         numOfMines: number
     ) {
-        this._id = id;
+        this._name = name;
         this._width = width;
         this._height = height;
         this._numOfMines = numOfMines;
     }
 
-    public id(): string {
-        return this._id;
+    public name(): string {
+        return this._name;
     }
 
     public width(): number {
@@ -69,13 +69,13 @@ export const DIFFICULTIES = [
 
 class Difficulties {
 
-    public static exists(id: string): boolean {
-        return DIFFICULTIES.some(e => e.id() == id);
+    public static exists(name: string): boolean {
+        return DIFFICULTIES.some(e => e.name() == name);
     }
 
-    public static get(id: string): Difficulty | null {
-        if (this.exists(id)) {
-            return DIFFICULTIES.filter(e => e.id() == id)[0];
+    public static get(name: string): Difficulty | null {
+        if (this.exists(name)) {
+            return DIFFICULTIES.filter(e => e.name() == name)[0];
         } else {
             return null;
         }
