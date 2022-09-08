@@ -14,7 +14,7 @@ export abstract class Cell {
         return this._coord;
     }
 
-    public notMine(): Boolean {
+    public notMine(): boolean {
         return !this.isMine();
     }
 
@@ -38,7 +38,7 @@ export class MineCell extends Cell {
 
 }
 
-export default class Minesweeper {
+class Minesweeper {
 
     private _width: number;
     private _height: number;
@@ -107,30 +107,6 @@ export default class Minesweeper {
         return this.calcNumber(coord.x(), coord.y());
     }
 
-    public dumpCells(): string {
-        const lines = ["\n"];
-
-        for (let y = 0; y < this.height(); y ++) {
-            let line = "";
-
-            for (let x = 0; x < this.width(); x ++) {
-                const cell = this.cellAt(x, y);
-
-                if (cell.isMine()) {
-                    line += "M";
-                } else {
-                    line += `${this.calcNumber_(cell.coord())}`;
-                }
-
-                line += " ";
-            }
-
-            lines.push(line.trim());
-        }
-
-        return lines.join("\n");
-    }
-
     public static generate(
         width: number,
         height: number,
@@ -160,14 +136,17 @@ export default class Minesweeper {
                 const xc = randomRange(0, width);
                 const yc = randomRange(0, height);
                 
-                if (!blacklist.some(c => c.equals(xc, yc))) {
-                    if (arr[yc][xc].notMine()) {
-                        x = xc;
-                        y = yc;
-
-                        break;
-                    }
+                if (blacklist.some(c => c.equals(xc, yc))) {
+                    continue;
                 }
+                if (arr[yc][xc].isMine()) {
+                    continue;
+                }
+
+                x = xc;
+                y = yc;
+
+                break;
             }
 
             arr[y][x] = new MineCell(new Coordinate(x, y));
@@ -182,3 +161,5 @@ export default class Minesweeper {
     }
 
 }
+
+export default Minesweeper;
