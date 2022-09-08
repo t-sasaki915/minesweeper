@@ -18,7 +18,7 @@ const DifficultySelect = () => {
         <div className="difficultySelect">
             {
                 DIFFICULTIES.map(d =>
-                    <a href="#" onClick={() => setDifficulty(d.id())}>{d.id()}<br /></a>
+                    <a href="#" onClick={() => setDifficulty(d.name())}>{d.name()}<br /></a>
                 )
             }
         </div>
