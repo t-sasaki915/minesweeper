@@ -15,7 +15,7 @@ function setDifficulty(difficulty: string): void {
 
 const DifficultySelect = () => {
     return (
-        <div>
+        <div className="difficultySelect">
             {
                 DIFFICULTIES.map(d =>
                     <a href="#" onClick={() => setDifficulty(d.id())}>{d.id()}<br /></a>
