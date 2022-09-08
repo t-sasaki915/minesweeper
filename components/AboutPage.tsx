@@ -2,7 +2,7 @@ import React from 'react';
 
 const AboutPage = () => {
     return (
-        <div>
+        <div className="aboutPage">
             <p>
                 This site is licensed under the <a href="https://github.com/stouma915/minesweeper/blob/main/LICENSE">MIT License</a>.<br />
                 This site is open source. <a href="https://github.com/stouma915/minesweeper/">Improve this site</a>.<br />
