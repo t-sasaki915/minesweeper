@@ -5,11 +5,12 @@ import { DIFFICULTIES } from "../src/ts/difficulty";
 function setDifficulty(difficulty: string): void {
     const url = new URL(window.location.href);
 
-    if (difficulty == "easy") {
-        window.location.href = `${url.origin}${url.pathname}`;
-    } else {
-        window.location.href = `${url.origin}${url.pathname}?d=${difficulty}`;
+    let newUrl = `${url.origin}${url.pathname}`;
+    if (difficulty != "easy") {
+        newUrl += `?d=${difficulty}`;
     }
+
+    window.location.href = newUrl;
 }
 
 const DifficultySelect = () => {
