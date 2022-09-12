@@ -1,3 +1,5 @@
+import Coordinate from "./coordinate";
+
 abstract class Cell {
 
     private _coord: Coordinate;
