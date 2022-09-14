@@ -345,8 +345,8 @@ function Main() {
             </Head>
             <Game width={WIDTH()}
                   height={HEIGHT()}
-                  cellClicked={(x, y) => cellClicked(new Coordinate(x, y))}
-                  cellRightClicked={(x, y) => cellRightClicked(new Coordinate(x, y))}
+                  cellClicked={c => cellClicked(c)}
+                  cellRightClicked={c => cellRightClicked(c)}
             />
             <br />
             <div>
