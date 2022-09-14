@@ -21,12 +21,8 @@ export function randomRange(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-export function cellElemAt(x: number, y: number): HTMLElement {
-    return document.getElementById(`${x}-${y}`)!;
-}
-
-export function cellElemAt_(coord: Coordinate): HTMLElement {
-    return cellElemAt(coord.x(), coord.y());
+export function cellElemAt(coord: Coordinate): HTMLElement {
+    return document.getElementById(`${coord.x()}-${coord.y()}`);
 }
 
 export function nearCells(
