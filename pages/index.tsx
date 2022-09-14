@@ -105,7 +105,9 @@ function chordOpen(x: number, y: number): void {
 
     if (cells.filter(c => isFlagged_(c)).length == num) {
         if (cells.some(c => isMine_(c))) {
-            endGame(x, y);
+            const firstMine = cells.filter(c => isMine_(c))[0];
+
+            endGame(firstMine.x(), firstMine.y());
             return;
         }
 
