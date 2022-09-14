@@ -140,11 +140,11 @@ function chordOpen(coord: Coordinate): void {
 }
 
 function normalOpen(coord: Coordinate): void {
-    if (ContFn.IS_OPENED(coord) || ContFn.IS_FLAGGED(coord)) {
+    if (ContFn.IS_OPENED(coord, context) || ContFn.IS_FLAGGED(coord, context)) {
         return;
     }
 
-    if (ContFn.IS_MINE(coord)) {
+    if (ContFn.IS_MINE(coord, context)) {
         endGame(coord);
     } else {
         openCellTailrec(coord);
@@ -153,20 +153,20 @@ function normalOpen(coord: Coordinate): void {
 
 function openCell(coord: Coordinate): void {
     if (
-        ContFn.IS_MINE(coord) ||
-        ContFn.IS_OPENED(coord) ||
-        ContFn.IS_FLAGGED(coord)
+        ContFn.IS_MINE(coord, context) ||
+        ContFn.IS_OPENED(coord, context) ||
+        ContFn.IS_FLAGGED(coord, context)
     ) {
         return;
     }
 
     const elem = cellElemAt_(coord);
-    const num = ContFn.CALC_NUM(coord);
+    const num = ContFn.CALC_NUM(coord, context);
 
     elem.className = `cell cell-num-${num}`;
     elem.innerHTML = `${num}`;
 
-    ContFn.ADD_OPENED(coord);
+    ContFn.ADD_OPENED(coord, context);
 
     const neutrals = context.gameInstance()!.neutrals();
     if (context.openedCells().length == neutrals.length) {
