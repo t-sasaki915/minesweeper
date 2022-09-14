@@ -11,8 +11,10 @@ import Coordinate from "../src/ts/coordinate";
 import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 import GameContext from "../src/ts/context";
 import Minesweeper from "../src/ts/minesweeper";
-import * as ContFn from "../src/ts/contextual-functions";
 import { cellElemAt, nearCells } from "../src/ts/util";
+
+import * as Consts from "../src/ts/constants";
+import * as ContFn from "../src/ts/contextual-functions";
 
 let difficulty: Difficulty | null = EASY;
 
@@ -65,7 +67,7 @@ function toggleFlagButtonClicked(): void {
         return;
     }
 
-    const elem = document.getElementById("toggleFlag")!;
+    const elem = document.getElementById(Consts.TOGGLE_FLAG_BUTTON_ID)!;
 
     if (context.flagMode()) {
         for (let x = 0; x < WIDTH(); x ++) {
@@ -73,7 +75,7 @@ function toggleFlagButtonClicked(): void {
                 const c = new Coordinate(x, y);
 
                 if (cellElemAt(c).className.indexOf("cell-flag-placeholder") != -1) {
-                    cellElemAt(c).className = "cell cell-not-opened";
+                    cellElemAt(c).className = Consts.CELL_NOT_OPENED_CLASS;
                 }
             }
         }
@@ -86,7 +88,7 @@ function toggleFlagButtonClicked(): void {
                 const c = new Coordinate(x, y);
 
                 if (ContFn.NOT_OPENED(c, context) && ContFn.NOT_FLAGGED(c, context)) {
-                    cellElemAt(c).className = "cell cell-flag-placeholder";
+                    cellElemAt(c).className = Consts.CELL_FLAG_PLACEHOLDER_CLASS;
                 }
             }
         }
@@ -101,7 +103,7 @@ function toggleChordButtonClicked(): void {
         return;
     }
 
-    const elem = document.getElementById("toggleChord")!;
+    const elem = document.getElementById(Consts.TOGGLE_CHORD_BUTTON_ID)!;
 
     if (context.chordMode()) {
         elem.innerHTML = "switch to chord mode";
@@ -165,7 +167,7 @@ function openCell(coord: Coordinate): void {
     const elem = cellElemAt(coord);
     const num = ContFn.CALC_NUM(coord, context);
 
-    elem.className = `cell cell-num-${num}`;
+    elem.className = `${Consts.CELL_NUM_CLASS}${num}`;
     elem.innerHTML = `${num}`;
 
     ContFn.ADD_OPENED(coord, context);
@@ -209,16 +211,16 @@ function setFlag(coord: Coordinate): void {
         addCount(MINE_COUNTER_ID, 1);
 
         if (context.flagMode()) {
-            elem.className = "cell cell-flag-placeholder";
+            elem.className = Consts.CELL_FLAG_PLACEHOLDER_CLASS;
         } else {
-            elem.className = "cell cell-not-opened";
+            elem.className = Consts.CELL_NOT_OPENED_CLASS;
         }
 
         ContFn.REMOVE_FLAGGED(coord, context);
     } else {
         addCount(MINE_COUNTER_ID, -1);
 
-        elem.className = "cell cell-flag";
+        elem.className = Consts.CELL_FLAG_CLASS;
             
         ContFn.ADD_FLAGGED(coord, context);
     }
@@ -230,14 +232,14 @@ function init(): void {
     resetTimer(TIMER_ID);
     resetCount(MINE_COUNTER_ID);
 
-    document.getElementById("toggleFlag")!.innerHTML = "switch to flag mode";
-    document.getElementById("toggleChord")!.innerHTML = "switch to chord mode";
+    document.getElementById(Consts.TOGGLE_FLAG_BUTTON_ID)!.innerHTML = "switch to flag mode";
+    document.getElementById(Consts.TOGGLE_CHORD_BUTTON_ID)!.innerHTML = "switch to chord mode";
 
     for (let x = 0; x < WIDTH(); x ++) {
         for (let y = 0; y < HEIGHT(); y ++) {
             const elem = cellElemAt(new Coordinate(x, y));
 
-            elem.className = "cell cell-not-opened";
+            elem.className = Consts.CELL_NOT_OPENED_CLASS;
             elem.innerHTML = "0";
         }
     }
@@ -283,7 +285,7 @@ function clearGame(): void {
         .map(c => c.coord())
         .forEach(c => {
             if (ContFn.NOT_FLAGGED(c, context)) {
-                cellElemAt(c).className = "cell cell-mine";
+                cellElemAt(c).className = Consts.CELL_MINE_CLASS;
             }
         });
 
@@ -303,17 +305,17 @@ function endGame(coord: Coordinate): void {
         .map(c => c.coord())
         .forEach(c => {
             if (ContFn.NOT_FLAGGED(c, context)) {
-                cellElemAt(c).className = "cell cell-mine";
+                cellElemAt(c).className = Consts.CELL_MINE_CLASS;
             } 
         });
 
-    cellElemAt(coord).className = "cell cell-mine-cause";
+    cellElemAt(coord).className = Consts.CELL_MINE_CAUSE_CLASS;
 
     context
         .flaggedCells()
         .forEach(c => {
             if (ContFn.NOT_MINE(c, context)) {
-                cellElemAt(c).className = "cell cell-flag-miss";
+                cellElemAt(c).className = Consts.CELL_FLAG_MISS_CLASS;
             }
         });
 
@@ -350,9 +352,9 @@ function Main() {
             />
             <br />
             <div>
-                <button id="toggleFlag" onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
-                <button id="toggleChord" onClick={() => toggleChordButtonClicked()}>switch to chord mode</button>
-                <button id="restart" onClick={() => restartButtonClicked()}>restart</button>
+                <button id={Consts.TOGGLE_FLAG_BUTTON_ID} onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
+                <button id={Consts.TOGGLE_CHORD_BUTTON_ID} onClick={() => toggleChordButtonClicked()}>switch to chord mode</button>
+                <button id={Consts.RESTART_BUTTON_ID} onClick={() => restartButtonClicked()}>restart</button>
                 <br />
                 <div>
                     <p>time: <Timer id={TIMER_ID} />s</p>
