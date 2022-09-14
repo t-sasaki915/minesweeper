@@ -1,12 +1,52 @@
-import Cell from "./cell";
 import Coordinate from "./coordinate";
-import Minesweeper from "./minesweeper";
+import GameContext from "./context";
+import { runSafely } from "./util";
 
-export const TO_COORD_ARRAY: (arr: Array<Cell>) => Array<Coordinate> =
-  (arr) => arr.map(c => c.coord());
+export const IS_MINE: (coord: Coordinate, context: GameContext) => boolean =
+    (coord, context) => {
+        const run = safeContext =>
+            safeContext.gameInstance()!.cellAt_(coord).isMine();
 
-export const IS_MINE: (x: number, y: number, instance: Minesweeper) => boolean =
-  (x, y, instance) => instance.cellAt(x, y).isMine()
+        return runSafely<boolean>(
+            context,
+            run
+        );
+    }
 
-export const IS_MINE_: (coord: Coordinate, instance: Minesweeper) => boolean =
-  (coord, instance) => IS_MINE(coord.x(), coord.y(), instance);
+export const NOT_MINE: (coord: Coordinate, context: GameContext) => boolean =
+    (coord, context) =>
+        !IS_MINE(coord, context);
+
+export const IS_NEUTRAL: (coord: Coordinate, context: GameContext) => boolean =
+    (coord, context) =>
+        NOT_MINE(coord, context);
+
+export const NOT_NEUTRAL: (coord: Coordinate, context: GameContext) => boolean =
+    (coord, context) =>
+        IS_MINE(coord, context);
+
+export const ADD_OPENED: (coord: Coordinate, context: GameContext) => void =
+    (coord, context) => {
+        const run = safeContext =>
+            safeContext.setOpenedCells(
+                context.openedCells().concat([coord])
+            );
+
+        return runSafely<void>(
+            context,
+            run
+        );
+    }
+
+export const ADD_FLAGGED: (coord: Coordinate, context: GameContext) => void =
+    (coord, context) => {
+        const run = safeContext =>
+            safeContext.setFlaggedCells(
+                safeContext.flaggedCells().concat([coord])
+            );
+
+        return runSafely<void>(
+            context,
+            run
+        );
+    }
