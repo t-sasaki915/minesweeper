@@ -28,9 +28,6 @@ const NUM_OF_MINES = () => {
     return difficulty!.numOfMines();
 }
 
-const TIMER_ID = "main";
-const MINE_COUNTER_ID = "mineRemain";
-
 let context: GameContext = GameContext.inactiveContext();
 
 function cellClicked(coord: Coordinate): void {
@@ -208,7 +205,7 @@ function setFlag(coord: Coordinate): void {
     const elem = cellElemAt(coord);
 
     if (ContFn.IS_FLAGGED(coord, context)) {
-        addCount(MINE_COUNTER_ID, 1);
+        addCount(Consts.MINE_COUNTER_ID, 1);
 
         if (context.flagMode()) {
             elem.className = Consts.CELL_FLAG_PLACEHOLDER_CLASS;
@@ -218,7 +215,7 @@ function setFlag(coord: Coordinate): void {
 
         ContFn.REMOVE_FLAGGED(coord, context);
     } else {
-        addCount(MINE_COUNTER_ID, -1);
+        addCount(Consts.MINE_COUNTER_ID, -1);
 
         elem.className = Consts.CELL_FLAG_CLASS;
             
@@ -229,8 +226,8 @@ function setFlag(coord: Coordinate): void {
 function init(): void {
     context = GameContext.inactiveContext();
 
-    resetTimer(TIMER_ID);
-    resetCount(MINE_COUNTER_ID);
+    resetTimer(Consts.TIMER_ID);
+    resetCount(Consts.MINE_COUNTER_ID);
 
     document.getElementById(Consts.TOGGLE_FLAG_BUTTON_ID)!.innerHTML = "switch to flag mode";
     document.getElementById(Consts.TOGGLE_CHORD_BUTTON_ID)!.innerHTML = "switch to chord mode";
@@ -265,9 +262,9 @@ function startGame(coord: Coordinate): void {
     );
     context.setActive(true);
 
-    startTimer(TIMER_ID);
+    startTimer(Consts.TIMER_ID);
 
-    setCount(MINE_COUNTER_ID, NUM_OF_MINES());
+    setCount(Consts.MINE_COUNTER_ID, NUM_OF_MINES());
 
     openCellTailrec(coord);
 }
@@ -277,7 +274,7 @@ function restartButtonClicked(): void {
 }
 
 function clearGame(): void {
-    stopTimer(TIMER_ID);
+    stopTimer(Consts.TIMER_ID);
 
     context
         .gameInstance()!
@@ -297,7 +294,7 @@ function clearGame(): void {
 }
 
 function endGame(coord: Coordinate): void {
-    stopTimer(TIMER_ID);
+    stopTimer(Consts.TIMER_ID);
     
     context
         .gameInstance()!
@@ -357,8 +354,8 @@ function Main() {
                 <button id={Consts.RESTART_BUTTON_ID} onClick={() => restartButtonClicked()}>restart</button>
                 <br />
                 <div>
-                    <p>time: <Timer id={TIMER_ID} />s</p>
-                    <p>mine remains: <Counter id={MINE_COUNTER_ID} /></p>
+                    <p>time: <Timer id={Consts.TIMER_ID} />s</p>
+                    <p>mine remains: <Counter id={Consts.MINE_COUNTER_ID} /></p>
                 </div>
             </div>
             <div>
