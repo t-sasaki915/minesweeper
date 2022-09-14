@@ -47,7 +47,7 @@ class Minesweeper {
     }
 
     public cellAt(x: number, y: number): Cell {
-        return this.cells().filter(e => e.coord().equals(x, y))[0];
+        return this.cells().filter(e => e.coord().equals(new Coordinate(x, y)))[0];
     }
 
     public cellAt_(coord: Coordinate): Cell {
@@ -101,7 +101,7 @@ class Minesweeper {
                 const xc = randomRange(0, width);
                 const yc = randomRange(0, height);
                 
-                if (blacklist.some(c => c.equals(xc, yc))) {
+                if (blacklist.some(c => c.equals(new Coordinate(xc, yc)))) {
                     continue;
                 }
                 if (arr[yc][xc].isMine()) {
