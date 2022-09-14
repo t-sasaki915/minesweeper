@@ -2,7 +2,7 @@ import Coordinate from "./coordinate";
 import GameContext from "./context";
 import { IllegalStateError } from "./errors";
 
-export function runSafely<T>(context: GameContext, run: () => T): T {
+export function runSafely<T>(context: GameContext, run: (c: GameContext) => T): T {
     if (!context.isActive()) {
         throw new IllegalStateError("GameContext isn't active.");
     }
@@ -10,7 +10,7 @@ export function runSafely<T>(context: GameContext, run: () => T): T {
         throw new IllegalStateError("GameContext hasn't game instance.");
     }
 
-    return run();
+    return run(context);
 }
 
 export function range(min: number, max: number): Array<number> {
