@@ -4,7 +4,7 @@ import { runSafely } from "./util";
 
 export const IS_MINE: (coord: Coordinate, context: GameContext) => boolean =
     (coord, context) => {
-        const run = safeContext =>
+        const run = (safeContext: GameContext) =>
             safeContext.gameInstance()!.cellAt_(coord).isMine();
 
         return runSafely<boolean>(
@@ -27,7 +27,7 @@ export const NOT_NEUTRAL: (coord: Coordinate, context: GameContext) => boolean =
 
 export const ADD_OPENED: (coord: Coordinate, context: GameContext) => void =
     (coord, context) => {
-        const run = safeContext =>
+        const run = (safeContext: GameContext) =>
             safeContext.setOpenedCells(
                 context.openedCells().concat([coord])
             );
@@ -40,7 +40,7 @@ export const ADD_OPENED: (coord: Coordinate, context: GameContext) => void =
 
 export const ADD_FLAGGED: (coord: Coordinate, context: GameContext) => void =
     (coord, context) => {
-        const run = safeContext =>
+        const run = (safeContext: GameContext) =>
             safeContext.setFlaggedCells(
                 safeContext.flaggedCells().concat([coord])
             );
