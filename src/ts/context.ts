@@ -36,7 +36,7 @@ class GameContext {
     public gameInstance(): Minesweeper | null {
         return this._gameInstance;
     }
-    public setInstance(instance: Minesweeper | null) {
+    public setInstance(instance: Minesweeper | null): void {
         this._gameInstance = instance;
     }
 
@@ -57,14 +57,14 @@ class GameContext {
     public flagMode(): boolean {
         return this._flagMode;
     }
-    public setFlagMode(flagMode: boolean) {
+    public setFlagMode(flagMode: boolean): void {
         this._flagMode = flagMode;
     }
 
     public chordMode(): boolean {
         return this._chordMode;
     }
-    public setChordMode(chordMode: boolean) {
+    public setChordMode(chordMode: boolean): void {
         this._chordMode = chordMode;
     }
 
