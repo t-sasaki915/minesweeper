@@ -55,7 +55,7 @@ function cellRightClicked(coord: Coordinate): void {
         return;
     }
 
-    if (!context.chordMode()) {
+    if (!context.flagMode()) {
         setFlag(coord);
     }
 }
