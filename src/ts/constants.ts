@@ -2,6 +2,9 @@ export const TOGGLE_FLAG_BUTTON_ID = "toggleFlag";
 export const TOGGLE_CHORD_BUTTON_ID = "toggleChord";
 export const RESTART_BUTTON_ID = "restart";
 
+export const TIMER_ID = "main";
+export const MINE_COUNTER_ID = "mineRemain";
+
 export const CELL_NOT_OPENED_CLASS = "cell cell-not-opened";
 export const CELL_NUM_CLASS = "cell cell-num-";
 export const CELL_MINE_CLASS = "cell cell-mine";
