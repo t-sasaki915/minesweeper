@@ -46,7 +46,7 @@ export const IS_OPENED: (coord: Coordinate, context: GameContext) => boolean =
         const run = (safeContext: GameContext) =>
             safeContext
                 .openedCells()
-                .some(c => c.equals_(coord));
+                .some(c => c.equals(coord));
 
         return runSafely<boolean>(
             context,
@@ -63,7 +63,7 @@ export const IS_FLAGGED: (coord: Coordinate, context: GameContext) => boolean =
         const run = (safeContext: GameContext) =>
             safeContext
                 .flaggedCells()
-                .some(c => c.equals_(coord));
+                .some(c => c.equals(coord));
         
         return runSafely<boolean>(
             context,
@@ -111,7 +111,7 @@ export const REMOVE_FLAGGED: (coord: Coordinate, context: GameContext) => void =
             safeContext.setFlaggedCells(
                 safeContext
                     .flaggedCells()
-                    .filter(c => !c.equals_(coord))
+                    .filter(c => !c.equals(coord))
             );
 
         return runSafely<void>(
