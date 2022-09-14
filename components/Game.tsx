@@ -1,12 +1,13 @@
 import React from 'react';
 
+import Coordinate from "../src/ts/coordinate";
 import { range } from "../src/ts/util";
 
 type Props = {
     width: number;
     height: number;
-    cellClicked: (x: number, y: number) => void;
-    cellRightClicked: (x: number, y: number) => void;
+    cellClicked: (coord: Coordinate) => void;
+    cellRightClicked: (coord: Coordinate) => void;
 }
 
 const Game = (props: Props) => {
@@ -21,10 +22,10 @@ const Game = (props: Props) => {
                                     className="cell cell-not-opened"
                                     id={`${x}-${y}`}
                                     draggable="false"
-                                    onClick={() => props.cellClicked(x, y)}
+                                    onClick={() => props.cellClicked(new Coordinate(x, y))}
                                     onContextMenu={(e) => {
                                         e.preventDefault();
-                                        props.cellRightClicked(x, y);
+                                        props.cellRightClicked(new Coordinate(x, y));
                                     }}
                                 >0</div>
                             )
