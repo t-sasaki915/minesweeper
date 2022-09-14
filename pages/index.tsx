@@ -113,7 +113,7 @@ function toggleChordButtonClicked(): void {
 }
 
 function chordOpen(coord: Coordinate): void {
-    if (ContFn.IS_OPENED(coord, context)) {
+    if (ContFn.NOT_OPENED(coord, context)) {
         return;
     }
 
