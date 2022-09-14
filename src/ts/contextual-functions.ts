@@ -2,120 +2,119 @@ import Coordinate from "./coordinate";
 import GameContext from "./context";
 import { runSafely } from "./util";
 
-export const CALC_NUM: (coord: Coordinate, context: GameContext) => number =
-    (coord, context) => {
-        const run = (safeContext: GameContext) =>
-            safeContext
-                .gameInstance()!
-                .calcNumber(coord);
-        
-        return runSafely<number>(
-            context,
-            run
+class GameContextOps {
+
+    private _context: GameContext;
+
+    constructor (context: GameContext) {
+        this._context = context;
+    }
+
+    public context(): GameContext {
+        return this._context;
+    }
+
+    public calcNum(coord: Coordinate): number {
+        return this.run<number>(
+            (safeContext: GameContext) =>
+                safeContext
+                    .gameInstance()!
+                    .calcNumber(coord)
         );
     }
 
-export const IS_MINE: (coord: Coordinate, context: GameContext) => boolean =
-    (coord, context) => {
-        const run = (safeContext: GameContext) =>
-            safeContext
-                .gameInstance()!
-                .cellAt(coord)
-                .isMine();
-
-        return runSafely<boolean>(
-            context,
-            run
+    public isMine(coord: Coordinate): boolean {
+        return this.run<boolean>(
+            (safeContext: GameContext) =>
+                safeContext
+                    .gameInstance()!
+                    .cellAt(coord)
+                    .isMine()
         );
     }
 
-export const NOT_MINE: (coord: Coordinate, context: GameContext) => boolean =
-    (coord, context) =>
-        !IS_MINE(coord, context);
-
-export const IS_NEUTRAL: (coord: Coordinate, context: GameContext) => boolean =
-    (coord, context) =>
-        NOT_MINE(coord, context);
-
-export const NOT_NEUTRAL: (coord: Coordinate, context: GameContext) => boolean =
-    (coord, context) =>
-        IS_MINE(coord, context);
-
-export const IS_OPENED: (coord: Coordinate, context: GameContext) => boolean =
-    (coord, context) => {
-        const run = (safeContext: GameContext) =>
-            safeContext
-                .openedCells()
-                .some(c => c.equals(coord));
-
-        return runSafely<boolean>(
-            context,
-            run
-        );
+    public notMine(coord: Coordinate): boolean {
+        return !this.isMine(coord);
     }
 
-export const NOT_OPENED: (coord: Coordinate, context: GameContext) => boolean =
-    (coord, context) =>
-        !IS_OPENED(coord, context);
-
-export const IS_FLAGGED: (coord: Coordinate, context: GameContext) => boolean =
-    (coord, context) => {
-        const run = (safeContext: GameContext) =>
-            safeContext
-                .flaggedCells()
-                .some(c => c.equals(coord));
-        
-        return runSafely<boolean>(
-            context,
-            run
-        );
+    public isNeutral(coord: Coordinate): boolean {
+        return this.notMine(coord);
     }
 
-export const NOT_FLAGGED: (coord: Coordinate, context: GameContext) => boolean =
-    (coord, context) =>
-        !IS_FLAGGED(coord, context);
+    public notNeutral(coord: Coordinate): boolean {
+        return !this.isNeutral(coord);
+    }
 
-export const ADD_OPENED: (coord: Coordinate, context: GameContext) => void =
-    (coord, context) => {
-        const run = (safeContext: GameContext) =>
-            safeContext.setOpenedCells(
-                context
+    public isOpened(coord: Coordinate): boolean {
+        return this.run<boolean>(
+            (safeContext: GameContext) =>
+                safeContext
                     .openedCells()
-                    .concat([coord])
-            );
-
-        return runSafely<void>(
-            context,
-            run
+                    .some(c => c.equals(coord))
         );
     }
 
-export const ADD_FLAGGED: (coord: Coordinate, context: GameContext) => void =
-    (coord, context) => {
-        const run = (safeContext: GameContext) =>
-            safeContext.setFlaggedCells(
+    public notOpened(coord: Coordinate): boolean {
+        return !this.isOpened(coord);
+    }
+
+    public isFlagged(coord: Coordinate): boolean {
+        return this.run<boolean>(
+            (safeContext: GameContext) =>
                 safeContext
                     .flaggedCells()
-                    .concat([coord])
-            );
-
-        return runSafely<void>(
-            context,
-            run
+                    .some(c => c.equals(coord))
         );
     }
 
-export const REMOVE_FLAGGED: (coord: Coordinate, context: GameContext) => void =
-    (coord, context) => {
-        const run = (safeContext: GameContext) =>
-            safeContext.setFlaggedCells(
-                safeContext
-                    .flaggedCells()
-                    .filter(c => !c.equals(coord))
-            );
+    public notFlagged(coord: Coordinate): boolean {
+        return !this.isFlagged(coord);
+    }
 
-        return runSafely<void>(
-            context,
-            run
+    public addOpened(coord: Coordinate): void {
+        return this.run<void>(
+            (safeContext: GameContext) =>
+                safeContext.setOpenedCells(
+                    context
+                        .openedCells()
+                        .concat([coord])
+                )
         );
     }
+
+    public addFlagged(coord: Coordinate): void {
+        return this.run<void>(
+            (safeContext: GameContext) =>
+                safeContext.setFlaggedCells(
+                    safeContext
+                        .flaggedCells()
+                        .concat([coord])
+                )
+        );
+    }
+
+    public removeFlagged(coord: Coordinate): void {
+        return this.run<void>(
+            (safeContext: GameContext) =>
+                safeContext.setFlaggedCells(
+                    safeContext
+                        .flaggedCells()
+                        .filter(c => !c.equals(coord))
+                )
+        );
+    }
+
+    public static apply(context: GameContext): GameContextOps {
+        return new GameContextOps(context);
+    }
+
+    private run<T>(r: (safeContext: GameContext) => T): T {
+        return runSafely<T>(
+            this.context(),
+            r
+        );
+    }
+
+}
+
+export default GameContextOps;
