@@ -22,7 +22,7 @@ export function randomRange(min: number, max: number): number {
 }
 
 export function cellElemAt(coord: Coordinate): HTMLElement {
-    return document.getElementById(`${coord.x()}-${coord.y()}`);
+    return document.getElementById(`${coord.x()}-${coord.y()}`)!;
 }
 
 export function nearCells(
