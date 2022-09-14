@@ -9,8 +9,10 @@ import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
 import Coordinate from "../src/ts/coordinate";
 import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
+import GameContext from "../src/ts/context";
 import Minesweeper from "../src/ts/minesweeper";
-import { cellElemAt, cellElemAt_, nearCells } from "../src/ts/util";
+import * as ContFn from "../src/ts/contextual-functions";
+import { cellElemAt_, nearCells } from "../src/ts/util";
 
 let difficulty: Difficulty | null = EASY;
 
@@ -27,243 +29,203 @@ const NUM_OF_MINES = () => {
 const TIMER_ID = "main";
 const MINE_COUNTER_ID = "mineRemain";
 
-let game: Minesweeper | null;
+let context: GameContext = GameContext.inactiveContext();
 
-let mines: Array<Coordinate> = [];
-let neutrals: Array<Coordinate> = [];
-
-let opened: Array<Coordinate> = [];
-let flagged: Array<Coordinate> = [];
-
-let flagMode = false;
-let chordMode = false;
-let end = false;
-
-function isMine(x: number, y: number): boolean {
-    return mines.some(c => c.equals(x, y));
-}
-
-function isMine_(coord: Coordinate): boolean {
-    return isMine(coord.x(), coord.y());
-}
-
-function isNeutral(x: number, y: number): boolean {
-    return neutrals.some(c => c.equals(x, y));
-}
-
-function isNeutral_(coord: Coordinate): boolean {
-    return isNeutral(coord.x(), coord.y());
-}
-
-function isOpened(x: number, y: number): boolean {
-    return opened.some(c => c.equals(x, y));
-}
-
-function isOpened_(coord: Coordinate): boolean {
-    return isOpened(coord.x(), coord.y());
-}
-
-function isFlagged(x: number, y: number): boolean {
-    return flagged.some(c => c.equals(x, y));
-}
-
-function isFlagged_(coord: Coordinate): boolean {
-    return isFlagged(coord.x(), coord.y());
-}
-
-function cellClicked(x: number, y: number): void {
-    if (game == null) {
+function cellClicked(coord: Coordinate): void {
+    if (!context.hasGameInstance()) {
         return startGame(x, y);
     }
-    if (end) {
+    if (!context.isActive()) {
         return;
     }
 
-    if (flagMode) {
-        setFlag(x, y);
+    if (context.flagMode()) {
+        setFlag(coord);
     } else {
-        if (chordMode) {
-            chordOpen(x, y);
+        if (context.chordMode()) {
+            chordOpen(coord);
         } else {
-            normalOpen(x, y);
+            normalOpen(coord);
         }
     }
 }
 
-function chordOpen(x: number, y: number): void {
-    if (!isOpened(x, y)) {
+function cellRightClicked(coord: Coordinate): void {
+    if (!context.hasGameInstance() || !context.isActive()) {
         return;
     }
 
-    const num = game!.calcNumber(x, y);
-
-    const cells = nearCells(
-        new Coordinate(x, y),
-        WIDTH(),
-        HEIGHT()
-    ).filter(c => !isOpened_(c));
-
-    if (cells.filter(c => isFlagged_(c)).length == num) {
-        if (cells.some(c => isMine_(c))) {
-            const firstMine = cells.filter(c => isMine_(c))[0];
-
-            endGame(firstMine.x(), firstMine.y());
-            return;
-        }
-
-        cells
-            .filter(c => !isFlagged_(c))
-            .forEach(c => {
-                normalOpen(c.x(), c.y());
-            });
-    }
-}
-
-function normalOpen(x: number, y: number): void {
-    if (isOpened(x, y) || isFlagged(x, y)) {
-        return;
-    }
-
-    if (isMine(x, y)) {
-        endGame(x, y);
-    } else {
-        openCellTailrec(x, y);
-    }
-}
-
-function cellRightClicked(x: number, y: number): void {
-    if (game == null || end) {
-        return;
-    }
-
-    if (!flagMode) {
-        setFlag(x, y);
-    }
-}
-
-function openCell(x: number, y: number): void {
-    if (isMine(x, y) || isOpened(x, y) || isFlagged(x, y)) {
-        return;
-    }
-
-    const elem = cellElemAt(x, y);
-    const num = game!.calcNumber(x, y);
-
-    elem.className = `cell cell-num-${num}`;
-    elem.innerHTML = `${num}`;
-
-    opened.push(new Coordinate(x, y));
-
-    if (opened.length == neutrals.length) {
-        clearGame();
-    }
-}
-
-function openCellTailrec(x: number, y: number): void {
-    if (isMine(x, y)) {
-        return;
-    }
-
-    openCell(x, y);
-
-    if (game!.calcNumber(x, y) == 0) {
-        const cells = nearCells(
-            new Coordinate(x, y),
-            WIDTH(),
-            HEIGHT()
-        ).filter(c => !isOpened_(c) && !isMine_(c) && !isFlagged_(c));
-
-        cells.forEach(c => openCellTailrec(c.x(), c.y()));
+    if (!context.chordMode()) {
+        setFlag(coord);
     }
 }
 
 function toggleFlagButtonClicked(): void {
-    if (game == null || end) {
+    if (!context.hasGameInstance() || !context.isActive()) {
         return;
     }
 
     const elem = document.getElementById("toggleFlag")!;
 
-    if (flagMode) {
+    if (context.flagMode()) {
         for (let x = 0; x < WIDTH(); x ++) {
             for (let y = 0; y < HEIGHT(); y ++) {
-                if (cellElemAt(x, y).className.indexOf("cell-flag-placeholder") != -1) {
-                    cellElemAt(x, y).className = "cell cell-not-opened";
+                const c = new Coordinate(x, y);
+
+                if (cellElemAt_(c).className.indexOf("cell-flag-placeholder") != -1) {
+                    cellElemAt_(c).className = "cell cell-not-opened";
                 }
             }
         }
 
         elem.innerHTML = "switch to flag mode";
-        flagMode = false;
+        context.setFlagMode(false);
     } else {
         for (let x = 0; x < WIDTH(); x ++) {
             for (let y = 0; y < HEIGHT(); y ++) {
-                if (!isOpened(x, y) && !isFlagged(x, y)) {
-                    cellElemAt(x, y).className = "cell cell-flag-placeholder";
+                const c = new Coordinate(x, y);
+
+                if (ContFn.NOT_OPENED(c, context) && ContFn.NOT_FLAGGED(c, context)) {
+                    cellElemAt_(c).className = "cell cell-flag-placeholder";
                 }
             }
         }
 
         elem.innerHTML = "exit flag mode";
-        flagMode = true;
+        context.setFlagMode(true);
     }
 }
 
-function setFlag(x: number, y: number): void {
-    if (isOpened(x, y)) {
-        return;
-    }
-
-    const elem = cellElemAt(x, y);
-
-    if (isFlagged(x, y)) {
-        addCount(MINE_COUNTER_ID, 1);
-
-        if (flagMode) {
-            elem.className = "cell cell-flag-placeholder";
-        } else {
-            elem.className = "cell cell-not-opened";
-        }
-
-        flagged = flagged.filter(e => !e.equals(x, y));
-    } else {
-        addCount(MINE_COUNTER_ID, -1);
-
-        elem.className = "cell cell-flag";
-            
-        flagged.push(new Coordinate(x, y));
-    }
-}
-
-function toggleChord(): void {
-    if (game == null || end) {
+function toggleChordButtonClicked(): void {
+    if (!context.hasGameInstance() || !context.isActive()) {
         return;
     }
 
     const elem = document.getElementById("toggleChord")!;
 
-    if (chordMode) {
+    if (context.chordMode()) {
         elem.innerHTML = "switch to chord mode";
-        chordMode = false;
+        context.setChordMode(false);
     } else {
         elem.innerHTML = "exit chord mode";
-        chordMode = true;
+        context.setChordMode(true);
+    }
+}
+
+function chordOpen(coord: Coordinate): void {
+    if (ContFn.IS_OPENED(coord, context)) {
+        return;
+    }
+
+    const num = ContFn.CALC_NUM(coord, context);
+
+    const cells = nearCells(
+        coord,
+        WIDTH(),
+        HEIGHT()
+    ).filter(c => ContFn.NOT_OPENED(c, context));
+
+    if (cells.filter(c => ContFn.IS_FLAGGED(c, context)).length == num) {
+        if (cells.some(c => ContFn.IS_MINE(c, context))) {
+            const firstMine = cells.filter(c => ContFn.IS_MINE(c, context))[0];
+
+            endGame(firstMine);
+            return;
+        }
+
+        cells
+            .filter(c => ContFn.NOT_FLAGGED(c, context))
+            .forEach(c => normalOpen(c));
+    }
+}
+
+function normalOpen(coord: Coordinate): void {
+    if (ContFn.IS_OPENED(coord) || ContFn.IS_FLAGGED(coord)) {
+        return;
+    }
+
+    if (ContFn.IS_MINE(coord)) {
+        endGame(coord);
+    } else {
+        openCellTailrec(coord);
+    }
+}
+
+function openCell(coord: Coordinate): void {
+    if (
+        ContFn.IS_MINE(coord) ||
+        ContFn.IS_OPENED(coord) ||
+        ContFn.IS_FLAGGED(coord)
+    ) {
+        return;
+    }
+
+    const elem = cellElemAt_(coord);
+    const num = ContFn.CALC_NUM(coord);
+
+    elem.className = `cell cell-num-${num}`;
+    elem.innerHTML = `${num}`;
+
+    ContFn.ADD_OPENED(coord);
+
+    const neutrals = context.gameInstance()!.neutrals();
+    if (context.openedCells().length == neutrals.length) {
+        clearGame();
+    }
+}
+
+function openCellTailrec(coord: Coordinate): void {
+    if (ContFn.IS_MINE(coord, context)) {
+        return;
+    }
+
+    openCell(coord);
+
+    if (ContFn.CALC_NUM(coord, context) == 0) {
+        const cells = nearCells(
+            coord,
+            WIDTH(),
+            HEIGHT()
+        ).filter(c =>
+            ContFn.NOT_OPENED(c, context) &&
+            ContFn.NOT_MINE(c, context) &&
+            ContFn.NOT_FLAGGED(c, context)
+        );
+
+        cells.forEach(c => openCellTailrec(c));
+    }
+}
+
+function setFlag(coord: Coordinate): void {
+    if (ContFn.IS_OPENED(coord, context)) {
+        return;
+    }
+
+    const elem = cellElemAt_(coord);
+
+    if (ContFn.IS_FLAGGED(coord, context)) {
+        addCount(MINE_COUNTER_ID, 1);
+
+        if (context.flagMode()) {
+            elem.className = "cell cell-flag-placeholder";
+        } else {
+            elem.className = "cell cell-not-opened";
+        }
+
+        ContFn.REMOVE_FLAGGED(coord, context);
+    } else {
+        addCount(MINE_COUNTER_ID, -1);
+
+        elem.className = "cell cell-flag";
+            
+        ContFn.ADD_FLAGGED(coord, context);
     }
 }
 
 function init(): void {
-    mines = [];
-    neutrals = [];
-    opened = [];
-    flagged = [];
-    flagMode = false;
-    chordMode = false;
-    end = false;
-
-    game = null;
+    context = GameContext.inactiveContext();
 
     resetTimer(TIMER_ID);
-
     resetCount(MINE_COUNTER_ID);
 
     document.getElementById("toggleFlag")!.innerHTML = "switch to flag mode";
@@ -271,7 +233,7 @@ function init(): void {
 
     for (let x = 0; x < WIDTH(); x ++) {
         for (let y = 0; y < HEIGHT(); y ++) {
-            const elem = cellElemAt(x, y);
+            const elem = cellElemAt_(new Coordinate(x, y));
 
             elem.className = "cell cell-not-opened";
             elem.innerHTML = "0";
@@ -279,25 +241,31 @@ function init(): void {
     }
 }
 
-function startGame(startX: number, startY: number): void {
+function startGame(coord: Coordinate): void {
     init();
 
     const blacklist = nearCells(
-        new Coordinate(startX, startY),
+        coord,
         WIDTH(),
         HEIGHT(),
         true
     );
 
-    game = Minesweeper.generate(WIDTH(), HEIGHT(), NUM_OF_MINES(), blacklist);
-    mines = game.mines().map(c => c.coord());
-    neutrals = game.neutrals().map(c => c.coord());
+    context.setInstance(
+        Minesweeper.generate(
+            WIDTH(),
+            HEIGHT(),
+            NUM_OF_MINES(),
+            blacklist
+        )
+    );
+    context.setActive(true);
 
     startTimer(TIMER_ID);
 
     setCount(MINE_COUNTER_ID, NUM_OF_MINES());
 
-    openCellTailrec(startX, startY);
+    openCellTailrec(coord);
 }
 
 function restartButtonClicked(): void {
@@ -307,36 +275,45 @@ function restartButtonClicked(): void {
 function clearGame(): void {
     stopTimer(TIMER_ID);
 
-    mines.forEach(coord => {
-        if (!isFlagged_(coord)) {
-            cellElemAt_(coord).className = "cell cell-mine";
-        } 
-    });
+    context
+        .gameInstance()!
+        .mines()
+        .forEach(c => {
+            if (ContFn.NOT_FLAGGED(c, context)) {
+                cellElemAt_(c).className = "cell cell-mine";
+            }
+        });
 
-    end = true;
+    context.setActive(false);
 
     setTimeout(() => {
         alert("cleared");
     }, 1);
 }
 
-function endGame(causeX: number, causeY: number): void {
+function endGame(coord: Coordinate): void {
     stopTimer(TIMER_ID);
     
-    mines.forEach(coord => {
-        if (!isFlagged_(coord)) {
-            cellElemAt_(coord).className = "cell cell-mine";
-        } 
-    });
-    cellElemAt(causeX, causeY).className = "cell cell-mine-cause";
+    context
+        .gameInstance()!
+        .mines()
+        .forEach(c => {
+            if (ContFn.NOT_FLAGGED(c, context)) {
+                cellElemAt_(c).className = "cell cell-mine";
+            } 
+        });
 
-    flagged.forEach(coord => {
-        if (!isMine_(coord)) {
-            cellElemAt_(coord).className = "cell cell-flag-miss";
-        }
-    });
+    cellElemAt_(coord).className = "cell cell-mine-cause";
 
-    end = true;
+    context
+        .flaggedCells()
+        .forEach(c => {
+            if (ContFn.NOT_MINE(c, context)) {
+                cellElemAt_(c).className = "cell cell-flag-miss";
+            }
+        });
+
+    context.setActive(false);
 }
 
 function Main() {
@@ -364,13 +341,13 @@ function Main() {
             </Head>
             <Game width={WIDTH()}
                   height={HEIGHT()}
-                  cellClicked={(x, y) => cellClicked(x, y)}
-                  cellRightClicked={(x, y) => cellRightClicked(x, y)}
+                  cellClicked={(x, y) => cellClicked(new Coordinate(x, y))}
+                  cellRightClicked={(x, y) => cellRightClicked(new Coordinate(x, y))}
             />
             <br />
             <div>
                 <button id="toggleFlag" onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
-                <button id="toggleChord" onClick={() => toggleChord()}>switch to chord mode</button>
+                <button id="toggleChord" onClick={() => toggleChordButtonClicked()}>switch to chord mode</button>
                 <button id="restart" onClick={() => restartButtonClicked()}>restart</button>
                 <br />
                 <div>
