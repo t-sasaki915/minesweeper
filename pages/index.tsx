@@ -278,6 +278,7 @@ function clearGame(): void {
     context
         .gameInstance()!
         .mines()
+        .map(c => c.coord())
         .forEach(c => {
             if (ContFn.NOT_FLAGGED(c, context)) {
                 cellElemAt_(c).className = "cell cell-mine";
@@ -297,6 +298,7 @@ function endGame(coord: Coordinate): void {
     context
         .gameInstance()!
         .mines()
+        .map(c => c.coord())
         .forEach(c => {
             if (ContFn.NOT_FLAGGED(c, context)) {
                 cellElemAt_(c).className = "cell cell-mine";
