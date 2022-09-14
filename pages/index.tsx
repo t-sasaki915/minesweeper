@@ -104,6 +104,11 @@ function chordOpen(x: number, y: number): void {
     ).filter(c => !isOpened_(c));
 
     if (cells.filter(c => isFlagged_(c)).length == num) {
+        if (cells.some(c => isMine_(c))) {
+            endGame(x, y);
+            return;
+        }
+
         cells
             .filter(c => !isFlagged_(c))
             .forEach(c => {
