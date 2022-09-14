@@ -39,37 +39,29 @@ class Minesweeper {
     }
 
     public mines(): Array<Cell> {
-        return this.cells().filter(e => e.isMine());
+        return this.cells().filter(c => c.isMine());
     }
 
     public neutrals(): Array<Cell> {
-        return this.cells().filter(e => e.notMine());
+        return this.cells().filter(c => c.notMine());
     }
 
-    public cellAt(x: number, y: number): Cell {
-        return this.cells().filter(e => e.coord().equals(new Coordinate(x, y)))[0];
+    public cellAt(coord: Coordinate): Cell {
+        return this.cells().filter(c => c.coord().equals(coord))[0];
     }
 
-    public cellAt_(coord: Coordinate): Cell {
-        return this.cellAt(coord.x(), coord.y());
-    }
-
-    public calcNumber(x: number, y: number): number {
-        if (this.cellAt(x, y).isMine()) {
+    public calcNumber(coord: Coordinate): number {
+        if (this.cellAt(coord).isMine()) {
             return 0;
         }
 
         const cells = nearCells(
-            new Coordinate(x, y),
+            coord,
             this.width(),
             this.height()
-        ).map(c => this.cellAt_(c));
+        ).map(c => this.cellAt(c));
 
-        return cells.filter(e => e.isMine()).length;
-    }
-
-    public calcNumber_(coord: Coordinate): number {
-        return this.calcNumber(coord.x(), coord.y());
+        return cells.filter(c => c.isMine()).length;
     }
 
     public static generate(
