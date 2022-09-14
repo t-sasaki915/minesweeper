@@ -12,7 +12,7 @@ import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 import GameContext from "../src/ts/context";
 import Minesweeper from "../src/ts/minesweeper";
 import * as ContFn from "../src/ts/contextual-functions";
-import { cellElemAt_, nearCells } from "../src/ts/util";
+import { cellElemAt, nearCells } from "../src/ts/util";
 
 let difficulty: Difficulty | null = EASY;
 
@@ -72,8 +72,8 @@ function toggleFlagButtonClicked(): void {
             for (let y = 0; y < HEIGHT(); y ++) {
                 const c = new Coordinate(x, y);
 
-                if (cellElemAt_(c).className.indexOf("cell-flag-placeholder") != -1) {
-                    cellElemAt_(c).className = "cell cell-not-opened";
+                if (cellElemAt(c).className.indexOf("cell-flag-placeholder") != -1) {
+                    cellElemAt(c).className = "cell cell-not-opened";
                 }
             }
         }
@@ -86,7 +86,7 @@ function toggleFlagButtonClicked(): void {
                 const c = new Coordinate(x, y);
 
                 if (ContFn.NOT_OPENED(c, context) && ContFn.NOT_FLAGGED(c, context)) {
-                    cellElemAt_(c).className = "cell cell-flag-placeholder";
+                    cellElemAt(c).className = "cell cell-flag-placeholder";
                 }
             }
         }
@@ -162,7 +162,7 @@ function openCell(coord: Coordinate): void {
         return;
     }
 
-    const elem = cellElemAt_(coord);
+    const elem = cellElemAt(coord);
     const num = ContFn.CALC_NUM(coord, context);
 
     elem.className = `cell cell-num-${num}`;
@@ -203,7 +203,7 @@ function setFlag(coord: Coordinate): void {
         return;
     }
 
-    const elem = cellElemAt_(coord);
+    const elem = cellElemAt(coord);
 
     if (ContFn.IS_FLAGGED(coord, context)) {
         addCount(MINE_COUNTER_ID, 1);
@@ -235,7 +235,7 @@ function init(): void {
 
     for (let x = 0; x < WIDTH(); x ++) {
         for (let y = 0; y < HEIGHT(); y ++) {
-            const elem = cellElemAt_(new Coordinate(x, y));
+            const elem = cellElemAt(new Coordinate(x, y));
 
             elem.className = "cell cell-not-opened";
             elem.innerHTML = "0";
@@ -283,7 +283,7 @@ function clearGame(): void {
         .map(c => c.coord())
         .forEach(c => {
             if (ContFn.NOT_FLAGGED(c, context)) {
-                cellElemAt_(c).className = "cell cell-mine";
+                cellElemAt(c).className = "cell cell-mine";
             }
         });
 
@@ -303,17 +303,17 @@ function endGame(coord: Coordinate): void {
         .map(c => c.coord())
         .forEach(c => {
             if (ContFn.NOT_FLAGGED(c, context)) {
-                cellElemAt_(c).className = "cell cell-mine";
+                cellElemAt(c).className = "cell cell-mine";
             } 
         });
 
-    cellElemAt_(coord).className = "cell cell-mine-cause";
+    cellElemAt(coord).className = "cell cell-mine-cause";
 
     context
         .flaggedCells()
         .forEach(c => {
             if (ContFn.NOT_MINE(c, context)) {
-                cellElemAt_(c).className = "cell cell-flag-miss";
+                cellElemAt(c).className = "cell cell-flag-miss";
             }
         });
 
