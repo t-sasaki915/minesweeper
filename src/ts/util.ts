@@ -1,4 +1,17 @@
 import Coordinate from "./coordinate";
+import GameContext from "./context";
+import { IllegalStateError } from "./errors";
+
+export function runSafely<T>(context: GameContext, run: () => T): T {
+    if (!context.isActive()) {
+        throw new IllegalStateError("GameContext isn't active.");
+    }
+    if (!context.hasGameInstance()) {
+        throw new IllegalStateError("GameContext hasn't game instance.");
+    }
+
+    return run();
+}
 
 export function range(min: number, max: number): Array<number> {
     return Array.from(Array(max - min).keys()).map(x => x + min);
