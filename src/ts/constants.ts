@@ -50,3 +50,18 @@ export const ADD_FLAGGED: (coord: Coordinate, context: GameContext) => void =
             run
         );
     }
+
+export const REMOVE_FLAGGED: (coord: Coordinate, context: GameContext) => void =
+    (coord, context) => {
+        const run = (safeContext: GameContext) =>
+            safeContext.setFlaggedCells(
+                safeContext
+                    .flaggedCells()
+                    .filter(c => !c.equals_(coord))
+            );
+
+        return runSafely<void>(
+            context,
+            run
+        );
+    }
