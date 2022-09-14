@@ -7,7 +7,7 @@ export const CALC_NUM: (coord: Coordinate, context: GameContext) => number =
         const run = (safeContext: GameContext) =>
             safeContext
                 .gameInstance()!
-                .calcNumber_(coord);
+                .calcNumber(coord);
         
         return runSafely<number>(
             context,
@@ -20,7 +20,7 @@ export const IS_MINE: (coord: Coordinate, context: GameContext) => boolean =
         const run = (safeContext: GameContext) =>
             safeContext
                 .gameInstance()!
-                .cellAt_(coord)
+                .cellAt(coord)
                 .isMine();
 
         return runSafely<boolean>(
