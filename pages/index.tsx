@@ -33,7 +33,7 @@ let context: GameContext = GameContext.inactiveContext();
 
 function cellClicked(coord: Coordinate): void {
     if (!context.hasGameInstance()) {
-        return startGame(x, y);
+        return startGame(coord);
     }
     if (!context.isActive()) {
         return;
