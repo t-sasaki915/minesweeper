@@ -126,10 +126,12 @@ function chordOpen(coord: Coordinate): void {
     ).filter(c => ContFn.NOT_OPENED(c, context));
 
     if (cells.filter(c => ContFn.IS_FLAGGED(c, context)).length == num) {
-        if (cells.some(c => ContFn.IS_MINE(c, context))) {
-            const firstMine = cells.filter(c => ContFn.IS_MINE(c, context))[0];
-
-            endGame(firstMine);
+        const notFlaggedMine = cells.filter(c =>
+            ContFn.NOT_FLAGGED(c, context) &&
+            ContFn.IS_MINE(c, context)
+        );
+        if (notFlaggedMine.length != 0) {
+            endGame(notFlaggedMine[0]);
             return;
         }
 
