@@ -16,12 +16,8 @@ class Coordinate {
         return this._y;
     }
 
-    public equals(x: number, y: number): boolean {
-        return this.x() == x && this.y() == y;
-    }
-
-    public equals_(coord: Coordinate): boolean {
-        return this.equals(coord.x(), coord.y());
+    public equals(another: Coordinate): boolean {
+        return another.x() == this.x() && another.y() == this.y();
     }
 
 }
