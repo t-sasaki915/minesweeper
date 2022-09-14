@@ -2,6 +2,19 @@ import Coordinate from "./coordinate";
 import GameContext from "./context";
 import { runSafely } from "./util";
 
+export const CALC_NUM: (coord: Coordinate, context: GameContext) => number =
+    (coord, context) => {
+        const run = (safeContext: GameContext) =>
+            safeContext
+                .gameInstance()!
+                .calcNumber_(coord);
+        
+        return runSafely<number>(
+            context,
+            run
+        );
+    }
+
 export const IS_MINE: (coord: Coordinate, context: GameContext) => boolean =
     (coord, context) => {
         const run = (safeContext: GameContext) =>
@@ -41,6 +54,10 @@ export const IS_OPENED: (coord: Coordinate, context: GameContext) => boolean =
         );
     }
 
+export const NOT_OPENED: (coord: Coordinate, context: GameContext) => boolean =
+    (coord, context) =>
+        !IS_OPENED(coord, context);
+
 export const IS_FLAGGED: (coord: Coordinate, context: GameContext) => boolean =
     (coord, context) => {
         const run = (safeContext: GameContext) =>
@@ -53,6 +70,10 @@ export const IS_FLAGGED: (coord: Coordinate, context: GameContext) => boolean =
             run
         );
     }
+
+export const NOT_FLAGGED: (coord: Coordinate, context: GameContext) => boolean =
+    (coord, context) =>
+        !IS_FLAGGED(coord, context);
 
 export const ADD_OPENED: (coord: Coordinate, context: GameContext) => void =
     (coord, context) => {
