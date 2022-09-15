@@ -11,13 +11,13 @@ import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 const GAME_ID = "main";
 
 function Main() {
-    return useEffect(() => {
-        let difficulty = EASY;
+    let difficulty = EASY;
 
+    if (window != "undefined") {
         const params = new URLSearchParams(window.location.search);
-        const difficultyParam = params.get("d");
-        if (difficultyParam != null) {
-            if (!Difficulties.exists(difficultyParam)) {
+        const diffParam = params.get("d");
+        if (diffParam != null) {
+            if (!Difficulties.exists(diffParam)) {
                 return (
                     <>
                         <p>unknown difficulty.</p>
@@ -26,25 +26,25 @@ function Main() {
                 );
             }
 
-            difficulty = Difficulties.get(difficultyParam)!;
+            difficulty = Difficulties.get(diffParam)!;
         }
+    }
 
-        const context = GameContext.inactiveContext(GAME_ID, difficulty);
+    const context = GameContext.inactiveContext(GAME_ID, difficulty);
 
-        return (
-            <>
-                <Head>
-                    <title>Minesweeper</title>
-                </Head>
-                <Game context={context} />
-                <div>
-                    <p>difficulty:</p>
-                    <DifficultySelect />
-                </div>
-                <AboutPage />
-            </>
-        );
-    });
+    return (
+        <>
+            <Head>
+                <title>Minesweeper</title>
+            </Head>
+            <Game context={context} />
+            <div>
+                <p>difficulty:</p>
+                <DifficultySelect />
+            </div>
+            <AboutPage />
+        </>
+    );
 }
 
 export default Main;
