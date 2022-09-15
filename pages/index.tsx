@@ -18,6 +18,8 @@ import { cellElemAt, nearCells } from "../src/ts/util";
 
 import * as Consts from "../src/ts/constants";
 
+const GAME_ID = `${uuidv4()}`;
+
 let difficulty: Difficulty | null = EASY;
 
 const WIDTH = () => {
@@ -30,7 +32,7 @@ const NUM_OF_MINES = () => {
     return difficulty!.numOfMines();
 }
 
-let context: GameContext = GameContext.inactiveContext(uuidv4());
+let context: GameContext = GameContext.inactiveContext(GAME_ID);
 let contextOps: GameContextOps = GameContextOps.apply(context);
 
 function cellClicked(coord: Coordinate): void {
@@ -227,7 +229,7 @@ function setFlag(coord: Coordinate): void {
 }
 
 function init(): void {
-    context = GameContext.inactiveContext(uuidv4());
+    context = GameContext.inactiveContext(GAME_ID);
     contextOps = GameContextOps.apply(context);
 
     resetTimer(Consts.TIMER_ID);
@@ -346,10 +348,12 @@ function Main() {
             <Head>
                 <title>Minesweeper</title>
             </Head>
-            <Game width={WIDTH()}
-                  height={HEIGHT()}
-                  cellClicked={c => cellClicked(c)}
-                  cellRightClicked={c => cellRightClicked(c)}
+            <Game
+                name={GAME_ID}
+                width={WIDTH()}
+                height={HEIGHT()}
+                cellClicked={c => cellClicked(c)}
+                cellRightClicked={c => cellRightClicked(c)}
             />
             <br />
             <div>
