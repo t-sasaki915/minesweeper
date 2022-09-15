@@ -10,11 +10,11 @@ import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 import Coordinate from "../src/ts/coordinate";
 import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 import GameContext from "../src/ts/context";
+import GameContextOps from "../src/ts/context-ops";
 import Minesweeper from "../src/ts/minesweeper";
 import { cellElemAt, nearCells } from "../src/ts/util";
 
 import * as Consts from "../src/ts/constants";
-import * as ContFn from "../src/ts/contextual-functions";
 
 let difficulty: Difficulty | null = EASY;
 
@@ -29,6 +29,7 @@ const NUM_OF_MINES = () => {
 }
 
 let context: GameContext = GameContext.inactiveContext();
+let contextOps: GameContextOps = GameContextOps.apply(context);
 
 function cellClicked(coord: Coordinate): void {
     if (!context.hasGameInstance()) {
@@ -84,7 +85,7 @@ function toggleFlagButtonClicked(): void {
             for (let y = 0; y < HEIGHT(); y ++) {
                 const c = new Coordinate(x, y);
 
-                if (ContFn.NOT_OPENED(c, context) && ContFn.NOT_FLAGGED(c, context)) {
+                if (contextOps.notOpened(c) && contextOps.notFlagged(c)) {
                     cellElemAt(c).className = Consts.CELL_FLAG_PLACEHOLDER_CLASS;
                 }
             }
@@ -112,22 +113,22 @@ function toggleChordButtonClicked(): void {
 }
 
 function chordOpen(coord: Coordinate): void {
-    if (ContFn.NOT_OPENED(coord, context)) {
+    if (contextOps.notOpened(coord)) {
         return;
     }
 
-    const num = ContFn.CALC_NUM(coord, context);
+    const num = contextOps.CALC_NUM(coord);
 
     const cells = nearCells(
         coord,
         WIDTH(),
         HEIGHT()
-    ).filter(c => ContFn.NOT_OPENED(c, context));
+    ).filter(c => contextOps.notOpened(c));
 
-    if (cells.filter(c => ContFn.IS_FLAGGED(c, context)).length == num) {
+    if (cells.filter(c => contextOps.isFlagged(c)).length == num) {
         const notFlaggedMine = cells.filter(c =>
-            ContFn.NOT_FLAGGED(c, context) &&
-            ContFn.IS_MINE(c, context)
+            contextOps.notFlagged(c) &&
+            contextOps.isMine(c)
         );
         if (notFlaggedMine.length != 0) {
             endGame(notFlaggedMine[0]);
@@ -135,17 +136,17 @@ function chordOpen(coord: Coordinate): void {
         }
 
         cells
-            .filter(c => ContFn.NOT_FLAGGED(c, context))
+            .filter(c => contextOps.notFlagged(c))
             .forEach(c => normalOpen(c));
     }
 }
 
 function normalOpen(coord: Coordinate): void {
-    if (ContFn.IS_OPENED(coord, context) || ContFn.IS_FLAGGED(coord, context)) {
+    if (contextOps.isOpened(coord) || contextOps.isFlagged(coord)) {
         return;
     }
 
-    if (ContFn.IS_MINE(coord, context)) {
+    if (contextOps.isMine(coord)) {
         endGame(coord);
     } else {
         openCellTailrec(coord);
@@ -154,20 +155,20 @@ function normalOpen(coord: Coordinate): void {
 
 function openCell(coord: Coordinate): void {
     if (
-        ContFn.IS_MINE(coord, context) ||
-        ContFn.IS_OPENED(coord, context) ||
-        ContFn.IS_FLAGGED(coord, context)
+        contextOps.isMine(coord) ||
+        contextOps.isOpened(coord) ||
+        contextOps.isFlagged(coord)
     ) {
         return;
     }
 
     const elem = cellElemAt(coord);
-    const num = ContFn.CALC_NUM(coord, context);
+    const num = contextOps.calcNum(coord);
 
     elem.className = `${Consts.CELL_NUM_CLASS}${num}`;
     elem.innerHTML = `${num}`;
 
-    ContFn.ADD_OPENED(coord, context);
+    contextOps.addOpened(coord);
 
     const neutrals = context.gameInstance()!.neutrals();
     if (context.openedCells().length == neutrals.length) {
@@ -176,21 +177,21 @@ function openCell(coord: Coordinate): void {
 }
 
 function openCellTailrec(coord: Coordinate): void {
-    if (ContFn.IS_MINE(coord, context)) {
+    if (contextOps.isMine(coord)) {
         return;
     }
 
     openCell(coord);
 
-    if (ContFn.CALC_NUM(coord, context) == 0) {
+    if (contextOps.calcNum(coord) == 0) {
         const cells = nearCells(
             coord,
             WIDTH(),
             HEIGHT()
         ).filter(c =>
-            ContFn.NOT_OPENED(c, context) &&
-            ContFn.NOT_MINE(c, context) &&
-            ContFn.NOT_FLAGGED(c, context)
+            contextOps.notOpened(c) &&
+            contextOps.notMine(c) &&
+            contextOps.notFlagged(c)
         );
 
         cells.forEach(c => openCellTailrec(c));
@@ -198,13 +199,13 @@ function openCellTailrec(coord: Coordinate): void {
 }
 
 function setFlag(coord: Coordinate): void {
-    if (ContFn.IS_OPENED(coord, context)) {
+    if (contextOps.isOpened(coord)) {
         return;
     }
 
     const elem = cellElemAt(coord);
 
-    if (ContFn.IS_FLAGGED(coord, context)) {
+    if (contextOps.isFlagged(coord)) {
         addCount(Consts.MINE_COUNTER_ID, 1);
 
         if (context.flagMode()) {
@@ -213,18 +214,19 @@ function setFlag(coord: Coordinate): void {
             elem.className = Consts.CELL_NOT_OPENED_CLASS;
         }
 
-        ContFn.REMOVE_FLAGGED(coord, context);
+        contextOps.removeFlagged(coord);
     } else {
         addCount(Consts.MINE_COUNTER_ID, -1);
 
         elem.className = Consts.CELL_FLAG_CLASS;
             
-        ContFn.ADD_FLAGGED(coord, context);
+        contextOps.addFlagged(coord);
     }
 }
 
 function init(): void {
     context = GameContext.inactiveContext();
+    contextOps = GameContextOps.apply(context);
 
     resetTimer(Consts.TIMER_ID);
     resetCount(Consts.MINE_COUNTER_ID);
@@ -281,7 +283,7 @@ function clearGame(): void {
         .mines()
         .map(c => c.coord())
         .forEach(c => {
-            if (ContFn.NOT_FLAGGED(c, context)) {
+            if (contextOps.notFlagged(c)) {
                 cellElemAt(c).className = Consts.CELL_MINE_CLASS;
             }
         });
@@ -301,7 +303,7 @@ function endGame(coord: Coordinate): void {
         .mines()
         .map(c => c.coord())
         .forEach(c => {
-            if (ContFn.NOT_FLAGGED(c, context)) {
+            if (contextOps.notFlagged(c)) {
                 cellElemAt(c).className = Consts.CELL_MINE_CLASS;
             } 
         });
@@ -311,7 +313,7 @@ function endGame(coord: Coordinate): void {
     context
         .flaggedCells()
         .forEach(c => {
-            if (ContFn.NOT_MINE(c, context)) {
+            if (contextOps.notMine(c)) {
                 cellElemAt(c).className = Consts.CELL_FLAG_MISS_CLASS;
             }
         });
