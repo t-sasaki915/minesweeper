@@ -75,7 +75,7 @@ class GameContextOps {
         return this.run<void>(
             (safeContext: GameContext) =>
                 safeContext.setOpenedCells(
-                    context
+                    safeContext
                         .openedCells()
                         .concat([coord])
                 )
