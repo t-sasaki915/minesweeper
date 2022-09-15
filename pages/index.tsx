@@ -11,9 +11,9 @@ import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 const GAME_ID = "main";
 
 function Main() {
-    let difficulty = EASY;
-
     if (typeof window != "undefined") {
+        let difficulty = EASY;
+
         const params = new URLSearchParams(window.location.search);
         const diffParam = params.get("d");
         if (diffParam != null) {
@@ -28,21 +28,29 @@ function Main() {
 
             difficulty = Difficulties.get(diffParam)!;
         }
-    }
 
-    const context = GameContext.inactiveContext(GAME_ID, difficulty);
+        const context = GameContext.inactiveContext(GAME_ID, difficulty);
+
+        return (
+            <>
+                <Head>
+                    <title>Minesweeper</title>
+                </Head>
+                <Game context={context} />
+                <div>
+                    <p>difficulty:</p>
+                    <DifficultySelect />
+                </div>
+                <AboutPage />
+            </>
+        );
+    }
 
     return (
         <>
             <Head>
                 <title>Minesweeper</title>
             </Head>
-            <Game context={context} />
-            <div>
-                <p>difficulty:</p>
-                <DifficultySelect />
-            </div>
-            <AboutPage />
         </>
     );
 }
