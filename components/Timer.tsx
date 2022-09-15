@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { IllegalStateError } from '../src/ts/errors';
+import { IllegalStateError } from "../src/ts/errors";
 
 const TIMES = new Map<string, number>();
 const TIMER_INTERVAL_IDS = new Map<string, number>();

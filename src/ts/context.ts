@@ -1,9 +1,11 @@
 import Coordinate from "./coordinate";
+import { Difficulty } from "./difficulty";
 import Minesweeper from "./minesweeper";
 
 class GameContext {
 
     private _name: string;
+    private _difficulty: Difficulty;
     private _isActive: boolean;
     private _gameInstance: Minesweeper | null;
     private _openedCells: Array<Coordinate>;
@@ -13,6 +15,7 @@ class GameContext {
 
     constructor (
         name: string,
+        difficulty: Difficulty,
         isActive: boolean,
         gameInstance: Minesweeper | null,
         openedCells: Array<Coordinate>,
@@ -21,6 +24,7 @@ class GameContext {
         chordMode: boolean
     ) {
         this._name = name;
+        this._difficulty = difficulty;
         this._isActive = isActive;
         this._gameInstance = gameInstance;
         this._openedCells = openedCells;
@@ -31,6 +35,10 @@ class GameContext {
 
     public name(): string {
         return this._name;
+    }
+
+    public difficulty(): Difficulty {
+        return this._difficulty;
     }
 
     public isActive(): boolean {
@@ -79,9 +87,19 @@ class GameContext {
         return this.gameInstance() != null;
     }
 
-    public static inactiveContext(name: string): GameContext {
+    public init(): void {
+        this.setActive(false);
+        this.setInstance(null);
+        this.setOpenedCells([]);
+        this.setFlaggedCells([]);
+        this.setFlagMode(false);
+        this.setChordMode(false)
+    }
+
+    public static inactiveContext(name: string, difficulty: Difficulty): GameContext {
         return new GameContext(
             name,
+            difficulty,
             false,
             null,
             [],

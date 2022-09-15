@@ -16,3 +16,18 @@ export function setCellClass(
 ): void {
     getCellElem(coord, context).className = newClass;
 }
+
+export function getCellClass(
+    coord: Coordinate,
+    context: GameContext
+): string {
+    return getCellElem(coord, context).className;
+}
+
+export function setCellNum(
+    newNum: number,
+    coord: Coordinate,
+    context: GameContext
+): void {
+    getCellElem(coord, context).innerHTML = `${newNum}`;
+}

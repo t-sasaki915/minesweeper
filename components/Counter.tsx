@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { IllegalStateError } from '../src/ts/errors';
+import { IllegalStateError } from "../src/ts/errors";
 
 const COUNTS = new Map<string, number>();
 
