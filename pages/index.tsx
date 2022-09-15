@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
 
+import { v4 as uuidv4 } from 'uuid';
+
 import AboutPage from "../components/AboutPage";
 import Counter, { addCount, setCount, resetCount } from "../components/Counter";
 import DifficultySelect from "../components/DifficultySelect";
@@ -28,7 +30,7 @@ const NUM_OF_MINES = () => {
     return difficulty!.numOfMines();
 }
 
-let context: GameContext = GameContext.inactiveContext();
+let context: GameContext = GameContext.inactiveContext(uuidv4());
 let contextOps: GameContextOps = GameContextOps.apply(context);
 
 function cellClicked(coord: Coordinate): void {
@@ -225,7 +227,7 @@ function setFlag(coord: Coordinate): void {
 }
 
 function init(): void {
-    context = GameContext.inactiveContext();
+    context = GameContext.inactiveContext(uuidv4());
     contextOps = GameContextOps.apply(context);
 
     resetTimer(Consts.TIMER_ID);
