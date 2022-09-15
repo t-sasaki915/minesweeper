@@ -7,6 +7,7 @@ import AboutPage from "../components/AboutPage";
 import Counter, { addCount, setCount, resetCount } from "../components/Counter";
 import DifficultySelect from "../components/DifficultySelect";
 import Game from "../components/Game";
+import RestartButton from "./components/RestartButton";
 import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
 import Coordinate from "../src/ts/coordinate";
@@ -360,6 +361,10 @@ function Main() {
                 <button id={Consts.TOGGLE_FLAG_BUTTON_ID} onClick={() => toggleFlagButtonClicked()}>switch to flag mode</button>
                 <button id={Consts.TOGGLE_CHORD_BUTTON_ID} onClick={() => toggleChordButtonClicked()}>switch to chord mode</button>
                 <button id={Consts.RESTART_BUTTON_ID} onClick={() => restartButtonClicked()}>restart</button>
+                <RestartButton
+                    name={GAME_ID}
+                    logic={() => restartButtonClicked()}
+                />
                 <br />
                 <div>
                     <p>time: <Timer id={Consts.TIMER_ID} />s</p>
