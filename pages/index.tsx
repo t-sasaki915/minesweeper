@@ -13,7 +13,7 @@ const GAME_ID = "main";
 function Main() {
     let difficulty = EASY;
 
-    if (window != undefined) {
+    if (typeof window != "undefined") {
         const params = new URLSearchParams(window.location.search);
         const diffParam = params.get("d");
         if (diffParam != null) {
