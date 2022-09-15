@@ -3,6 +3,7 @@ import Minesweeper from "./minesweeper";
 
 class GameContext {
 
+    private _name: string;
     private _isActive: boolean;
     private _gameInstance: Minesweeper | null;
     private _openedCells: Array<Coordinate>;
@@ -11,6 +12,7 @@ class GameContext {
     private _chordMode: boolean;
 
     constructor (
+        name: string,
         isActive: boolean,
         gameInstance: Minesweeper | null,
         openedCells: Array<Coordinate>,
@@ -18,12 +20,17 @@ class GameContext {
         flagMode: boolean,
         chordMode: boolean
     ) {
+        this._name = name;
         this._isActive = isActive;
         this._gameInstance = gameInstance;
         this._openedCells = openedCells;
         this._flaggedCells = flaggedCells;
         this._flagMode = flagMode;
         this._chordMode = chordMode;
+    }
+
+    public name(): string {
+        return this._name;
     }
 
     public isActive(): boolean {
@@ -72,8 +79,9 @@ class GameContext {
         return this.gameInstance() != null;
     }
 
-    public static inactiveContext(): GameContext {
+    public static inactiveContext(name: string): GameContext {
         return new GameContext(
+            name,
             false,
             null,
             [],
