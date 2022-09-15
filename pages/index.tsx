@@ -117,7 +117,7 @@ function chordOpen(coord: Coordinate): void {
         return;
     }
 
-    const num = contextOps.CALC_NUM(coord);
+    const num = contextOps.calcNum(coord);
 
     const cells = nearCells(
         coord,
