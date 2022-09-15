@@ -7,7 +7,7 @@ import AboutPage from "../components/AboutPage";
 import Counter, { addCount, setCount, resetCount } from "../components/Counter";
 import DifficultySelect from "../components/DifficultySelect";
 import Game from "../components/Game";
-import RestartButton from "./components/RestartButton";
+import RestartButton from "../components/RestartButton";
 import Timer, { startTimer, stopTimer, resetTimer } from "../components/Timer";
 
 import Coordinate from "../src/ts/coordinate";
