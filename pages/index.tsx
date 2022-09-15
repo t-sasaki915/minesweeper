@@ -8,11 +8,11 @@ import Game from "../components/Game";
 import GameContext from "../src/ts/context";
 import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 
-let difficulty: Difficulty | null = EASY;
-
 const GAME_ID = "main";
 
 function Main() {
+    let difficulty: Difficulty | null = EASY;
+
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const difficultyParam = params.get("d");
