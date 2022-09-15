@@ -13,6 +13,10 @@ export function runSafely<T>(context: GameContext, run: (c: GameContext) => T): 
     return run(context);
 }
 
+export function isOnBrowser(): boolean {
+    return typeof window != "undefined";
+}
+
 export function range(min: number, max: number): Array<number> {
     return Array.from(Array(max - min).keys()).map(x => x + min);
 }
