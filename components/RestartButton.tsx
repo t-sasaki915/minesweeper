@@ -1,21 +1,19 @@
 import React from "react";
 
-import GameContexts from "../src/ts/contexts";
+import GameContext from "../src/ts/context";
 
 import * as Logic from "../src/ts/game-logic";
 
 type Props = {
-    name: string;
+    context: GameContext;
 }
 
 const RestartButton = (props: Props) => {
-    const context = GameContexts.getContext(props.name);
-
     return (
         <button
             className="restartButton"
-            id={`${context.name()}-restart`}
-            onClick={() => Logic.restartButtonClicked(context)}
+            id={`${props.context.name()}-restart`}
+            onClick={() => Logic.restartButtonClicked(props.context)}
         >restart</button>
     );
 };

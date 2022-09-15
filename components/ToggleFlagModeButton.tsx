@@ -1,12 +1,11 @@
 import React from "react";
 
 import GameContext from "../src/ts/context";
-import GameContexts from "../src/ts/contexts";
 
 import * as Logic from "../src/ts/game-logic";
 
 type Props = {
-    name: string;
+    context: GameContext;
 }
 
 export function updateFlagInnerHTML(context: GameContext): void {
@@ -15,13 +14,11 @@ export function updateFlagInnerHTML(context: GameContext): void {
 }
 
 const ToggleFlagModeButton = (props: Props) => {
-    const context = GameContexts.getContext(props.name);
-    
     return (
         <button
             className="toggleFlagModeButton"
-            id={`${context.name()}-toggleFlagMode`}
-            onClick={() => Logic.toggleFlagButtonClicked(context)}
+            id={`${props.context.name()}-toggleFlagMode`}
+            onClick={() => Logic.toggleFlagButtonClicked(props.context)}
         >switch to flag mode</button>
     );
 };

@@ -1,12 +1,11 @@
 import React from "react";
 
 import GameContext from "../src/ts/context";
-import GameContexts from "../src/ts/contexts";
 
 import * as Logic from "../src/ts/game-logic";
 
 type Props = {
-    name: string;
+    context: GameContext;
 }
 
 export function updateChordInnerHTML(context: GameContext): void {
@@ -15,13 +14,11 @@ export function updateChordInnerHTML(context: GameContext): void {
 }
 
 const ToggleChordModeButton = (props: Props) => {
-    const context = GameContexts.getContext(props.name);
-    
     return (
         <button
             className="toggleChordModeButton"
-            id={`${context.name()}-toggleChordMode`}
-            onClick={() => Logic.toggleChordButtonClicked(context)}
+            id={`${props.context.name()}-toggleChordMode`}
+            onClick={() => Logic.toggleChordButtonClicked(props.context)}
         >switch to chord mode</button>
     );
 };

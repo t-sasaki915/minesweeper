@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
 
-import { v4 as uuidv4 } from "uuid";
-
 import AboutPage from "../components/AboutPage";
 import DifficultySelect from "../components/DifficultySelect";
 import Game from "../components/Game";
 
-import GameContexts from "../src/ts/contexts";
+import GameContext from "../src/ts/context";
 import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
 
 let difficulty: Difficulty | null = EASY;
 
-const GAME_ID = `${uuidv4()}`;
+const GAME_ID = "main";
 
 function Main() {
     useEffect(() => {
@@ -32,14 +30,14 @@ function Main() {
         );
     }
 
-    const context = GameContexts.createGame(GAME_ID, difficulty);
+    const context = GameContext.inactiveContext(GAME_ID, difficulty);
 
     return (
         <>
             <Head>
                 <title>Minesweeper</title>
             </Head>
-            <Game name={context.name()} />
+            <Game context={context} />
             <div>
                 <p>difficulty:</p>
                 <DifficultySelect />

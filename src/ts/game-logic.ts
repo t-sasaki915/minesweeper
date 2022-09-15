@@ -157,7 +157,7 @@ function startGame(
     );
 
     context.setInstance(
-        new Minesweeper(
+        Minesweeper.generate(
             diff.width(),
             diff.height(),
             diff.numOfMines(),
@@ -232,11 +232,11 @@ function chordOpen(
         if (notFlaggedMines.length != 0) {
             return endGame(notFlaggedMines[0], context);
         }
-    }
 
-    cells
-        .filter(c => contextOps.notFlagged(c))
-        .forEach(c => openCellTailrec(c));
+        cells
+            .filter(c => contextOps.notFlagged(c))
+            .forEach(c => openCellTailrec(c, context));
+    }
 }
 
 function normalOpen(
