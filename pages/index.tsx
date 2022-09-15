@@ -7,11 +7,12 @@ import Game from "../components/Game";
 
 import GameContext from "../src/ts/context";
 import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
+import { isOnBrowser } from "../src/ts/util";
 
 const GAME_ID = "main";
 
 function Main() {
-    if (typeof window != "undefined") {
+    if (isOnBrowser()) {
         let difficulty = EASY;
 
         const params = new URLSearchParams(window.location.search);
