@@ -4,6 +4,7 @@ import Coordinate from "../src/ts/coordinate";
 import { range } from "../src/ts/util";
 
 type Props = {
+    name: string;
     width: number;
     height: number;
     cellClicked: (coord: Coordinate) => void;
