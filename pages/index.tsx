@@ -49,9 +49,6 @@ function Main() {
 
     return (
         <>
-            <Head>
-                <title>Minesweeper</title>
-            </Head>
         </>
     );
 }
