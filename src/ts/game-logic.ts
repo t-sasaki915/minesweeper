@@ -1,7 +1,7 @@
 import { addCount, setCount, resetCount } from "../../components/Counter";
 import { startTimer, stopTimer, resetTimer } from "../../components/Timer";
 import { updateInnerHTML as updateChordInnerHTML } from "../../components/ToggleChordModeButton";
-import { updateFlagInnerHTML } from "../../components/ToggleFlagModeButton";
+import { updateInnerHTML as updateFlagInnerHTML } from "../../components/ToggleFlagModeButton";
 
 import Coordinate from "./coordinate";
 import GameContext from "./context";

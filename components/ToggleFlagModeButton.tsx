@@ -8,7 +8,7 @@ type Props = {
     context: GameContext;
 }
 
-export function updateFlagInnerHTML(context: GameContext): void {
+export function updateInnerHTML(context: GameContext): void {
     const elem = document.getElementById(`${context.name()}-toggleFlagMode`)!;
     elem.innerHTML = context.flagMode() ? "exit flag mode" : "switch to flag mode";
 }
