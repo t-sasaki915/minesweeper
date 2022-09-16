@@ -52,8 +52,8 @@ function GameScreen(context: GameContext) {
 
 class Main extends Component {
 
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
 
         this.state = {
             loaded: false,
