@@ -43,6 +43,38 @@ function loadImages(): void {
         });
 }
 
+function LoadingScreen() {
+    return (
+        <>
+            <p>loading images...</p>
+        </>
+    );
+}
+
+function LoadFailedScreen() {
+    return (
+        <>
+            <p>load failed.</p>
+        </>
+    );
+}
+
+function GameScreen(context: GameContext) {
+    return (
+        <>
+            <Head>
+                <title>Minesweeper</title>
+            </Head>
+            <Game context={context} />
+            <div>
+                <p>difficulty:</p>
+                <DifficultySelect />
+            </div>
+            <AboutPage />
+        </>
+    );
+}
+
 function Main() {
     if (isOnBrowser()) {
         let difficulty = EASY;
@@ -63,35 +95,17 @@ function Main() {
         }
 
         loadImages();
-        
-        if (!doneLoading) {
-            return (
-                <>
-                    <p>loading images...</p>
-                </>
-            );
-        }
-        if (loadingErr) {
-            return (
-                <>
-                    <p>loading failed.</p>
-                </>
-            );
-        }
 
         const context = GameContext.inactiveContext(GAME_ID, difficulty);
 
         return (
             <>
-                <Head>
-                    <title>Minesweeper</title>
-                </Head>
-                <Game context={context} />
-                <div>
-                    <p>difficulty:</p>
-                    <DifficultySelect />
-                </div>
-                <AboutPage />
+                {
+                    doneLoading ?
+                        loadingErr ? LoadFailedScreen() 
+                                   : GameScreen(context) 
+                                : LoadingScreen()
+                }
             </>
         );
     }
