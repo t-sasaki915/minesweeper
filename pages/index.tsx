@@ -50,11 +50,16 @@ function GameScreen(context: GameContext) {
     );
 }
 
-type Props = {};
+interface IProps {
+}
+interface IState {
+    loaded: boolean;
+    loadErr: boolean;
+}
 
-class Main extends Component {
+class Main extends Component<IProps, IState> {
 
-    constructor (props: Props) {
+    constructor (props: IProps) {
         super(props);
 
         this.state = {
