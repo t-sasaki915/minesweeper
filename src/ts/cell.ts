@@ -12,10 +12,6 @@ abstract class Cell {
         return this._coord;
     }
 
-    public notMine(): boolean {
-        return !this.isMine();
-    }
-
     public abstract isMine(): boolean;
 
 }
