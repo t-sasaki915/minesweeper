@@ -91,7 +91,7 @@ class Main extends Component {
     }
 
     render() {
-        if (isOnBrowser) {
+        if (isOnBrowser()) {
             const params = new URLSearchParams(window.location.search);
             const diffParam = params.get("d");
             if (diffParam != null) {
