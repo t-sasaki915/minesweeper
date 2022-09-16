@@ -92,6 +92,8 @@ class Main extends Component {
 
     render() {
         if (isOnBrowser()) {
+            let difficulty = EASY;
+
             const params = new URLSearchParams(window.location.search);
             const diffParam = params.get("d");
             if (diffParam != null) {
