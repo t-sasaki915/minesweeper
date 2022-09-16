@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Component, useState } from "react";
 import Head from "next/head";
 
 import AboutPage from "../components/AboutPage";
@@ -18,31 +18,6 @@ const IMAGES_TO_LOAD = [
     "mine.png"
 ];
 
-let doneLoading = false;
-let loadingErr = false;
-
-function loadImages(): void {
-    const promises = IMAGES_TO_LOAD.map(url => {
-        return new Promise<void>((resolve, reject) => {
-            const img = new Image();
-            img.onload = () => resolve();
-            img.onerror = () => reject();
-            img.src = url;
-        });
-    });
-    
-    Promise.all(promises)
-        .then(() => {
-            loadingErr = false;
-        })
-        .catch(() => {
-            loadingErr = true;
-        })
-        .finally(() => {
-            doneLoading = true;
-        });
-}
-
 function LoadingScreen() {
     return (
         <>
@@ -51,7 +26,7 @@ function LoadingScreen() {
     );
 }
 
-function LoadFailedScreen() {
+function LoadErrScreen() {
     return (
         <>
             <p>load failed.</p>
@@ -75,45 +50,80 @@ function GameScreen(context: GameContext) {
     );
 }
 
-function Main() {
-    if (isOnBrowser()) {
-        let difficulty = EASY;
+class Main extends Component {
 
-        const params = new URLSearchParams(window.location.search);
-        const diffParam = params.get("d");
-        if (diffParam != null) {
-            if (!Difficulties.exists(diffParam)) {
-                return (
-                    <>
-                        <p>unknown difficulty.</p>
-                        <DifficultySelect />
-                    </>
-                );
-            }
+    constructor () {
+        super();
 
-            difficulty = Difficulties.get(diffParam)!;
-        }
+        this.state = {
+            loaded: false,
+            loadErr: false
+        };
 
-        loadImages();
-
-        const context = GameContext.inactiveContext(GAME_ID, difficulty);
-
-        return (
-            <>
-                {
-                    doneLoading ?
-                        loadingErr ? LoadFailedScreen() 
-                                   : GameScreen(context) 
-                                : LoadingScreen()
-                }
-            </>
-        );
+        this.loadImages = this.loadImages.bind(this);
     }
 
-    return (
-        <>
-        </>
-    );
+    loadImages(): void {
+        const promises = IMAGES_TO_LOAD.map(url => {
+            return new Promise<void>((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve();
+                img.onerror = () => reject();
+                img.src = url;
+            });
+        });
+        
+        Promise.all(promises)
+            .then(() => {
+                this.setState({
+                    loaded: true,
+                    loadErr: false
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    loaded: true,
+                    loadErr: true
+                });
+            });
+    }
+
+    render() {
+        if (isOnBrowser) {
+            const params = new URLSearchParams(window.location.search);
+            const diffParam = params.get("d");
+            if (diffParam != null) {
+                if (!Difficulties.exists(diffParam)) {
+                    return (
+                        <>
+                            <p>unknown difficulty.</p>
+                            <DifficultySelect />
+                        </>
+                    );
+                }
+
+                difficulty = Difficulties.get(diffParam)!;
+            }
+
+            loadImages();
+
+            const context = GameContext.inactiveContext(GAME_ID, difficulty);
+
+            return (
+                <>
+                    {
+                        this.state.loaded ?
+                            this.state.loadErr ? LoadErrScreen()
+                                               : GameScreen(context)
+                                          : LoadingScreen()
+                    }
+                </>
+            );
+        }
+
+        return <></>;
+    }
+
 }
 
 export default Main;
