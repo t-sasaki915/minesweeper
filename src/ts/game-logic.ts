@@ -1,6 +1,6 @@
 import { addCount, setCount, resetCount } from "../../components/Counter";
 import { startTimer, stopTimer, resetTimer } from "../../components/Timer";
-import { updateChordInnerHTML } from "../../components/ToggleChordModeButton";
+import { updateInnerHTML as updateChordInnerHTML } from "../../components/ToggleChordModeButton";
 import { updateFlagInnerHTML } from "../../components/ToggleFlagModeButton";
 
 import Coordinate from "./coordinate";

@@ -8,7 +8,7 @@ type Props = {
     context: GameContext;
 }
 
-export function updateChordInnerHTML(context: GameContext): void {
+export function updateInnerHTML(context: GameContext): void {
     const elem = document.getElementById(`${context.name()}-toggleChordMode`)!;
     elem.innerHTML = context.chordMode() ? "exit chord mode" : "switch to chord mode";
 }
