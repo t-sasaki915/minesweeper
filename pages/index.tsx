@@ -11,7 +11,7 @@ import { isOnBrowser } from "../src/ts/util";
 
 const GAME_ID = "main";
 const IMAGES_TO_LOAD = [
-    "cellNotOpened.png",
+    "../cellNotOpened.png",
     "flag.png",
     "flagMiss.png",
     "flagPlaceholder.png",
