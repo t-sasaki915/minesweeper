@@ -23,7 +23,7 @@ let loadingErr = false;
 
 function loadImages(): void {
     const promises = IMAGES_TO_LOAD.map(url => {
-        return new Promise<any>((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             const img = new Image();
             img.onload = () => resolve();
             img.onerror = () => reject();
