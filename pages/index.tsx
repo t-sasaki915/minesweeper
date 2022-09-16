@@ -109,7 +109,7 @@ class Main extends Component {
                 difficulty = Difficulties.get(diffParam)!;
             }
 
-            loadImages();
+            this.loadImages();
 
             const context = GameContext.inactiveContext(GAME_ID, difficulty);
 
