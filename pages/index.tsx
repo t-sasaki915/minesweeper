@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import Head from "next/head";
 
 import AboutPage from "../components/AboutPage";
@@ -18,59 +18,78 @@ const IMAGES_TO_LOAD = [
     "mine.png"
 ];
 
+function UnknownDifficultyScreen() {
+    return (
+        <>
+            <p>unknown difficulty.</p>
+            <DifficultySelect />
+        </>
+    );
+}
 function LoadingScreen() {
     return (
         <>
-            <p>loading images...</p>
+            <p>loading resources...</p>
         </>
     );
 }
-
 function LoadErrScreen() {
     return (
         <>
-            <p>load failed.</p>
+            <p>failed to load resources.</p>
         </>
     );
 }
 
-function GameScreen(context: GameContext) {
-    return (
-        <>
-            <Head>
-                <title>Minesweeper</title>
-            </Head>
-            <Game context={context} />
-            <div>
-                <p>difficulty:</p>
-                <DifficultySelect />
-            </div>
-            <AboutPage />
-        </>
-    );
-}
-
-interface IProps {
-}
+interface IProps { }
 interface IState {
     loaded: boolean;
     loadErr: boolean;
+    unknownDifficulty: boolean;
 }
 
 class Main extends Component<IProps, IState> {
+
+    private _context: GameContext;
+    private _difficulty: Difficulty;
 
     constructor (props: IProps) {
         super(props);
 
         this.state = {
             loaded: false,
-            loadErr: false
+            loadErr: false,
+            unknownDifficulty: false
         };
 
-        this.loadImages = this.loadImages.bind(this);
+        this._context = GameContext.inactiveContext(GAME_ID, EASY);
+        this._difficulty = EASY;
+
+        if (isOnBrowser()) {
+            this.init();
+            this.loadImages();
+        }
     }
 
-    loadImages(): void {
+    public init(): void {
+        const params = new URLSearchParams(window.location.search);
+        const diffParam = params.get("d");
+        if (diffParam != null) {
+            if (!Difficulties.exists(diffParam)) {
+                this.state = {
+                    loaded: false,
+                    loadErr: false,
+                    unknownDifficulty: true
+                };
+            } else {
+                this._difficulty = Difficulties.get(diffParam)!;
+            }
+        }
+
+        this._context = GameContext.inactiveContext(GAME_ID, this._difficulty);
+    }
+
+    public loadImages(): void {
         const promises = IMAGES_TO_LOAD.map(url => {
             return new Promise<void>((resolve, reject) => {
                 const img = new Image();
@@ -82,58 +101,38 @@ class Main extends Component<IProps, IState> {
         
         Promise.all(promises)
             .then(() => {
-                this.setState({
-                    loaded: true,
-                    loadErr: false
-                });
+                this.setState({ loadErr: false });
             })
             .catch(() => {
-                this.setState({
-                    loaded: true,
-                    loadErr: true
-                });
+                this.setState({ loadErr: true });
+            })
+            .finally(() => {
+                this.setState({ loaded: true });
             });
     }
 
-    render() {
-        if (isOnBrowser()) {
-            let difficulty = EASY;
-
-            const params = new URLSearchParams(window.location.search);
-            const diffParam = params.get("d");
-            if (diffParam != null) {
-                if (!Difficulties.exists(diffParam)) {
-                    return (
-                        <>
-                            <p>unknown difficulty.</p>
-                            <DifficultySelect />
-                        </>
-                    );
-                }
-
-                difficulty = Difficulties.get(diffParam)!;
-            }
-
-            this.loadImages();
-
-            const context = GameContext.inactiveContext(GAME_ID, difficulty);
-
+    public render() {
             return (
                 <>
+                    <Head>
+                        <title>Minesweeper</title>
+                    </Head>
                     {
-                        this.state.loaded
-                            ? this.state.loadErr
-                                ? LoadErrScreen()
-                                : GameScreen(context)
-                            : LoadingScreen()
+                        this.state.unknownDifficulty ? UnknownDifficultyScreen() :
+                        !this.state.loaded ? LoadingScreen() :
+                        this.state.loaded && this.state.loadErr ? LoadErrScreen() :
+                        <div>
+                            <Game context={this._context} />
+                            <div>
+                                <p>difficulty:</p>
+                                <DifficultySelect />
+                            </div>
+                            <AboutPage />
+                        </div>
                     }
                 </>
             );
-        }
-
-        return <></>;
     }
-
 }
 
 export default Main;
