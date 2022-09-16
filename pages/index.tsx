@@ -50,9 +50,11 @@ function GameScreen(context: GameContext) {
     );
 }
 
+type Props = {};
+
 class Main extends Component {
 
-    constructor (props) {
+    constructor (props: Props) {
         super(props);
 
         this.state = {
@@ -112,10 +114,11 @@ class Main extends Component {
             return (
                 <>
                     {
-                        this.state.loaded ?
-                            this.state.loadErr ? LoadErrScreen()
-                                               : GameScreen(context)
-                                          : LoadingScreen()
+                        this.state.loaded
+                            ? this.state.loadErr
+                                ? LoadErrScreen()
+                                : GameScreen(context)
+                            : LoadingScreen()
                     }
                 </>
             );
