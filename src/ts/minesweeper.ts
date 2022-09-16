@@ -43,7 +43,7 @@ class Minesweeper {
     }
 
     public neutrals(): Array<Cell> {
-        return this.cells().filter(c => c.notMine());
+        return this.cells().filter(c => !c.isMine());
     }
 
     public cellAt(coord: Coordinate): Cell {
