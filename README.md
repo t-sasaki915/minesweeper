@@ -1,2 +1,2 @@
 # minesweeper
-TypeScript製Minesweeper
+Minesweeper made with TypeScript
