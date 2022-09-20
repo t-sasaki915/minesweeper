@@ -100,15 +100,9 @@ class Main extends Component<IProps, IState> {
         });
         
         Promise.all(promises)
-            .then(() => {
-                this.setState({ loadErr: false });
-            })
-            .catch(() => {
-                this.setState({ loadErr: true });
-            })
-            .finally(() => {
-                this.setState({ loaded: true });
-            });
+            .then(() => this.setState({ loadErr: false }))
+            .catch(() => this.setState({ loadErr: true }))
+            .finally(() => this.setState({ loaded: true }));
     }
 
     public render() {
