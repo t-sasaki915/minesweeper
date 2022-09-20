@@ -4,13 +4,13 @@ import GameContext from "../src/ts/context";
 
 import * as Logic from "../src/ts/game-logic";
 
-type Props = {
-    context: GameContext;
-}
-
 export function updateInnerHTML(context: GameContext): void {
     const elem = document.getElementById(`${context.name()}-toggleFlagMode`)!;
     elem.innerHTML = context.flagMode() ? "exit flag mode" : "switch to flag mode";
+}
+
+type Props = {
+    context: GameContext;
 }
 
 const ToggleFlagModeButton = (props: Props) => {
