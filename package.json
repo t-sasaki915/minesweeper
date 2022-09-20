@@ -7,8 +7,9 @@
   "license": "MIT",
   "scripts": {
     "build": "next build && next export",
+    "dev": "next dev",
     "start": "next start",
-    "dev": "next dev"
+    "test": "jest"
   },
   "dependencies": {
     "next": "^12.3.0",
