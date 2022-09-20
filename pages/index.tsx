@@ -11,12 +11,12 @@ import { isOnBrowser } from "../src/ts/util";
 
 const GAME_ID = "main";
 const IMAGES_TO_LOAD = [
-    require("../public/cellNotOpened.png"),
-    require("../public/flag.png"),
-    require("../public/flagMiss.png"),
-    require("../public/flagPlaceholder.png"),
-    require("../public/mine.png")
-];
+    "cellNotOpened.png",
+    "flag.png",
+    "flagMiss.png",
+    "flagPlaceholder.png",
+    "mine.png"
+].map(url => require(`../public/${url}`));
 
 function UnknownDifficultyScreen() {
     return (
