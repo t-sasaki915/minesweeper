@@ -11,11 +11,11 @@ import { isOnBrowser } from "../src/ts/util";
 
 const GAME_ID = "main";
 const IMAGES_TO_LOAD = [
-    "cellNotOpened.png",
-    "flag.png",
-    "flagMiss.png",
-    "flagPlaceholder.png",
-    "mine.png"
+    require("../public/cellNotOpened.png"),
+    require("../public/flag.png"),
+    require("../public/flagMiss.png"),
+    require("../public/flagPlaceholder.png"),
+    require("../public/mine.png")
 ];
 
 function UnknownDifficultyScreen() {
@@ -90,12 +90,12 @@ class Main extends Component<IProps, IState> {
     }
 
     public loadImages(): void {
-        const promises = IMAGES_TO_LOAD.map(url => {
+        const promises = IMAGES_TO_LOAD.map(obj => {
             return new Promise<void>((resolve, reject) => {
                 const img = new Image();
                 img.onload = () => resolve();
                 img.onerror = () => reject();
-                img.src = url;
+                img.src = obj.default.src;
             });
         });
         
