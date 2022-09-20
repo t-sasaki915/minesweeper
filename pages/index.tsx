@@ -117,7 +117,7 @@ class Main extends Component<IProps, IState> {
                     </Head>
                     {
                         !this.state.loaded ? LoadingScreen() :
-                        this.state.loaded && this.state.loadErr ? LoadErrScreen() :
+                        this.state.loadErr ? LoadErrScreen() :
                         <div>
                             <Game context={this._context} />
                             <div>
