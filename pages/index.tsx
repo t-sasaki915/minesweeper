@@ -106,13 +106,16 @@ class Main extends Component<IProps, IState> {
     }
 
     public render() {
+            if (this.state.unknownDifficulty) {
+                return UnknownDifficultyScreen();
+            }
+
             return (
                 <>
                     <Head>
                         <title>Minesweeper</title>
                     </Head>
                     {
-                        this.state.unknownDifficulty ? UnknownDifficultyScreen() :
                         !this.state.loaded ? LoadingScreen() :
                         this.state.loaded && this.state.loadErr ? LoadErrScreen() :
                         <div>
