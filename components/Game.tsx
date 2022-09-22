@@ -35,6 +35,14 @@ const Game = (props: Props) => {
                                             props.context
                                         )
                                     }
+                                    onAuxClick={(e) => {
+                                        if (e.button == 1) {
+                                            Logic.cellMiddleClicked(
+                                                new Coordinate(x, y),
+                                                props.context
+                                            );
+                                        }
+                                    }}
                                     onContextMenu={(e) => {
                                         e.preventDefault();
                                         Logic.cellRightClicked(

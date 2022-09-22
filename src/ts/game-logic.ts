@@ -79,6 +79,19 @@ export function cellRightClicked(
     }
 }
 
+export function cellMiddleClicked(
+    coord: Coordinate,
+    context: GameContext
+): void {
+    if (!context.hasGameInstance() || !context.isActive()) {
+        return;
+    }
+
+    if (!context.flagMode()) {
+        chordOpen(coord, context);
+    }
+}
+
 export function toggleFlagButtonClicked(
     context: GameContext
 ): void {
