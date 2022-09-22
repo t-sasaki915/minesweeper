@@ -29,13 +29,15 @@ const Game = (props: Props) => {
                                     className={Consts.DEFAULT_CELL_CLASSES}
                                     id={`${props.context.name()}-${x}-${y}`}
                                     draggable="false"
-                                    onClick={() =>
+                                    onClick={(e) => {
+                                        e.preventDefault();
                                         Logic.cellClicked(
                                             new Coordinate(x, y),
                                             props.context
                                         )
-                                    }
+                                    }}
                                     onAuxClick={(e) => {
+                                        e.preventDefault();
                                         if (e.button == 1) {
                                             Logic.cellMiddleClicked(
                                                 new Coordinate(x, y),
