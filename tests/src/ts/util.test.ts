@@ -15,7 +15,7 @@ test(
 );
 
 test(
-    "'nearCells' should return all coords in 3 x 3 range centered at 'center'",
+    "'nearCells' should return all coords in 3 x 3 range centered at 'center'.",
     () => {
         expect(Util.nearCells(new Coordinate(1, 1), 3, 3, true))
             .toStrictEqual([
