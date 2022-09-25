@@ -7,7 +7,7 @@ import Game from "../components/Game";
 
 import GameContext from "../src/ts/context";
 import Difficulties, { Difficulty, EASY } from "../src/ts/difficulty";
-import { isOnBrowser } from "../src/ts/util";
+import { isOnBrowser, unless, when } from "../src/ts/util";
 
 const GAME_ID = "main";
 const IMAGES_TO_LOAD = [
@@ -17,29 +17,6 @@ const IMAGES_TO_LOAD = [
     "flagPlaceholder.png",
     "mine.png"
 ].map(url => require(`../public/${url}`));
-
-function UnknownDifficultyScreen() {
-    return (
-        <>
-            <p>unknown difficulty.</p>
-            <DifficultySelect />
-        </>
-    );
-}
-function LoadingScreen() {
-    return (
-        <>
-            <p>loading resources...</p>
-        </>
-    );
-}
-function LoadErrScreen() {
-    return (
-        <>
-            <p>failed to load resources.</p>
-        </>
-    );
-}
 
 interface IProps { }
 interface IState {
@@ -107,7 +84,12 @@ class Main extends Component<IProps, IState> {
 
     public render() {
             if (this.state.unknownDifficulty) {
-                return UnknownDifficultyScreen();
+                return (
+                    <>
+                        <p>unknown difficulty.</p>
+                        <DifficultySelect />
+                    </>
+                );
             }
 
             return (
@@ -116,16 +98,23 @@ class Main extends Component<IProps, IState> {
                         <title>Minesweeper</title>
                     </Head>
                     {
-                        !this.state.loaded ? LoadingScreen() :
-                        this.state.loadErr ? LoadErrScreen() :
-                        <div>
-                            <Game context={this._context} />
-                            <div>
-                                <p>difficulty:</p>
-                                <DifficultySelect />
-                            </div>
-                            <AboutPage />
-                        </div>
+                        unless(
+                            this.state.loaded,
+                            () => <p>loading resources...</p>,
+                            () => when(
+                                this.state.loadErr,
+                                () => <p>failed to load resources.</p>,
+                                () =>
+                                    <div>
+                                        <Game context={this._context} />
+                                        <div>
+                                            <p>difficulty:</p>
+                                            <DifficultySelect />
+                                        </div>
+                                        <AboutPage />
+                                    </div>
+                            )
+                        )
                     }
                 </>
             );

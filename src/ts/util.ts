@@ -13,6 +13,14 @@ export function runSafely<T>(context: GameContext, run: (c: GameContext) => T): 
     return run(context);
 }
 
+export function when<T>(cond: boolean, ifYes: () => T, ifNo: () => T): T {
+    return cond ? ifYes() : ifNo();
+}
+
+export function unless<T>(cond: boolean, ifYes: () => T, ifNo: () => T): T {
+    return when<T>(!cond, ifYes, ifNo);
+}
+
 export function isOnBrowser(): boolean {
     return typeof window != "undefined";
 }
