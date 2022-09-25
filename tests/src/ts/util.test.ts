@@ -54,4 +54,4 @@ test(
                 new Coordinate(1, 1)
             ]);
     }
-)
+);
