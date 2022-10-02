@@ -95,11 +95,11 @@ export function cellMiddleClicked(
 export function toggleFlagButtonClicked(
     context: GameContext
 ): void {
-    const contextOps = GameContextOps.apply(context);
-
     if (!context.hasGameInstance() || !context.isActive()) {
         return;
     }
+
+    const contextOps = GameContextOps.apply(context);
 
     const width = context.difficulty().width();
     const height = context.difficulty().height();
