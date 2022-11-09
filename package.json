@@ -1,7 +1,7 @@
 {
   "name": "minesweeper",
   "version": "1.0.0",
-  "description": "Minesweeper made with TypeScript.",
+  "description": "Minesweeper made with TypeScript",
   "main": "index.js",
   "author": "stouma915",
   "license": "MIT",
