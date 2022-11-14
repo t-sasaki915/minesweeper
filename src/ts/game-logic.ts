@@ -336,6 +336,11 @@ function clearGame(
 ): void {
     const contextOps = GameContextOps.apply(context);
 
+    contextOps.incrementClearStreak();
+    contextOps.updateHighestClearStreak();
+
+    FrontEnd.updateClearStreak(context);
+
     stopTimer(`${context.name()}-timer`);
 
     context
@@ -364,6 +369,10 @@ function endGame(
     context: GameContext
 ): void {
     const contextOps = GameContextOps.apply(context);
+
+    contextOps.resetClearStreak();
+
+    FrontEnd.updateClearStreak(context);
 
     stopTimer(`${context.name()}-timer`);
 

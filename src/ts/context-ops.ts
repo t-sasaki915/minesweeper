@@ -104,6 +104,32 @@ class GameContextOps {
         );
     }
 
+    public incrementClearStreak(): void {
+	return this.run<void>(
+	    (safeContext: GameContext) =>
+	        safeContext.setClearStreak(
+		    safeContext.clearStreak() + 1
+		)
+	);
+    }
+
+    public resetClearStreak(): void {
+	return this.run<void>(
+	    (safeContext: GameContext) =>
+	        safeContext.setClearStreak(0)
+	);
+    }
+
+    public updateHighestClearStreak(): void {
+	return this.run<void>(
+	    (safeContext: GameContext) => {
+	        if (safeContext.clearStreak() > safeContext.highestClearStreak()) {
+		    safeContext.setHighestClearStreak(safeContext.clearStreak());
+		}
+	    }
+	);
+    }
+
     public static apply(context: GameContext): GameContextOps {
         return new GameContextOps(context);
     }

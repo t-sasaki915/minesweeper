@@ -1,3 +1,5 @@
+import { setCount } from "../../components/Counter";
+
 import Coordinate from "./coordinate";
 import GameContext from "./context";
 
@@ -30,4 +32,17 @@ export function setCellNum(
     context: GameContext
 ): void {
     getCellElem(coord, context).innerHTML = `${newNum}`;
+}
+
+export function updateClearStreak(
+    context: GameContext
+): void {
+    setCount(
+        `${context.name()}-clearStreak`,
+	context.clearStreak()
+    );
+    setCount(
+	`${context.name()}-highestClearStreak`,
+	context.highestClearStreak()
+    );
 }

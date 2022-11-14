@@ -12,6 +12,8 @@ class GameContext {
     private _flaggedCells: Array<Coordinate>;
     private _flagMode: boolean;
     private _chordMode: boolean;
+    private _clearStreak: number;
+    private _highestClearStreak: number;
 
     constructor (
         name: string,
@@ -21,7 +23,9 @@ class GameContext {
         openedCells: Array<Coordinate>,
         flaggedCells: Array<Coordinate>,
         flagMode: boolean,
-        chordMode: boolean
+        chordMode: boolean,
+	clearStreak: number,
+	highestClearStreak: number
     ) {
         this._name = name;
         this._difficulty = difficulty;
@@ -31,6 +35,8 @@ class GameContext {
         this._flaggedCells = flaggedCells;
         this._flagMode = flagMode;
         this._chordMode = chordMode;
+	this._clearStreak = clearStreak;
+	this._highestClearStreak = highestClearStreak;
     }
 
     public name(): string {
@@ -83,6 +89,22 @@ class GameContext {
         this._chordMode = chordMode;
     }
 
+    public clearStreak(): number {
+	return this._clearStreak;
+    }
+
+    public setClearStreak(clearStreak: number): void {
+	this._clearStreak = clearStreak;
+    }
+
+    public highestClearStreak(): number {
+	return this._highestClearStreak;
+    }
+
+    public setHighestClearStreak(highestClearStreak: number): void {
+	this._highestClearStreak = highestClearStreak;
+    }
+
     public hasGameInstance(): boolean {
         return this.gameInstance() != null;
     }
@@ -93,7 +115,7 @@ class GameContext {
         this.setOpenedCells([]);
         this.setFlaggedCells([]);
         this.setFlagMode(false);
-        this.setChordMode(false)
+        this.setChordMode(false);
     }
 
     public static inactiveContext(name: string, difficulty: Difficulty): GameContext {
@@ -105,7 +127,9 @@ class GameContext {
             [],
             [],
             false,
-            false
+            false,
+	    0,
+	    0
         );
     }
 

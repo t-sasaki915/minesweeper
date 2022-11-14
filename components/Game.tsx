@@ -64,9 +64,13 @@ const Game = (props: Props) => {
                 <ToggleChordModeButton context={props.context} />
                 <RestartButton context={props.context} />
                 <br />
+                <br />
                 <div>
-                    <p>time: <Timer id={`${props.context.name()}-timer`} />s</p>
-                    <p>mine remains: <Counter id={`${props.context.name()}-mineRemain`} /></p>
+                    <span>time: <Timer id={`${props.context.name()}-timer`} />s</span><br />
+                    <span>mine remains: <Counter id={`${props.context.name()}-mineRemain`} /></span><br />
+                    <br />
+                    <span>clear streak: <Counter id={`${props.context.name()}-clearStreak`} /></span><br />
+                    <span>highest clear streak: <Counter id={`${props.context.name()}-highestClearStreak`} /></span><br />
                 </div>
             </div>
         </div>
